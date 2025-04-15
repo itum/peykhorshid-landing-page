@@ -1,3 +1,6 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@100;200;300;400;500;600;700;800;900&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -13,10 +16,10 @@
     --popover: 0 0% 100%;
     --popover-foreground: 222.2 84% 4.9%;
 
-    --primary: 222.2 47.4% 11.2%;
+    --primary: 199 89% 48%;
     --primary-foreground: 210 40% 98%;
 
-    --secondary: 210 40% 96.1%;
+    --secondary: 25 95% 53%;
     --secondary-foreground: 222.2 47.4% 11.2%;
 
     --muted: 210 40% 96.1%;
@@ -32,22 +35,15 @@
     --input: 214.3 31.8% 91.4%;
     --ring: 222.2 84% 4.9%;
 
-    --radius: 0.5rem;
+    --radius: 0.75rem;
 
     --sidebar-background: 0 0% 98%;
-
     --sidebar-foreground: 240 5.3% 26.1%;
-
     --sidebar-primary: 240 5.9% 10%;
-
     --sidebar-primary-foreground: 0 0% 98%;
-
     --sidebar-accent: 240 4.8% 95.9%;
-
     --sidebar-accent-foreground: 240 5.9% 10%;
-
     --sidebar-border: 220 13% 91%;
-
     --sidebar-ring: 217.2 91.2% 59.8%;
   }
 
@@ -95,7 +91,32 @@
     @apply border-border;
   }
 
+  html, body {
+    @apply font-vazirmatn;
+    direction: rtl;
+  }
+
   body {
     @apply bg-background text-foreground;
   }
+}
+
+.gradient-blue {
+  @apply bg-gradient-to-r from-peyk-blue-dark via-peyk-blue to-peyk-blue-light;
+}
+
+.gradient-orange {
+  @apply bg-gradient-to-r from-peyk-orange-dark via-peyk-orange to-peyk-orange-light;
+}
+
+.feature-card {
+  @apply p-6 bg-white rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300;
+}
+
+.section-padding {
+  @apply py-16 px-4 md:px-8 lg:px-12;
+}
+
+.blue-gradient-bg {
+  background: linear-gradient(90deg, #0EA5E9 0%, #38BDF8 100%);
 }
