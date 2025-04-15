@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { CreditCard, Calendar } from 'lucide-react';
+import { CreditCard, Calendar, Plane, Map } from 'lucide-react';
 
 const Hero = () => {
   return (
@@ -8,19 +8,30 @@ const Hero = () => {
         <div className="flex flex-col md:flex-row items-center justify-between gap-8">
           <div className="md:w-1/2 text-white">
             <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4">
-              وام آنلاین، بدون ضامن و چک
+              طرح جامع وام سفر
             </h1>
-            <p className="text-lg md:text-xl mb-8">
-              با «پیک خورشید اهواز» تا سقف ۱۰۰ میلیون تومان وام دریافت کنید.
+            <p className="text-lg md:text-xl mb-6">
+              با «پیک خورشید اهواز» به رویای سفرهای خود جامه عمل بپوشانید.
               <br />
               فقط با سفته الکترونیکی، بدون نیاز به ضامن یا چک!
             </p>
+            
+            <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 mb-6">
+              <h3 className="font-bold text-xl text-peyk-yellow mb-2">تورهای خارجی خاص</h3>
+              <p className="mb-1">تا سقف ۱۰۰ میلیون تومان برای سفر به اروپا، آفریقا و آمریکای جنوبی</p>
+            </div>
+            
+            <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 mb-6">
+              <h3 className="font-bold text-xl text-peyk-yellow mb-2">تورهای داخلی و خارجی عمومی</h3>
+              <p className="mb-1">از ۲۰ تا ۸۰ میلیون تومان برای سفرهای داخلی و سایر تورهای خارجی</p>
+            </div>
+            
             <div className="flex flex-col sm:flex-row gap-4">
               <Button className="bg-peyk-blue hover:bg-peyk-blue-dark text-white px-8 py-6 text-lg">
-                دریافت وام
+                درخواست وام سفر
               </Button>
               <Button variant="outline" className="bg-transparent border-white text-white hover:bg-white/10 px-8 py-6 text-lg">
-                بیشتر بدانید
+                مشاهده جزئیات
               </Button>
             </div>
           </div>
@@ -35,10 +46,17 @@ const Hero = () => {
               <div className="bg-white p-6 rounded-2xl shadow-xl animate-float">
                 <div className="flex flex-col gap-4">
                   <div className="flex items-center gap-3">
-                    <CreditCard className="text-peyk-blue h-6 w-6" />
+                    <Plane className="text-peyk-blue h-6 w-6" />
                     <div>
-                      <p className="text-gray-500">تا سقف</p>
-                      <p className="text-xl font-bold">۱۰۰ میلیون تومان</p>
+                      <p className="text-gray-500">تورهای خارجی خاص</p>
+                      <p className="text-xl font-bold">تا ۱۰۰ میلیون تومان</p>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <Map className="text-peyk-blue h-6 w-6" />
+                    <div>
+                      <p className="text-gray-500">تورهای داخلی و خارجی</p>
+                      <p className="text-xl font-bold">۲۰ تا ۸۰ میلیون تومان</p>
                     </div>
                   </div>
                   <div className="flex items-center gap-3">
@@ -48,7 +66,7 @@ const Hero = () => {
                       <p className="text-xl font-bold">۶ تا ۲۴ ماه</p>
                     </div>
                   </div>
-                  <Button className="gradient-blue w-full py-5 mt-2">همین حالا شروع کنید</Button>
+                  <Button className="gradient-blue w-full py-5 mt-2">همین حالا درخواست دهید</Button>
                 </div>
               </div>
             </div>
