@@ -1,4 +1,3 @@
-
 import { FileText, Check, CreditCard } from 'lucide-react';
 import { Button } from './ui/button';
 
@@ -35,8 +34,7 @@ const Steps = () => {
         </div>
 
         <div className="relative">
-          {/* Connector Line */}
-          <div className="hidden lg:block absolute top-44 left-[10%] right-[10%] h-1 bg-peyk-blue/30 z-0"></div>
+          {/* Connector Line has been removed */}
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-10 relative z-10">
             {steps.map((step, index) => (
