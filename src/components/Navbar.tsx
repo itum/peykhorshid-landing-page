@@ -9,9 +9,10 @@ const Navbar = () => {
   const navItems = [
     { id: 'hero', label: 'صفحه اصلی' },
     { id: 'features', label: 'امکانات' },
+    { id: 'guarantees', label: 'مدارک و تضامین' },
     { id: 'calculator', label: 'محاسبه اقساط' },
     { id: 'steps', label: 'مراحل دریافت' },
-    { id: 'contact', label: 'تماس با ما' }
+    { id: 'popular-routes', label: 'مسیرهای پرتردد' }
   ];
 
   const toggleMenu = () => {
@@ -81,14 +82,13 @@ const Navbar = () => {
             <a 
               key={item.id}
               href={`#${item.id}`}
-              className={`relative group px-2 py-1 ${activeSection === item.id ? 'text-peyk-yellow font-medium nav-link-active' : 'text-gray-700 hover:text-peyk-yellow'} transition-colors`}
+              className={`relative group px-2 py-1 ${activeSection === item.id ? 'text-peyk-orange font-medium nav-link-active' : 'text-gray-700 hover:text-peyk-orange'} transition-colors`}
               onClick={(e) => smoothScroll(e, item.id)}
             >
               {item.label}
-              <span className={`absolute bottom-0 left-0 w-0 h-0.5 bg-peyk-yellow group-hover:w-full transition-all duration-300 ${activeSection === item.id ? 'w-full width-grow' : ''}`}></span>
+              <span className={`absolute bottom-0 left-0 w-0 h-0.5 bg-peyk-orange group-hover:w-full transition-all duration-300 ${activeSection === item.id ? 'w-full width-grow' : ''}`}></span>
             </a>
           ))}
-          <Button className="gradient-blue btn-hover-effect">ثبت‌نام</Button>
         </div>
 
         {/* Mobile Menu Button */}
@@ -107,15 +107,14 @@ const Navbar = () => {
               <a 
                 key={item.id}
                 href={`#${item.id}`}
-                className={`relative overflow-hidden group pb-2 ${activeSection === item.id ? 'text-peyk-yellow font-medium' : 'text-gray-700 hover:text-peyk-yellow'} transition-colors`}
+                className={`relative overflow-hidden group pb-2 ${activeSection === item.id ? 'text-peyk-orange font-medium' : 'text-gray-700 hover:text-peyk-orange'} transition-colors`}
                 onClick={(e) => smoothScroll(e, item.id)}
                 style={{ animationDelay: `${index * 0.1}s` }}
               >
                 {item.label}
-                <span className={`absolute bottom-0 right-0 w-0 h-0.5 bg-peyk-yellow group-hover:w-full transition-all duration-300 ${activeSection === item.id ? 'w-full width-grow' : ''}`}></span>
+                <span className={`absolute bottom-0 right-0 w-0 h-0.5 bg-peyk-orange group-hover:w-full transition-all duration-300 ${activeSection === item.id ? 'w-full width-grow' : ''}`}></span>
               </a>
             ))}
-            <Button className="gradient-blue w-full btn-hover-effect">ثبت‌نام</Button>
           </div>
         </div>
       )}
@@ -123,4 +122,4 @@ const Navbar = () => {
   );
 };
 
-export default Navbar; 
+export default Navbar;

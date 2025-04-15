@@ -1,5 +1,7 @@
-import { FileText, Check, CreditCard } from 'lucide-react';
+import { FileText, Check, CreditCard, Shield, Briefcase, User, Building } from 'lucide-react';
 import { Button } from './ui/button';
+import { Card, CardContent } from "@/components/ui/card";
+import { Separator } from "@/components/ui/separator";
 
 const Steps = () => {
   const steps = [
@@ -24,48 +26,151 @@ const Steps = () => {
   ];
 
   return (
-    <section id="steps" className="section-padding py-20 bg-gradient-to-b from-peyk-blue/10 to-white">
-      <div className="container mx-auto">
-        <div className="text-center mb-16">
-          <h2 className="text-4xl font-bold mb-6 text-gray-800">مراحل دریافت وام</h2>
-          <p className="max-w-2xl mx-auto text-lg text-gray-600">
-            دریافت وام از پیک خورشید اهواز در سه گام ساده انجام می‌شود:
-          </p>
-        </div>
+    <>
+      <section id="steps" className="section-padding py-20 bg-gradient-to-b from-peyk-blue/10 to-white">
+        <div className="container mx-auto">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl font-bold mb-6 text-gray-800">مراحل دریافت وام</h2>
+            <p className="max-w-2xl mx-auto text-lg text-gray-600">
+              دریافت وام از پیک خورشید اهواز در سه گام ساده انجام می‌شود:
+            </p>
+          </div>
 
-        <div className="relative">
-          {/* Connector Line has been removed */}
-          
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-10 relative z-10">
-            {steps.map((step, index) => (
-              <div 
-                key={index} 
-                className="flex flex-col items-center text-center group"
-                data-aos="fade-up"
-                data-aos-delay={index * 100}
-              >
-                <div className="relative mb-6">
-                  <div className="absolute inset-0 bg-peyk-blue rounded-full scale-110 opacity-20 group-hover:scale-125 group-hover:opacity-30 transition-all duration-300"></div>
-                  <div className="bg-gradient-to-br from-peyk-blue to-peyk-blue-dark p-8 rounded-full mb-4 shadow-lg relative z-10 transform group-hover:scale-110 transition-transform duration-300">
-                    {step.icon}
-                  </div>
-                  <div className="absolute -right-3 -top-3 w-10 h-10 bg-peyk-orange text-white rounded-full flex items-center justify-center text-xl font-bold shadow-md z-20">
-                    {index + 1}
-                  </div>
-                </div>
-                <h3 className="text-2xl font-bold mb-4 text-gray-800">{step.title}</h3>
-                <p className="text-gray-600 mb-6 max-w-xs mx-auto">{step.description}</p>
-                <Button 
-                  className="bg-gradient-to-r from-peyk-orange to-peyk-orange-dark hover:from-peyk-orange-dark hover:to-peyk-orange text-white transition-all duration-300 shadow-md hover:shadow-lg transform hover:-translate-y-1"
+          <div className="relative">
+            {/* Connector Line has been removed */}
+            
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-10 relative z-10">
+              {steps.map((step, index) => (
+                <div 
+                  key={index} 
+                  className="flex flex-col items-center text-center group"
+                  data-aos="fade-up"
+                  data-aos-delay={index * 100}
                 >
-                  {step.buttonText}
-                </Button>
-              </div>
-            ))}
+                  <div className="relative mb-6">
+                    <div className="absolute inset-0 bg-peyk-blue rounded-full scale-110 opacity-20 group-hover:scale-125 group-hover:opacity-30 transition-all duration-300"></div>
+                    <div className="bg-gradient-to-br from-peyk-blue to-peyk-blue-dark p-8 rounded-full mb-4 shadow-lg relative z-10 transform group-hover:scale-110 transition-transform duration-300">
+                      {step.icon}
+                    </div>
+                    <div className="absolute -right-3 -top-3 w-10 h-10 bg-peyk-orange text-white rounded-full flex items-center justify-center text-xl font-bold shadow-md z-20">
+                      {index + 1}
+                    </div>
+                  </div>
+                  <h3 className="text-2xl font-bold mb-4 text-gray-800">{step.title}</h3>
+                  <p className="text-gray-600 mb-6 max-w-xs mx-auto">{step.description}</p>
+                  <Button 
+                    className="bg-gradient-to-r from-peyk-orange to-peyk-orange-dark hover:from-peyk-orange-dark hover:to-peyk-orange text-white transition-all duration-300 shadow-md hover:shadow-lg transform hover:-translate-y-1"
+                  >
+                    {step.buttonText}
+                  </Button>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
-      </div>
-    </section>
+      </section>
+
+      {/* بخش مدارک و تضامین */}
+      <section id="guarantees" className="section-padding bg-gradient-to-b from-white to-gray-50">
+        <div className="container mx-auto">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold text-gray-900 mb-4">مدارک و تضامین</h2>
+            <p className="text-gray-600 max-w-2xl mx-auto">
+              آشنایی با مدارک مورد نیاز و تضامین قابل ارائه برای دریافت وام از پیک خورشید اهواز
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            {/* ستون اول - مدارک */}
+            <Card className="overflow-hidden border-0 shadow-lg hover:shadow-xl transition-shadow duration-300">
+              <div className="bg-gradient-to-r from-peyk-blue to-peyk-blue-dark p-4">
+                <div className="flex items-center gap-3">
+                  <FileText className="text-white h-7 w-7" />
+                  <h3 className="text-xl font-bold text-white">مدارک مورد نیاز</h3>
+                </div>
+              </div>
+              <CardContent className="p-6">
+                <ul className="space-y-4">
+                  <li className="flex items-start gap-3">
+                    <Check className="text-peyk-blue h-5 w-5 mt-0.5 flex-shrink-0" />
+                    <span>کپی کارت ملی و شناسنامه متقاضی</span>
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <Check className="text-peyk-blue h-5 w-5 mt-0.5 flex-shrink-0" />
+                    <span>مدارک شغلی و درآمدی (بر اساس نوع شغل)</span>
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <Check className="text-peyk-blue h-5 w-5 mt-0.5 flex-shrink-0" />
+                    <span>قبض آب یا برق یا گاز محل سکونت</span>
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <Check className="text-peyk-blue h-5 w-5 mt-0.5 flex-shrink-0" />
+                    <span>عکس پرسنلی جدید</span>
+                  </li>
+                </ul>
+              </CardContent>
+            </Card>
+
+            {/* ستون دوم - تضامین */}
+            <Card className="overflow-hidden border-0 shadow-lg hover:shadow-xl transition-shadow duration-300">
+              <div className="bg-gradient-to-r from-peyk-orange to-peyk-orange-dark p-4">
+                <div className="flex items-center gap-3">
+                  <Shield className="text-white h-7 w-7" />
+                  <h3 className="text-xl font-bold text-white">تضامین</h3>
+                </div>
+              </div>
+              <CardContent className="p-6">
+                <div className="space-y-6">
+                  <div className="space-y-3">
+                    <div className="flex items-center gap-2">
+                      <User className="text-peyk-orange h-5 w-5 flex-shrink-0" />
+                      <h4 className="font-bold">کارکنان بخش دولتی</h4>
+                    </div>
+                    <p className="text-gray-600 text-sm pr-7">
+                      آخرین فیش حقوقی بهمراه چک جدید طرح صیاد به تعداد اقساط
+                    </p>
+                  </div>
+
+                  <Separator className="bg-gray-200" />
+
+                  <div className="space-y-3">
+                    <div className="flex items-center gap-2">
+                      <Building className="text-peyk-orange h-5 w-5 flex-shrink-0" />
+                      <h4 className="font-bold">کارکنان بخش خصوصی</h4>
+                    </div>
+                    <p className="text-gray-600 text-sm pr-7">
+                      گواهی اشتغال به کار، آخرین لیست بیمه پرداختی ممهور به مهر
+                    </p>
+                  </div>
+
+                  <Separator className="bg-gray-200" />
+
+                  <div className="space-y-3">
+                    <div className="flex items-center gap-2">
+                      <Briefcase className="text-peyk-orange h-5 w-5 flex-shrink-0" />
+                      <h4 className="font-bold">صاحبان کسب و کار</h4>
+                    </div>
+                    <p className="text-gray-600 text-sm pr-7">
+                      پروانه کسب معتبر با چک جدید طرح صیاد به تعداد اقساط
+                    </p>
+                  </div>
+
+                  <div className="mt-6 bg-gray-50 p-4 rounded-lg border border-gray-200">
+                    <h4 className="font-bold text-center mb-3">نوع تضمین</h4>
+                    <p className="text-gray-600 text-sm text-center">
+                      واگذاری چک طرح صیادی بنفش به تعداد اقساط با کارمزد هرچک ۴ درصد
+                    </p>
+                    <p className="text-gray-600 text-sm text-center mt-2">
+                      یک چک ضمانت به مبلغ کل اقساط
+                    </p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+      </section>
+    </>
   );
 };
 

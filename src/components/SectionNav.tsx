@@ -11,9 +11,10 @@ const SectionNav = () => {
   const sections: SectionItem[] = [
     { id: 'hero', label: 'صفحه اصلی' },
     { id: 'features', label: 'امکانات' },
+    { id: 'guarantees', label: 'مدارک و تضامین' },
     { id: 'calculator', label: 'محاسبه اقساط' },
     { id: 'steps', label: 'مراحل دریافت' },
-    { id: 'contact', label: 'تماس با ما' }
+    { id: 'popular-routes', label: 'مسیرهای پرتردد' }
   ];
 
   useEffect(() => {
