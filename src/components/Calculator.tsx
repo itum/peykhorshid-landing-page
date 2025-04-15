@@ -63,7 +63,7 @@ const Calculator = () => {
                 defaultValue={[loanAmount]}
                 max={MAX_LOAN}
                 min={MIN_LOAN}
-                step={1000000}
+                step={10000000}
                 onValueChange={handleLoanChange}
                 className="my-4"
               />

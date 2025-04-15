@@ -12,7 +12,7 @@ const Hero = () => {
               وام آنلاین، بدون ضامن و چک
             </h1>
             <p className="text-lg md:text-xl mb-8">
-              با «پیک خورشید اهواز» تا سقف ۲۰ میلیون تومان وام دریافت کنید.
+              با «پیک خورشید اهواز» تا سقف ۱۰۰ میلیون تومان وام دریافت کنید.
               <br />
               فقط با سفته الکترونیکی، بدون نیاز به ضامن یا چک!
             </p>
@@ -39,14 +39,14 @@ const Hero = () => {
                     <CreditCard className="text-peyk-blue h-6 w-6" />
                     <div>
                       <p className="text-gray-500">تا سقف</p>
-                      <p className="text-xl font-bold">۲۰ میلیون تومان</p>
+                      <p className="text-xl font-bold">۱۰۰ میلیون تومان</p>
                     </div>
                   </div>
                   <div className="flex items-center gap-3">
                     <Calendar className="text-peyk-blue h-6 w-6" />
                     <div>
                       <p className="text-gray-500">بازپرداخت</p>
-                      <p className="text-xl font-bold">۳ تا ۱۲ ماه</p>
+                      <p className="text-xl font-bold">۶ تا ۲۴ ماه</p>
                     </div>
                   </div>
                   <Button className="gradient-orange w-full py-5 mt-2">همین حالا شروع کنید</Button>
