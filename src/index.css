@@ -341,3 +341,133 @@ html {
 .animate-fadeInDown {
   animation: fadeInDown 0.3s ease-out;
 }
+
+/* استایل‌های گلس مورفیسم برای هیرو */
+.hero-bg {
+  background: linear-gradient(125deg, #00153B 0%, #053aa1 100%);
+  position: relative;
+}
+
+.shadow-glass {
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+}
+
+.shadow-glass-hover {
+  box-shadow: 0 8px 32px rgba(5, 58, 161, 0.35);
+}
+
+.glassmorphism-card {
+  position: relative;
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(8px);
+  border-radius: 1rem;
+  padding: 1.25rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  overflow: hidden;
+}
+
+.glassmorphism-item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(8px);
+  border-radius: 1rem;
+  padding: 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  transition: all 0.3s ease;
+}
+
+.glassmorphism-item:hover {
+  background: rgba(255, 255, 255, 0.1);
+  transform: translateY(-2px);
+}
+
+.glass-button-primary {
+  background: rgba(5, 58, 161, 0.6);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.75rem;
+  color: white;
+  font-size: 1.125rem;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
+}
+
+.glass-button-primary:hover {
+  background: rgba(5, 58, 161, 0.8);
+  box-shadow: 0 8px 20px rgba(5, 58, 161, 0.4);
+  transform: translateY(-2px);
+}
+
+.glass-button-secondary {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.75rem;
+  color: white;
+  font-size: 1.125rem;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.glass-button-secondary:hover {
+  background: rgba(255, 255, 255, 0.15);
+  box-shadow: 0 8px 20px rgba(255, 255, 255, 0.15);
+  transform: translateY(-2px);
+}
+
+.glass-button-glow {
+  background: linear-gradient(135deg, rgba(5, 58, 161, 0.8), rgba(25, 73, 153, 0.8));
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.75rem;
+  color: white;
+  font-size: 1.125rem;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
+  position: relative;
+  overflow: hidden;
+}
+
+.glass-button-glow::before {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  background: linear-gradient(45deg, #FFC107, #053aa1, #194999, #FFC107);
+  background-size: 400% 400%;
+  z-index: -1;
+  border-radius: 0.75rem;
+  animation: glowBorder 6s ease-in-out infinite;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.glass-button-glow:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px rgba(5, 58, 161, 0.4);
+}
+
+.glass-button-glow:hover::before {
+  opacity: 1;
+}
+
+@keyframes glowBorder {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
