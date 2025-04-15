@@ -1,4 +1,3 @@
-
 import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
 import Features from "@/components/Features";
@@ -8,6 +7,8 @@ import Steps from "@/components/Steps";
 import Contact from "@/components/Contact";
 import AppDownload from "@/components/AppDownload";
 import Footer from "@/components/Footer";
+import ScrollToTop from "@/components/ScrollToTop";
+import SectionNav from "@/components/SectionNav";
 
 const Index = () => {
   return (
@@ -21,6 +22,8 @@ const Index = () => {
       <Contact />
       <AppDownload />
       <Footer />
+      <SectionNav />
+      <ScrollToTop />
     </div>
   );
 };

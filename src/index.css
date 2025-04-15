@@ -1,4 +1,3 @@
-
 @import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@100;200;300;400;500;600;700;800;900&display=swap');
 
 @tailwind base;
@@ -16,10 +15,10 @@
     --popover: 0 0% 100%;
     --popover-foreground: 222.2 84% 4.9%;
 
-    --primary: 199 89% 48%;
+    --primary: 220 94% 32%;
     --primary-foreground: 210 40% 98%;
 
-    --secondary: 25 95% 53%;
+    --secondary: 220 68% 35%;
     --secondary-foreground: 222.2 47.4% 11.2%;
 
     --muted: 210 40% 96.1%;
@@ -45,6 +44,15 @@
     --sidebar-accent-foreground: 240 5.9% 10%;
     --sidebar-border: 220 13% 91%;
     --sidebar-ring: 217.2 91.2% 59.8%;
+
+    --peyk-blue: #053aa1;
+    --peyk-blue-light: #194999;
+    --peyk-blue-dark: #042d7c;
+    --peyk-orange: #194999;
+    --peyk-orange-light: #2356b0;
+    --peyk-orange-dark: #123a7d;
+    --peyk-yellow: #FFC107;
+    --peyk-yellow-light: #FFCA28;
   }
 
   .dark {
@@ -118,5 +126,218 @@
 }
 
 .blue-gradient-bg {
-  background: linear-gradient(90deg, #0EA5E9 0%, #38BDF8 100%);
+  background: linear-gradient(90deg, #053aa1 0%, #194999 100%);
+}
+
+/* اسکرول انیمیشن ها */
+html {
+  scroll-behavior: smooth;
+}
+
+/* کلاس فعال برای لینک‌های ناوبری */
+.nav-link-active {
+  color: var(--peyk-yellow);
+}
+
+.nav-link-active span {
+  width: 100%;
+}
+
+/* انیمیشن نشانگر بخش فعال */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.section-transition {
+  animation: fadeInUp 0.8s ease-out;
+}
+
+@keyframes pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.4);
+  }
+  70% {
+    box-shadow: 0 0 0 10px rgba(59, 130, 246, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(59, 130, 246, 0);
+  }
+}
+
+.pulse-animation {
+  animation: pulse 2s infinite;
+}
+
+/* استایل برای اسکرول باتن */
+.scroll-top-btn {
+  position: fixed;
+  bottom: 20px;
+  left: 20px;
+  width: 40px;
+  height: 40px;
+  background-color: var(--peyk-blue);
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.3s, transform 0.3s;
+  transform: translateY(20px);
+  z-index: 30;
+}
+
+.scroll-top-btn.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* اسکرولبار استایل */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--peyk-blue);
+  border-radius: 6px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--peyk-blue-dark);
+}
+
+/* انیمیشن‌های اضافی برای بخش‌های سایت */
+@keyframes float {
+  0% {
+    transform: translateY(0px);
+    box-shadow: 0 5px 15px 0px rgba(0,0,0,0.1);
+  }
+  50% {
+    transform: translateY(-10px);
+    box-shadow: 0 15px 25px 0px rgba(0,0,0,0.15);
+  }
+  100% {
+    transform: translateY(0px);
+    box-shadow: 0 5px 15px 0px rgba(0,0,0,0.1);
+  }
+}
+
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+/* انیمیشن برای نمایش نام سکشن‌ها */
+@keyframes fadeInRight {
+  from {
+    opacity: 0;
+    transform: translateX(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.section-label-animation {
+  animation: fadeInRight 0.3s ease-out forwards;
+}
+
+/* انیمیشن مکان‌نما در نوار جانبی */
+@keyframes expandDot {
+  from {
+    transform: scale(1);
+  }
+  to {
+    transform: scale(1.5);
+    box-shadow: 0 0 10px rgba(255, 193, 7, 0.5);
+  }
+}
+
+.active-dot {
+  animation: expandDot 0.5s ease-out forwards;
+}
+
+/* بهبود انیمیشن دکمه اسکرول به بالا */
+@keyframes bounceUp {
+  0%, 20%, 50%, 80%, 100% {
+    transform: translateY(0);
+  }
+  40% {
+    transform: translateY(-10px);
+  }
+  60% {
+    transform: translateY(-5px);
+  }
+}
+
+.bounce-animation {
+  animation: bounceUp 2s infinite;
+}
+
+/* افکت هاور برای دکمه‌ها */
+.btn-hover-effect {
+  transition: all 0.3s ease;
+}
+
+.btn-hover-effect:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+/* انیمیشن برای نشانگر اکتیو در منوی اصلی */
+@keyframes widthGrow {
+  from {
+    width: 0;
+  }
+  to {
+    width: 100%;
+  }
+}
+
+.width-grow {
+  animation: widthGrow 0.4s ease-out forwards;
+}
+
+/* انیمیشن هاور نمایش توضیحات بخش‌ها در منوی جانبی */
+.section-tooltip {
+  visibility: hidden;
+  opacity: 0;
+  position: absolute;
+  transition: opacity 0.3s, transform 0.3s;
+  transform: translateX(-10px);
+  z-index: 50;
+}
+
+.section-item:hover .section-tooltip {
+  visibility: visible;
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* انیمیشن برای منوی موبایل */
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fadeInDown {
+  animation: fadeInDown 0.3s ease-out;
 }

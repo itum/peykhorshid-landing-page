@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { Slider } from "@/components/ui/slider";
 import {
@@ -97,10 +96,6 @@ const Calculator = () => {
                 </p>
               </CardContent>
             </Card>
-          </div>
-
-          <div className="mt-6 text-center text-sm text-gray-500">
-            با نرخ سود ثابت ۴٪ محاسبه شده است.
           </div>
         </div>
       </div>

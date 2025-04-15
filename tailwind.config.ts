@@ -1,4 +1,3 @@
-
 import type { Config } from "tailwindcss";
 
 export default {
@@ -64,12 +63,15 @@ export default {
 					ring: 'hsl(var(--sidebar-ring))'
 				},
 				peyk: {
-					blue: '#0EA5E9',
-					'blue-light': '#38BDF8',
-					'blue-dark': '#0369A1',
-					orange: '#F97316',
-					'orange-light': '#FB923C',
-					'orange-dark': '#C2410C',
+					blue: '#053aa1',
+					'blue-light': '#194999',
+					'blue-dark': '#042d7c',
+					orange: '#194999',
+					'orange-light': '#2356b0',
+					'orange-dark': '#123a7d',
+					yellow: '#FFC107',
+					'yellow-light': '#FFCA28',
+					'yellow-dark': '#FFA000',
 					gray: '#F1F5F9',
 				}
 			},

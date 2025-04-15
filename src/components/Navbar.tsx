@@ -1,29 +1,94 @@
-
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { Menu, X } from 'lucide-react';
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [activeSection, setActiveSection] = useState<string>('');
+
+  const navItems = [
+    { id: 'hero', label: 'صفحه اصلی' },
+    { id: 'features', label: 'امکانات' },
+    { id: 'calculator', label: 'محاسبه اقساط' },
+    { id: 'steps', label: 'مراحل دریافت' },
+    { id: 'contact', label: 'تماس با ما' }
+  ];
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
 
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollPosition = window.scrollY + 100;
+      
+      // تشخیص بخش فعال بر اساس موقعیت اسکرول
+      for (const item of navItems) {
+        const element = document.getElementById(item.id);
+        if (element) {
+          const offsetTop = element.offsetTop;
+          const offsetBottom = offsetTop + element.offsetHeight;
+          
+          if (scrollPosition >= offsetTop && scrollPosition < offsetBottom) {
+            setActiveSection(item.id);
+            break;
+          }
+        }
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    handleScroll(); // اجرای اولیه برای تعیین بخش فعال
+    
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, [navItems]);
+
+  const smoothScroll = (e: React.MouseEvent<HTMLAnchorElement>, targetId: string) => {
+    e.preventDefault();
+    const targetElement = document.getElementById(targetId);
+    
+    if (targetElement) {
+      // بستن منوی موبایل اگر باز است
+      if (isMenuOpen) {
+        toggleMenu();
+      }
+      
+      window.scrollTo({
+        top: targetElement.offsetTop - 80, // فاصله از بالا را برای هدر تنظیم می‌کند
+        behavior: 'smooth',
+      });
+      
+      // اضافه کردن پارامتر به URL بدون رفرش صفحه
+      window.history.pushState({}, '', `#${targetId}`);
+      setActiveSection(targetId);
+    }
+  };
+
   return (
-    <nav className="sticky top-0 z-50 bg-white/90 backdrop-blur-md shadow-sm py-4 px-6">
+    <nav className="sticky top-0 z-50 bg-white/90 backdrop-blur-md shadow-sm py-4 px-6 transition-all duration-300">
       <div className="container mx-auto flex justify-between items-center">
         <div className="flex items-center">
-          <h1 className="text-xl md:text-2xl font-bold text-peyk-blue">پیک خورشید اهواز</h1>
+          <a href="#hero" className="flex items-center" onClick={(e) => smoothScroll(e, 'hero')}>
+            <img src="/peykhorshid-logo.png" alt="پیک خورشید اهواز" className="h-12 hover:scale-105 transition-transform duration-300" />
+          </a>
         </div>
 
         {/* Desktop Menu */}
         <div className="hidden md:flex items-center space-x-4 space-x-reverse">
-          <a href="#features" className="text-gray-700 hover:text-peyk-blue transition-colors">امکانات</a>
-          <a href="#calculator" className="text-gray-700 hover:text-peyk-blue transition-colors">محاسبه اقساط</a>
-          <a href="#steps" className="text-gray-700 hover:text-peyk-blue transition-colors">مراحل دریافت</a>
-          <a href="#contact" className="text-gray-700 hover:text-peyk-blue transition-colors">تماس با ما</a>
-          <Button className="gradient-blue">ثبت‌نام</Button>
+          {navItems.map((item) => (
+            <a 
+              key={item.id}
+              href={`#${item.id}`}
+              className={`relative group px-2 py-1 ${activeSection === item.id ? 'text-peyk-yellow font-medium nav-link-active' : 'text-gray-700 hover:text-peyk-yellow'} transition-colors`}
+              onClick={(e) => smoothScroll(e, item.id)}
+            >
+              {item.label}
+              <span className={`absolute bottom-0 left-0 w-0 h-0.5 bg-peyk-yellow group-hover:w-full transition-all duration-300 ${activeSection === item.id ? 'w-full width-grow' : ''}`}></span>
+            </a>
+          ))}
+          <Button className="gradient-blue btn-hover-effect">ثبت‌نام</Button>
         </div>
 
         {/* Mobile Menu Button */}
@@ -36,13 +101,21 @@ const Navbar = () => {
 
       {/* Mobile Menu */}
       {isMenuOpen && (
-        <div className="md:hidden absolute top-16 right-0 left-0 bg-white shadow-md py-4 px-6 z-50">
+        <div className="md:hidden absolute top-16 right-0 left-0 bg-white shadow-md py-4 px-6 z-50 animate-fadeInDown">
           <div className="flex flex-col space-y-4">
-            <a href="#features" className="text-gray-700 hover:text-peyk-blue transition-colors" onClick={toggleMenu}>امکانات</a>
-            <a href="#calculator" className="text-gray-700 hover:text-peyk-blue transition-colors" onClick={toggleMenu}>محاسبه اقساط</a>
-            <a href="#steps" className="text-gray-700 hover:text-peyk-blue transition-colors" onClick={toggleMenu}>مراحل دریافت</a>
-            <a href="#contact" className="text-gray-700 hover:text-peyk-blue transition-colors" onClick={toggleMenu}>تماس با ما</a>
-            <Button className="gradient-blue w-full">ثبت‌نام</Button>
+            {navItems.map((item, index) => (
+              <a 
+                key={item.id}
+                href={`#${item.id}`}
+                className={`relative overflow-hidden group pb-2 ${activeSection === item.id ? 'text-peyk-yellow font-medium' : 'text-gray-700 hover:text-peyk-yellow'} transition-colors`}
+                onClick={(e) => smoothScroll(e, item.id)}
+                style={{ animationDelay: `${index * 0.1}s` }}
+              >
+                {item.label}
+                <span className={`absolute bottom-0 right-0 w-0 h-0.5 bg-peyk-yellow group-hover:w-full transition-all duration-300 ${activeSection === item.id ? 'w-full width-grow' : ''}`}></span>
+              </a>
+            ))}
+            <Button className="gradient-blue w-full btn-hover-effect">ثبت‌نام</Button>
           </div>
         </div>
       )}
@@ -50,4 +123,4 @@ const Navbar = () => {
   );
 };
 
-export default Navbar;
+export default Navbar; 

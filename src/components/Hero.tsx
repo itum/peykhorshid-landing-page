@@ -1,10 +1,9 @@
-
 import { Button } from "@/components/ui/button";
 import { CreditCard, Calendar } from 'lucide-react';
 
 const Hero = () => {
   return (
-    <section className="blue-gradient-bg section-padding">
+    <section id="hero" className="blue-gradient-bg section-padding">
       <div className="container mx-auto">
         <div className="flex flex-col md:flex-row items-center justify-between gap-8">
           <div className="md:w-1/2 text-white">
@@ -17,7 +16,7 @@ const Hero = () => {
               فقط با سفته الکترونیکی، بدون نیاز به ضامن یا چک!
             </p>
             <div className="flex flex-col sm:flex-row gap-4">
-              <Button className="bg-peyk-orange hover:bg-peyk-orange-dark text-white px-8 py-6 text-lg">
+              <Button className="bg-peyk-blue hover:bg-peyk-blue-dark text-white px-8 py-6 text-lg">
                 دریافت وام
               </Button>
               <Button variant="outline" className="bg-transparent border-white text-white hover:bg-white/10 px-8 py-6 text-lg">
@@ -27,7 +26,7 @@ const Hero = () => {
           </div>
           <div className="md:w-1/2 flex justify-center">
             <div className="relative w-full max-w-md">
-              <div className="absolute -top-6 -right-6 w-20 h-20 rounded-full bg-peyk-orange flex items-center justify-center text-white">
+              <div className="absolute -top-6 -right-6 w-20 h-20 rounded-full bg-peyk-blue flex items-center justify-center text-white">
                 <div className="text-center">
                   <div className="text-lg font-bold">۴٪</div>
                   <div className="text-xs">سود ثابت</div>
@@ -49,7 +48,7 @@ const Hero = () => {
                       <p className="text-xl font-bold">۶ تا ۲۴ ماه</p>
                     </div>
                   </div>
-                  <Button className="gradient-orange w-full py-5 mt-2">همین حالا شروع کنید</Button>
+                  <Button className="gradient-blue w-full py-5 mt-2">همین حالا شروع کنید</Button>
                 </div>
               </div>
             </div>
