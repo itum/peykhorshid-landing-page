@@ -4,7 +4,7 @@ import Hero from "@/components/Hero";
 import Features from "@/components/Features";
 import Calculator from "@/components/Calculator";
 import Steps from "@/components/Steps";
-import Testimonials from "@/components/Testimonials";
+// Removed Testimonials import
 import Contact from "@/components/Contact";
 import AppDownload from "@/components/AppDownload";
 import Footer from "@/components/Footer";
@@ -17,7 +17,7 @@ const Index = () => {
       <Features />
       <Calculator />
       <Steps />
-      <Testimonials />
+      {/* Removed Testimonials component */}
       <Contact />
       <AppDownload />
       <Footer />
