@@ -10,14 +10,13 @@ import {
 import { Card, CardContent } from "@/components/ui/card";
 
 const Calculator = () => {
-  const [loanAmount, setLoanAmount] = useState<number>(10000000); // 10 million tomans default
+  const [loanAmount, setLoanAmount] = useState<number>(20000000); // 20 million tomans default
   const [duration, setDuration] = useState<number>(6); // 6 months default
   const [monthlyPayment, setMonthlyPayment] = useState<number>(0);
-  const [totalPayment, setTotalPayment] = useState<number>(0);
   
   // Constants
-  const MAX_LOAN = 20000000; // 20 million tomans
-  const MIN_LOAN = 1000000; // 1 million tomans
+  const MAX_LOAN = 100000000; // 100 million tomans
+  const MIN_LOAN = 20000000; // 20 million tomans
   const INTEREST_RATE = 0.04; // 4% fixed interest rate
 
   // Calculate payments whenever loan amount or duration changes
@@ -32,7 +31,6 @@ const Calculator = () => {
     const monthly = total / months;
     
     setMonthlyPayment(Math.round(monthly));
-    setTotalPayment(Math.round(total));
   };
 
   const formatCurrency = (amount: number) => {
@@ -65,7 +63,7 @@ const Calculator = () => {
                 defaultValue={[loanAmount]}
                 max={MAX_LOAN}
                 min={MIN_LOAN}
-                step={500000}
+                step={1000000}
                 onValueChange={handleLoanChange}
                 className="my-4"
               />
@@ -82,29 +80,20 @@ const Calculator = () => {
           <div className="mb-8">
             <label className="block text-sm font-medium text-gray-700 mb-2">مدت بازپرداخت (ماه)</label>
             <Tabs defaultValue="6" className="w-full" onValueChange={(value) => handleDurationChange(parseInt(value))}>
-              <TabsList className="grid grid-cols-4 w-full">
-                <TabsTrigger value="3">۳ ماهه</TabsTrigger>
+              <TabsList className="grid grid-cols-3 w-full">
                 <TabsTrigger value="6">۶ ماهه</TabsTrigger>
-                <TabsTrigger value="9">۹ ماهه</TabsTrigger>
                 <TabsTrigger value="12">۱۲ ماهه</TabsTrigger>
+                <TabsTrigger value="24">۲۴ ماهه</TabsTrigger>
               </TabsList>
             </Tabs>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 gap-6">
             <Card>
               <CardContent className="pt-6">
                 <h3 className="text-lg text-center text-gray-600 mb-2">قسط ماهانه</h3>
                 <p className="text-2xl font-bold text-center text-peyk-orange">
                   {formatCurrency(monthlyPayment)} تومان
-                </p>
-              </CardContent>
-            </Card>
-            <Card>
-              <CardContent className="pt-6">
-                <h3 className="text-lg text-center text-gray-600 mb-2">مجموع بازپرداخت</h3>
-                <p className="text-2xl font-bold text-center text-peyk-blue">
-                  {formatCurrency(totalPayment)} تومان
                 </p>
               </CardContent>
             </Card>

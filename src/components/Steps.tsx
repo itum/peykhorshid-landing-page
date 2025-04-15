@@ -18,7 +18,7 @@ const Steps = () => {
     },
     {
       icon: <CreditCard className="h-16 w-16 text-white" />,
-      title: "دریافت کارت اعتباری",
+      title: "دریافت تسهیلات",
       description: "پس از تایید، کارت اعتباری شما صادر شده و می‌توانید خرید کنید",
       buttonText: "شروع خرید"
     }
