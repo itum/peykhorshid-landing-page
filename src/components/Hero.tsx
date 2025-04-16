@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
-import { CreditCard, Calendar, Plane, Map } from 'lucide-react';
+import { Calendar, Plane, Map } from 'lucide-react';
+import { Link } from "react-router-dom";
 
 const Hero = () => {
   return (
@@ -47,18 +48,26 @@ const Hero = () => {
             </div>
             
             <div className="flex flex-col xs:flex-row gap-3 md:gap-4">
-              <Button className="bg-peyk-yellow hover:bg-peyk-yellow-light text-peyk-blue-dark font-bold px-4 sm:px-6 md:px-8 py-4 md:py-6 text-base md:text-lg w-full xs:w-auto">
-                درخواست وام سفر
+              <Button 
+                className="bg-peyk-yellow hover:bg-peyk-yellow-light text-peyk-blue-dark font-bold px-4 sm:px-6 md:px-8 py-4 md:py-6 text-base md:text-lg w-full xs:w-auto"
+                asChild
+              >
+                <Link to="/register">درخواست وام سفر</Link>
               </Button>
-              <Button variant="outline" className="bg-transparent border-white text-white hover:bg-white/20 px-4 sm:px-6 md:px-8 py-4 md:py-6 text-base md:text-lg w-full xs:w-auto">
-                مشاهده جزئیات
+              <Button 
+                variant="outline" 
+                className="bg-transparent border-white text-white hover:bg-white/20 px-4 sm:px-6 md:px-8 py-4 md:py-6 text-base md:text-lg w-full xs:w-auto"
+                asChild
+              >
+                <a href="#calculator">مشاهده جزئیات</a>
               </Button>
             </div>
           </div>
           
           {/* کارت محاسبه سریع - کارت در موبایل به زیر باکس اصلی منتقل می‌شود */}
-          <div className="w-full lg:w-5/12 flex justify-center lg:justify-end mt-6 lg:mt-0">
-            <div className="relative w-full max-w-md">
+          <div className="w-full lg:w-5/12 flex flex-col justify-center lg:justify-end mt-6 lg:mt-0 gap-6">
+            {/* کارت محاسبه سریع */}
+            <div className="relative w-full max-w-md mx-auto">
               <div className="bg-white/90 backdrop-blur-md p-5 md:p-6 rounded-2xl shadow-2xl animate-float">
                 <div className="flex flex-col gap-4 md:gap-5">
                   <div className="border-b border-gray-100 pb-3 md:pb-4">
@@ -86,8 +95,11 @@ const Hero = () => {
                       <p className="text-lg md:text-xl font-bold text-peyk-blue">۶ تا ۲۴ ماه</p>
                     </div>
                   </div>
-                  <Button className="bg-gradient-to-r from-peyk-yellow to-peyk-yellow-light text-peyk-blue-dark font-bold w-full py-4 md:py-5 mt-1 md:mt-2 hover:shadow-lg transition-all duration-300 text-base md:text-lg">
-                    همین حالا درخواست دهید
+                  <Button 
+                    className="bg-gradient-to-r from-peyk-yellow to-peyk-yellow-light text-peyk-blue-dark font-bold w-full py-4 md:py-5 mt-1 md:mt-2 hover:shadow-lg transition-all duration-300 text-base md:text-lg"
+                    asChild
+                  >
+                    <Link to="/register">همین حالا درخواست دهید</Link>
                   </Button>
                 </div>
               </div>

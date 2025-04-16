@@ -9,6 +9,7 @@ import ScrollToTop from "@/components/ScrollToTop";
 import SectionNav from "@/components/SectionNav";
 import ContactUs from "@/components/ContactUs";
 import PopularRoutes from "@/components/PopularRoutes";
+import QuizBanner from "@/components/QuizBanner";
 
 const Index = () => {
   return (
@@ -24,6 +25,7 @@ const Index = () => {
       <Footer />
       <SectionNav />
       <ScrollToTop />
+      <QuizBanner />
     </div>
   );
 };
