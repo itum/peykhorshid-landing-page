@@ -3,8 +3,28 @@ import { CreditCard, Calendar, Plane, Map } from 'lucide-react';
 
 const Hero = () => {
   return (
-    <section id="hero" className="blue-gradient-bg section-padding">
-      <div className="container mx-auto">
+    <section 
+      id="hero" 
+      className="relative section-padding overflow-hidden"
+      style={{
+        minHeight: "100vh"
+      }}
+    >
+      {/* تصویر پس‌زمینه */}
+      <div 
+        className="absolute inset-0 w-full h-full bg-cover bg-center z-0" 
+        style={{ 
+          backgroundImage: `url('/images/hero-image.jpg')`,
+          filter: 'brightness(0.4)'
+        }}
+      ></div>
+      
+      {/* گرادیان جهت خوانایی بهتر متن‌ها */}
+      <div 
+        className="absolute inset-0 bg-gradient-to-r from-peyk-blue-dark/80 to-peyk-blue/60 z-10"
+      ></div>
+      
+      <div className="container mx-auto relative z-20">
         <div className="flex flex-col md:flex-row items-center justify-between gap-8">
           <div className="md:w-1/2 text-white">
             <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4">
