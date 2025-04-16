@@ -2,8 +2,36 @@ import { FileText, Check, CreditCard, Shield, Briefcase, User, Building } from '
 import { Button } from './ui/button';
 import { Card, CardContent } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
+import { useState, useEffect } from 'react';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Pagination, Autoplay, Navigation } from 'swiper/modules';
+
+// Import Swiper styles
+import 'swiper/css';
+import 'swiper/css/pagination';
+import 'swiper/css/navigation';
+import 'swiper/css/autoplay';
 
 const Steps = () => {
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 1024);
+    };
+    
+    // Set initial value
+    handleResize();
+    
+    // Add event listener
+    window.addEventListener('resize', handleResize);
+    
+    // Clean up
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
+
   const steps = [
     {
       icon: <FileText className="h-16 w-16 text-white" />,
@@ -37,35 +65,76 @@ const Steps = () => {
           </div>
 
           <div className="relative">
-            {/* Connector Line has been removed */}
-            
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-10 relative z-10">
-              {steps.map((step, index) => (
-                <div 
-                  key={index} 
-                  className="flex flex-col items-center text-center group"
-                  data-aos="fade-up"
-                  data-aos-delay={index * 100}
-                >
-                  <div className="relative mb-6">
-                    <div className="absolute inset-0 bg-peyk-blue rounded-full scale-110 opacity-20 group-hover:scale-125 group-hover:opacity-30 transition-all duration-300"></div>
-                    <div className="bg-gradient-to-br from-peyk-blue to-peyk-blue-dark p-8 rounded-full mb-4 shadow-lg relative z-10 transform group-hover:scale-110 transition-transform duration-300">
-                      {step.icon}
+            {isMobile ? (
+              <Swiper
+                modules={[Pagination, Autoplay, Navigation]}
+                spaceBetween={20}
+                slidesPerView={1}
+                pagination={{ clickable: true }}
+                navigation={true}
+                autoplay={{ delay: 3500, disableOnInteraction: false }}
+                breakpoints={{
+                  640: { slidesPerView: 2 }
+                }}
+                dir="rtl"
+                className="pb-16"
+              >
+                {steps.map((step, index) => (
+                  <SwiperSlide key={index}>
+                    <div 
+                      className="flex flex-col items-center text-center group h-full"
+                      data-aos="fade-up"
+                      data-aos-delay={index * 100}
+                    >
+                      <div className="relative mb-6">
+                        <div className="absolute inset-0 bg-peyk-blue rounded-full scale-110 opacity-20 group-hover:scale-125 group-hover:opacity-30 transition-all duration-300"></div>
+                        <div className="bg-gradient-to-br from-peyk-blue to-peyk-blue-dark p-8 rounded-full mb-4 shadow-lg relative z-10 transform group-hover:scale-110 transition-transform duration-300">
+                          {step.icon}
+                        </div>
+                        <div className="absolute -right-3 -top-3 w-10 h-10 bg-peyk-orange text-white rounded-full flex items-center justify-center text-xl font-bold shadow-md z-20">
+                          {index + 1}
+                        </div>
+                      </div>
+                      <h3 className="text-2xl font-bold mb-4 text-gray-800">{step.title}</h3>
+                      <p className="text-gray-600 mb-6 max-w-xs mx-auto">{step.description}</p>
+                      <Button 
+                        className="bg-gradient-to-r from-peyk-orange to-peyk-orange-dark hover:from-peyk-orange-dark hover:to-peyk-orange text-white transition-all duration-300 shadow-md hover:shadow-lg transform hover:-translate-y-1 mt-auto"
+                      >
+                        {step.buttonText}
+                      </Button>
                     </div>
-                    <div className="absolute -right-3 -top-3 w-10 h-10 bg-peyk-orange text-white rounded-full flex items-center justify-center text-xl font-bold shadow-md z-20">
-                      {index + 1}
-                    </div>
-                  </div>
-                  <h3 className="text-2xl font-bold mb-4 text-gray-800">{step.title}</h3>
-                  <p className="text-gray-600 mb-6 max-w-xs mx-auto">{step.description}</p>
-                  <Button 
-                    className="bg-gradient-to-r from-peyk-orange to-peyk-orange-dark hover:from-peyk-orange-dark hover:to-peyk-orange text-white transition-all duration-300 shadow-md hover:shadow-lg transform hover:-translate-y-1"
+                  </SwiperSlide>
+                ))}
+              </Swiper>
+            ) : (
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-10 relative z-10">
+                {steps.map((step, index) => (
+                  <div 
+                    key={index} 
+                    className="flex flex-col items-center text-center group"
+                    data-aos="fade-up"
+                    data-aos-delay={index * 100}
                   >
-                    {step.buttonText}
-                  </Button>
-                </div>
-              ))}
-            </div>
+                    <div className="relative mb-6">
+                      <div className="absolute inset-0 bg-peyk-blue rounded-full scale-110 opacity-20 group-hover:scale-125 group-hover:opacity-30 transition-all duration-300"></div>
+                      <div className="bg-gradient-to-br from-peyk-blue to-peyk-blue-dark p-8 rounded-full mb-4 shadow-lg relative z-10 transform group-hover:scale-110 transition-transform duration-300">
+                        {step.icon}
+                      </div>
+                      <div className="absolute -right-3 -top-3 w-10 h-10 bg-peyk-orange text-white rounded-full flex items-center justify-center text-xl font-bold shadow-md z-20">
+                        {index + 1}
+                      </div>
+                    </div>
+                    <h3 className="text-2xl font-bold mb-4 text-gray-800">{step.title}</h3>
+                    <p className="text-gray-600 mb-6 max-w-xs mx-auto">{step.description}</p>
+                    <Button 
+                      className="bg-gradient-to-r from-peyk-orange to-peyk-orange-dark hover:from-peyk-orange-dark hover:to-peyk-orange text-white transition-all duration-300 shadow-md hover:shadow-lg transform hover:-translate-y-1"
+                    >
+                      {step.buttonText}
+                    </Button>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
         </div>
       </section>

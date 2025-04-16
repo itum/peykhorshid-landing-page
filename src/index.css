@@ -385,3 +385,59 @@ section {
     min-height: auto;
   }
 }
+
+/* Swiper Custom Styles */
+.swiper {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  padding-bottom: 40px;
+}
+
+.swiper-pagination-bullet {
+  width: 10px;
+  height: 10px;
+  background-color: #d1d5db;
+  opacity: 0.5;
+  transition: all 0.3s ease;
+}
+
+.swiper-pagination-bullet-active {
+  opacity: 1;
+  background-color: #0061a8; /* peyk-blue */
+  width: 14px;
+  height: 14px;
+}
+
+.swiper-button-next,
+.swiper-button-prev {
+  color: #0061a8 !important; /* peyk-blue */
+  padding: 30px;
+  background-color: rgba(255, 255, 255, 0.7);
+  border-radius: 50%;
+  width: 24px !important;
+  height: 24px !important;
+  transition: all 0.3s ease;
+}
+
+.swiper-button-next:hover,
+.swiper-button-prev:hover {
+  background-color: rgba(255, 255, 255, 0.9);
+}
+
+.swiper-button-next:after,
+.swiper-button-prev:after {
+  font-size: 18px !important;
+  font-weight: bold;
+}
+
+/* RTL Fix for Swiper */
+.swiper-wrapper {
+  direction: rtl;
+}
+
+.swiper-slide {
+  height: auto;
+  display: flex;
+  flex-direction: column;
+}
