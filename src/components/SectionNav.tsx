@@ -11,9 +11,9 @@ const SectionNav = () => {
   const sections: SectionItem[] = [
     { id: 'hero', label: 'صفحه اصلی' },
     { id: 'features', label: 'امکانات' },
-    { id: 'guarantees', label: 'مدارک و تضامین' },
     { id: 'calculator', label: 'محاسبه اقساط' },
     { id: 'steps', label: 'مراحل دریافت' },
+    { id: 'guarantees', label: 'مدارک و تضمین' },
     { id: 'popular-routes', label: 'مسیرهای پرتردد' },
     { id: 'contact-us', label: 'تماس با ما' }
   ];

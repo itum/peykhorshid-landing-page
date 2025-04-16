@@ -45,8 +45,8 @@ const Calculator = () => {
   };
 
   return (
-    <section id="calculator" className="section-padding">
-      <div className="container mx-auto">
+    <section id="calculator" className="section-padding pt-6 md:pt-8">
+      <div className="container mx-auto pt-0">
         <div className="text-center mb-12">
           <h2 className="text-3xl font-bold text-gray-900 mb-4">محاسبه اقساط</h2>
           <p className="text-gray-600 max-w-2xl mx-auto">

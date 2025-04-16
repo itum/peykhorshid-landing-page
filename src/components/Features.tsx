@@ -1,4 +1,3 @@
-
 import { CreditCard, Clock, Shield, ShoppingBag } from 'lucide-react';
 
 const Features = () => {
@@ -26,8 +25,8 @@ const Features = () => {
   ];
 
   return (
-    <section id="features" className="section-padding bg-gray-50">
-      <div className="container mx-auto">
+    <section id="features" className="section-padding bg-gray-50 pb-8 md:pb-10">
+      <div className="container mx-auto pb-0">
         <div className="text-center mb-12">
           <h2 className="text-3xl font-bold text-gray-900 mb-4">چرا پیک خورشید اهواز؟</h2>
           <p className="text-gray-600 max-w-2xl mx-auto">
