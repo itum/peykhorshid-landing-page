@@ -14,12 +14,16 @@ const SectionNav = () => {
     { id: 'guarantees', label: 'مدارک و تضامین' },
     { id: 'calculator', label: 'محاسبه اقساط' },
     { id: 'steps', label: 'مراحل دریافت' },
-    { id: 'popular-routes', label: 'مسیرهای پرتردد' }
+    { id: 'popular-routes', label: 'مسیرهای پرتردد' },
+    { id: 'contact-us', label: 'تماس با ما' }
   ];
 
   useEffect(() => {
     const handleScroll = () => {
-      const scrollPosition = window.scrollY + 100;
+      // ارتفاع ویوپورت را دریافت می‌کنیم
+      const viewportHeight = window.innerHeight;
+      // موقعیت فعلی اسکرول + 20% ارتفاع صفحه
+      const scrollPosition = window.scrollY + viewportHeight * 0.2;
       
       // بررسی موقعیت بخش‌های مختلف و تعیین بخش فعال
       for (const section of sections) {
@@ -28,11 +32,17 @@ const SectionNav = () => {
           const offsetTop = element.offsetTop;
           const offsetBottom = offsetTop + element.offsetHeight;
           
+          // بخش فعال را زمانی تعیین می‌کنیم که ۲۰٪ ویوپورت به آن رسیده باشد
           if (scrollPosition >= offsetTop && scrollPosition < offsetBottom) {
             setActiveSection(section.id);
             break;
           }
         }
+      }
+      
+      // اگر به انتهای صفحه رسیده‌ایم، آخرین بخش را فعال می‌کنیم
+      if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight - 10) {
+        setActiveSection(sections[sections.length - 1].id);
       }
     };
 
@@ -49,13 +59,19 @@ const SectionNav = () => {
     const targetElement = document.getElementById(id);
     
     if (targetElement) {
+      // مقدار آفست را تنظیم می‌کنیم تا بخش کامل نمایش داده شود
+      const offset = 50; // آفست کمتر برای نمایش کامل‌تر بخش‌ها
+      
       window.scrollTo({
-        top: targetElement.offsetTop - 80,
+        top: targetElement.offsetTop - offset,
         behavior: 'smooth'
       });
       
       // تغییر URL بدون رفرش صفحه
       window.history.pushState({}, '', `#${id}`);
+      
+      // بعد از اسکرول، بخش فعال را تنظیم می‌کنیم
+      setActiveSection(id);
     }
   };
 

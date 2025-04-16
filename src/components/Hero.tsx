@@ -37,12 +37,6 @@ const Hero = () => {
           </div>
           <div className="md:w-1/2 flex justify-center">
             <div className="relative w-full max-w-md">
-              <div className="absolute -top-6 -right-6 w-20 h-20 rounded-full bg-peyk-blue flex items-center justify-center text-white">
-                <div className="text-center">
-                  <div className="text-lg font-bold">۴٪</div>
-                  <div className="text-xs">سود ثابت</div>
-                </div>
-              </div>
               <div className="bg-white p-6 rounded-2xl shadow-xl animate-float">
                 <div className="flex flex-col gap-4">
                   <div className="flex items-center gap-3">

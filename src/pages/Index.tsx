@@ -4,10 +4,11 @@ import Features from "@/components/Features";
 import Calculator from "@/components/Calculator";
 import Steps from "@/components/Steps";
 // Removed Testimonials import
-import Contact from "@/components/Contact";
 import Footer from "@/components/Footer";
 import ScrollToTop from "@/components/ScrollToTop";
 import SectionNav from "@/components/SectionNav";
+import ContactUs from "@/components/ContactUs";
+import PopularRoutes from "@/components/PopularRoutes";
 
 const Index = () => {
   return (
@@ -18,7 +19,8 @@ const Index = () => {
       <Calculator />
       <Steps />
       {/* Removed Testimonials component */}
-      <Contact />
+      <PopularRoutes />
+      <ContactUs />
       <Footer />
       <SectionNav />
       <ScrollToTop />

@@ -1,7 +1,7 @@
 import { Phone, Mail, MapPin, Clock, ChevronDown, Plane } from 'lucide-react';
 import { useState, useEffect } from 'react';
 
-const Contact = () => {
+const PopularRoutes = () => {
   const [activeTab, setActiveTab] = useState<'domestic' | 'special'>('domestic');
 
   // دیتای مسیرهای پرتردد داخلی
@@ -167,4 +167,4 @@ const Contact = () => {
   );
 };
 
-export default Contact;
+export default PopularRoutes; 

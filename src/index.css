@@ -121,17 +121,39 @@
   @apply p-6 bg-white rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300;
 }
 
-.section-padding {
-  @apply py-16 px-4 md:px-8 lg:px-12;
-}
-
 .blue-gradient-bg {
   background: linear-gradient(90deg, #053aa1 0%, #194999 100%);
+}
+
+@layer components {
+  .section-padding {
+    @apply py-16 px-4 md:px-8 lg:px-12 min-h-screen flex flex-col justify-center;
+  }
+  
+  #hero {
+    min-height: calc(100vh - 70px);
+  }
+  
+  #contact-us {
+    min-height: 100vh;
+    padding-bottom: 6rem;
+  }
+  
+  @media (max-width: 768px) {
+    .section-padding {
+      @apply py-12 min-h-0;
+    }
+    
+    #hero, #contact-us {
+      min-height: auto;
+    }
+  }
 }
 
 /* اسکرول انیمیشن ها */
 html {
   scroll-behavior: smooth;
+  scroll-padding-top: 50px;
 }
 
 /* کلاس فعال برای لینک‌های ناوبری */
@@ -155,8 +177,8 @@ html {
   }
 }
 
-.section-transition {
-  animation: fadeInUp 0.8s ease-out;
+section {
+  animation: fadeInUp 0.5s ease-out forwards;
 }
 
 @keyframes pulse {
@@ -340,4 +362,26 @@ html {
 
 .animate-fadeInDown {
   animation: fadeInDown 0.3s ease-out;
+}
+
+/* استایل‌های خاص برای سکشن‌های مختلف */
+#hero {
+  min-height: calc(100vh - 70px);
+}
+
+#contact-us {
+  min-height: 100vh;
+  padding-bottom: 6rem;
+}
+
+/* تنظیمات واکنش‌گرا برای صفحات موبایل */
+@media (max-width: 768px) {
+  .section-padding {
+    padding: 3rem 0;
+    min-height: auto;
+  }
+  
+  #hero, #contact-us {
+    min-height: auto;
+  }
 }
