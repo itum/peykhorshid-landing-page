@@ -15,72 +15,78 @@ const Hero = () => {
         className="absolute inset-0 w-full h-full bg-cover bg-center z-0" 
         style={{ 
           backgroundImage: `url('/images/hero-image.jpg')`,
-          filter: 'brightness(0.4)'
+          filter: 'brightness(0.6)'
         }}
       ></div>
       
       {/* گرادیان جهت خوانایی بهتر متن‌ها */}
       <div 
-        className="absolute inset-0 bg-gradient-to-r from-peyk-blue-dark/80 to-peyk-blue/60 z-10"
+        className="absolute inset-0 bg-gradient-to-r from-peyk-blue-dark/70 to-transparent z-10"
       ></div>
       
       <div className="container mx-auto relative z-20">
-        <div className="flex flex-col md:flex-row items-center justify-between gap-8">
-          <div className="md:w-1/2 text-white">
-            <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4">
+        <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-12">
+          <div className="lg:w-1/2 text-white bg-peyk-blue-dark/50 backdrop-blur-md rounded-xl p-6 lg:p-8">
+            <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-6">
               طرح جامع وام سفر
             </h1>
-            <p className="text-lg md:text-xl mb-6">
+            <p className="text-lg md:text-xl mb-8">
               با «پیک خورشید اهواز» به رویای سفرهای خود جامه عمل بپوشانید.
               <br />
               فقط با سفته الکترونیکی، بدون نیاز به ضامن یا چک!
             </p>
             
-            <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 mb-6">
+            <div className="bg-white/20 backdrop-blur-md rounded-xl p-5 mb-6 shadow-lg">
               <h3 className="font-bold text-xl text-peyk-yellow mb-2">تورهای خارجی خاص</h3>
               <p className="mb-1">تا سقف ۱۰۰ میلیون تومان برای سفر به اروپا، آفریقا و آمریکای جنوبی</p>
             </div>
             
-            <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 mb-6">
+            <div className="bg-white/20 backdrop-blur-md rounded-xl p-5 mb-8 shadow-lg">
               <h3 className="font-bold text-xl text-peyk-yellow mb-2">تورهای داخلی و خارجی عمومی</h3>
               <p className="mb-1">از ۲۰ تا ۸۰ میلیون تومان برای سفرهای داخلی و سایر تورهای خارجی</p>
             </div>
             
             <div className="flex flex-col sm:flex-row gap-4">
-              <Button className="bg-peyk-blue hover:bg-peyk-blue-dark text-white px-8 py-6 text-lg">
+              <Button className="bg-peyk-yellow hover:bg-peyk-yellow-light text-peyk-blue-dark font-bold px-8 py-6 text-lg">
                 درخواست وام سفر
               </Button>
-              <Button variant="outline" className="bg-transparent border-white text-white hover:bg-white/10 px-8 py-6 text-lg">
+              <Button variant="outline" className="bg-transparent border-white text-white hover:bg-white/20 px-8 py-6 text-lg">
                 مشاهده جزئیات
               </Button>
             </div>
           </div>
-          <div className="md:w-1/2 flex justify-center">
+          <div className="lg:w-5/12 flex justify-center lg:justify-end">
             <div className="relative w-full max-w-md">
-              <div className="bg-white p-6 rounded-2xl shadow-xl animate-float">
-                <div className="flex flex-col gap-4">
-                  <div className="flex items-center gap-3">
-                    <Plane className="text-peyk-blue h-6 w-6" />
+              <div className="bg-white/90 backdrop-blur-md p-6 rounded-2xl shadow-2xl animate-float">
+                <div className="flex flex-col gap-5">
+                  <div className="border-b border-gray-100 pb-4">
+                    <h2 className="text-2xl font-bold text-peyk-blue-dark mb-3">محاسبه سریع اقساط</h2>
+                    <p className="text-gray-600">بررسی اولیه مبلغ اقساط بر اساس تور مورد نظر</p>
+                  </div>
+                  <div className="flex items-center gap-4 bg-gray-50 p-3 rounded-lg">
+                    <Plane className="text-peyk-blue h-6 w-6 flex-shrink-0" />
                     <div>
                       <p className="text-gray-500">تورهای خارجی خاص</p>
-                      <p className="text-xl font-bold">تا ۱۰۰ میلیون تومان</p>
+                      <p className="text-xl font-bold text-peyk-blue">تا ۱۰۰ میلیون تومان</p>
                     </div>
                   </div>
-                  <div className="flex items-center gap-3">
-                    <Map className="text-peyk-blue h-6 w-6" />
+                  <div className="flex items-center gap-4 bg-gray-50 p-3 rounded-lg">
+                    <Map className="text-peyk-blue h-6 w-6 flex-shrink-0" />
                     <div>
                       <p className="text-gray-500">تورهای داخلی و خارجی</p>
-                      <p className="text-xl font-bold">۲۰ تا ۸۰ میلیون تومان</p>
+                      <p className="text-xl font-bold text-peyk-blue">۲۰ تا ۸۰ میلیون تومان</p>
                     </div>
                   </div>
-                  <div className="flex items-center gap-3">
-                    <Calendar className="text-peyk-blue h-6 w-6" />
+                  <div className="flex items-center gap-4 bg-gray-50 p-3 rounded-lg">
+                    <Calendar className="text-peyk-blue h-6 w-6 flex-shrink-0" />
                     <div>
                       <p className="text-gray-500">بازپرداخت</p>
-                      <p className="text-xl font-bold">۶ تا ۲۴ ماه</p>
+                      <p className="text-xl font-bold text-peyk-blue">۶ تا ۲۴ ماه</p>
                     </div>
                   </div>
-                  <Button className="gradient-blue w-full py-5 mt-2">همین حالا درخواست دهید</Button>
+                  <Button className="bg-gradient-to-r from-peyk-yellow to-peyk-yellow-light text-peyk-blue-dark font-bold w-full py-5 mt-2 hover:shadow-lg transition-all duration-300">
+                    همین حالا درخواست دهید
+                  </Button>
                 </div>
               </div>
             </div>
