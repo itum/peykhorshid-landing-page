@@ -31,23 +31,23 @@ const Features = () => {
   const features = [
     {
       icon: <CreditCard className="h-10 w-10 text-peyk-blue" />,
-      title: "تا سقف ۲۰ میلیون تومان",
-      description: "وام بدون ضامن با شرایط آسان و پرداخت سریع"
+      title: "تا سقف ۱۰۰ میلیون تومان",
+      description: "وام سفر برای تورهای خارجی خاص به اروپا، آفریقا و آمریکای جنوبی"
     },
     {
       icon: <Shield className="h-10 w-10 text-peyk-blue" />,
-      title: "فقط با سفته معتبر",
-      description: "بدون نیاز به ضامن یا چک، فقط با سفته الکترونیکی"
+      title: "۲۰ تا ۸۰ میلیون تومان",
+      description: "برای سفرهای داخلی و سایر تورهای خارجی با شرایط آسان"
     },
     {
       icon: <Clock className="h-10 w-10 text-peyk-blue" />,
-      title: "فرآیند کاملاً آنلاین",
-      description: "ثبت‌نام، اعتبارسنجی و دریافت وام به صورت کاملاً آنلاین"
+      title: "بازپرداخت ۶ تا ۲۴ ماه",
+      description: "امکان انتخاب مدت بازپرداخت مناسب با نیاز و توان مالی شما"
     },
     {
       icon: <ShoppingBag className="h-10 w-10 text-peyk-blue" />,
-      title: "خرید از فروشگاه‌های متنوع",
-      description: "امکان خرید از فروشگاه‌های آنلاین مختلف با کارت اعتباری"
+      title: "فقط با سفته الکترونیکی",
+      description: "بدون نیاز به ضامن یا چک، فرآیند کاملاً آنلاین و سریع"
     },
   ];
 
@@ -55,9 +55,9 @@ const Features = () => {
     <section id="features" className="section-padding bg-gray-50 pb-8 md:pb-10">
       <div className="container mx-auto pb-0">
         <div className="text-center mb-12">
-          <h2 className="text-3xl font-bold text-gray-900 mb-4">چرا پیک خورشید اهواز؟</h2>
+          <h2 className="text-3xl font-bold text-gray-900 mb-4">چرا طرح جامع وام سفر پیک خورشید اهواز؟</h2>
           <p className="text-gray-600 max-w-2xl mx-auto">
-            با پیک خورشید اهواز، خرید اقساطی آسان‌تر از همیشه است. بدون نیاز به ضامن یا چک!
+            به رویای سفرهای خود جامه عمل بپوشانید. بدون نیاز به ضامن یا چک، فقط با سفته الکترونیکی!
           </p>
         </div>
 
