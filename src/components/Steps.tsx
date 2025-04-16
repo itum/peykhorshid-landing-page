@@ -77,18 +77,18 @@ const Steps = () => {
                   640: { slidesPerView: 2 }
                 }}
                 dir="rtl"
-                className="pb-16"
+                className="pb-16 steps-swiper"
               >
                 {steps.map((step, index) => (
-                  <SwiperSlide key={index}>
+                  <SwiperSlide key={index} className="py-6">
                     <div 
-                      className="flex flex-col items-center text-center group h-full"
+                      className="flex flex-col items-center text-center group h-full bg-white rounded-xl p-6 pt-10 shadow-md hover:shadow-lg transition-all duration-300"
                       data-aos="fade-up"
                       data-aos-delay={index * 100}
                     >
-                      <div className="relative mb-6">
+                      <div className="relative mb-8">
                         <div className="absolute inset-0 bg-peyk-blue rounded-full scale-110 opacity-20 group-hover:scale-125 group-hover:opacity-30 transition-all duration-300"></div>
-                        <div className="bg-gradient-to-br from-peyk-blue to-peyk-blue-dark p-8 rounded-full mb-4 shadow-lg relative z-10 transform group-hover:scale-110 transition-transform duration-300">
+                        <div className="bg-gradient-to-br from-peyk-blue to-peyk-blue-dark p-9 rounded-full mb-4 shadow-lg relative z-10 transform group-hover:scale-110 transition-transform duration-300">
                           {step.icon}
                         </div>
                         <div className="absolute -right-3 -top-3 w-10 h-10 bg-peyk-orange text-white rounded-full flex items-center justify-center text-xl font-bold shadow-md z-20">

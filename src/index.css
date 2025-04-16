@@ -441,3 +441,27 @@ section {
   display: flex;
   flex-direction: column;
 }
+
+/* استایل اختصاصی برای اسلایدر مراحل دریافت وام */
+.steps-swiper {
+  min-height: 470px !important;
+  padding-bottom: 50px !important;
+}
+
+.steps-swiper .swiper-slide {
+  height: 420px !important;
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+
+.steps-swiper .swiper-button-next,
+.steps-swiper .swiper-button-prev {
+  background-color: rgba(255, 255, 255, 0.9);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* بهبود نمایش آیکن‌ها در اسلایدر */
+.steps-swiper .h-16 {
+  height: 4rem !important;
+  width: 4rem !important;
+}
