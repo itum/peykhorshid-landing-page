@@ -7,38 +7,6 @@ const Footer = () => {
     <footer className="bg-gradient-to-r from-gray-100 to-gray-200 text-gray-700">
       <div className="container mx-auto py-12 px-4 md:px-6">
         
-        {/* Features Section */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-10 py-4 border-b border-gray-300">
-          <div className="flex flex-col items-center text-center hover:text-peyk-blue transition-colors duration-300">
-            <div className="bg-white p-3 rounded-full shadow-md mb-3">
-              <ShieldCheck className="h-7 w-7 text-peyk-blue" />
-            </div>
-            <h4 className="font-bold">پرداخت امن</h4>
-            <p className="text-sm mt-1">امنیت بالا در تمام پرداخت‌ها</p>
-          </div>
-          <div className="flex flex-col items-center text-center hover:text-peyk-blue transition-colors duration-300">
-            <div className="bg-white p-3 rounded-full shadow-md mb-3">
-              <CreditCard className="h-7 w-7 text-peyk-blue" />
-            </div>
-            <h4 className="font-bold">اقساط آسان</h4>
-            <p className="text-sm mt-1">پرداخت اقساطی بدون ضامن</p>
-          </div>
-          <div className="flex flex-col items-center text-center hover:text-peyk-blue transition-colors duration-300">
-            <div className="bg-white p-3 rounded-full shadow-md mb-3">
-              <Clock className="h-7 w-7 text-peyk-blue" />
-            </div>
-            <h4 className="font-bold">پشتیبانی ۲۴/۷</h4>
-            <p className="text-sm mt-1">پاسخگویی در تمام ساعات هفته</p>
-          </div>
-          <div className="flex flex-col items-center text-center hover:text-peyk-blue transition-colors duration-300">
-            <div className="bg-white p-3 rounded-full shadow-md mb-3">
-              <Heart className="h-7 w-7 text-peyk-blue" />
-            </div>
-            <h4 className="font-bold">تضمین رضایت</h4>
-            <p className="text-sm mt-1">اطمینان از خرید با کیفیت</p>
-          </div>
-        </div>
-
         {/* Main Footer Content */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           <div className="space-y-4">
