@@ -14,10 +14,8 @@ const Calculator = () => {
   const [monthlyPayment, setMonthlyPayment] = useState<number>(0);
   
   // Constants
-  const LOAN_MIN = 20000000; // 20 million tomans (actual slider min)
-  const LOAN_MAX = 100000000; // 100 million tomans (actual slider max)
-  const MIN_LOAN = 100000000; // 100 million tomans (display value for min)
-  const MAX_LOAN = 20000000; // 20 million tomans (display value for max)
+  const MIN_LOAN = 20000000; // 20 million tomans
+  const MAX_LOAN = 100000000; // 100 million tomans
   const MONTHLY_INTEREST_RATE = 0.04; // 4% monthly interest rate
 
   // Calculate payments whenever loan amount or duration changes
@@ -65,15 +63,15 @@ const Calculator = () => {
             <div className="mb-4">
               <Slider
                 defaultValue={[loanAmount]}
-                min={LOAN_MIN}
-                max={LOAN_MAX}
+                min={MIN_LOAN}
+                max={MAX_LOAN}
                 step={10000000}
                 onValueChange={handleLoanChange}
                 className="my-4"
               />
               <div className="flex justify-between text-sm text-gray-500">
-                <span>{formatCurrency(MAX_LOAN)} تومان</span>
-                <span>{formatCurrency(MIN_LOAN)} تومان</span>
+                <span>۱۰۰,۰۰۰,۰۰۰ تومان</span>
+                <span>۲۰,۰۰۰,۰۰۰ تومان</span>
               </div>
             </div>
             <div className="text-center text-2xl font-bold text-peyk-blue">
