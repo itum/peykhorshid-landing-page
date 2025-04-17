@@ -343,7 +343,7 @@ const TravelQuiz = () => {
           </div>
           
           <div className="mb-8">
-            <h3 className="text-xl font-bold mb-6">{questions[step].question}</h3>
+            <h3 className="text-xl font-bold mb-4">{questions[step].question}</h3>
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {questions[step].options.map((option) => (
@@ -416,7 +416,7 @@ const TravelQuiz = () => {
                 <p className="text-sm text-gray-600">
                   <span className="font-bold text-gray-700">
                     {name ? `${name} عزیز، ` : ''}
-                    کارشناسان ما با شماره {phone} تماس خواهند گرفت
+                    کارشناسان ما با شماره <a href={`tel:${phone}`} className="text-peyk-blue hover:underline">{phone}</a> تماس خواهند گرفت
                   </span> تا 
                   جزئیات بیشتر درباره وام سفر به {travelDestination} را توضیح دهند.
                 </p>

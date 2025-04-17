@@ -6,7 +6,7 @@ const Guarantees = () => {
   return (
     <section id="guarantees" className="section-padding bg-gradient-to-b from-white to-gray-50">
       <div className="container mx-auto">
-        <div className="text-center mb-12">
+        <div className="text-center mb-8">
           <h2 className="text-3xl font-bold text-gray-900 mb-4">مدارک و تضامین</h2>
           <p className="text-gray-600 max-w-2xl mx-auto">
             آشنایی با مدارک مورد نیاز و تضامین قابل ارائه برای دریافت وام از پیک خورشید اهواز

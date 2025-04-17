@@ -1,5 +1,13 @@
 import { Phone, Mail, MapPin, Clock, ChevronDown, Plane } from 'lucide-react';
 import { useState, useEffect } from 'react';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Pagination, Autoplay, Navigation } from 'swiper/modules';
+
+// Import Swiper styles
+import 'swiper/css';
+import 'swiper/css/pagination';
+import 'swiper/css/navigation';
+import 'swiper/css/autoplay';
 
 // تعریف تایپ برای تورهای داخلی
 interface DomesticRoute {
@@ -22,6 +30,7 @@ type RouteType = DomesticRoute | SpecialRoute;
 
 const PopularRoutes = () => {
   const [activeTab, setActiveTab] = useState<'domestic' | 'special'>('domestic');
+  const [isMobile, setIsMobile] = useState(false);
 
   // دیتای مسیرهای پرتردد داخلی
   const domesticRoutes: DomesticRoute[] = [
@@ -50,6 +59,24 @@ const PopularRoutes = () => {
     const animations = ['fly-animation', 'bounce-animation', 'pulse-animation', 'wobble-animation'];
     return animations[index % animations.length];
   };
+
+  // بررسی اندازه صفحه و تنظیم حالت موبایل
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 1024);
+    };
+    
+    // تنظیم مقدار اولیه
+    handleResize();
+    
+    // اضافه کردن event listener
+    window.addEventListener('resize', handleResize);
+    
+    // پاکسازی
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
 
   // اضافه کردن استایل‌های انیمیشن به head
   useEffect(() => {
@@ -105,10 +132,93 @@ const PopularRoutes = () => {
     };
   }, []);
 
+  // متد رندر کارت تور
+  const renderRouteCard = (route: RouteType, index: number, isInSwiper = false) => {
+    return (
+      <div 
+        key={isInSwiper ? undefined : index} 
+        className={`bg-white rounded-xl shadow-xl hover:shadow-2xl transition-all duration-500 overflow-hidden cursor-pointer hover:translate-y-[-8px] hover:scale-[1.02] route-card ${isInSwiper ? 'h-full' : ''}`}
+      >
+        {activeTab === 'domestic' ? (
+          <a 
+            href={(route as DomesticRoute).link} 
+            target="_blank" 
+            rel="noopener noreferrer" 
+            className="flex flex-col h-full"
+          >
+            {/* بخش تصویر برای تورهای داخلی */}
+            <div className="relative overflow-hidden p-0">
+              {(route as DomesticRoute).image ? (
+                <img 
+                  src={(route as DomesticRoute).image} 
+                  alt={`تور ${route.to}`} 
+                  className="w-full h-auto rounded-t-xl"
+                />
+              ) : (
+                <div className="w-full h-[200px] flex items-center justify-center bg-gradient-to-r from-peyk-orange/20 to-peyk-yellow/20">
+                  <Plane className="h-12 w-12 text-peyk-orange/70" />
+                </div>
+              )}
+            </div>
+            
+            {/* اطلاعات تور */}
+            <div className="p-4 flex-grow flex flex-col justify-between">
+              <div className="text-right">
+                <h3 className="font-bold text-base text-gray-800 mb-1">تور {route.to}</h3>
+                <p className="text-peyk-blue font-bold text-sm text-right">ماهیانه {route.price} میلیون تومان</p>
+              </div>
+              <div className="flex justify-end mt-4">
+                <button className="border border-peyk-blue text-peyk-blue font-medium rounded-full py-1.5 px-5 text-sm transition-all hover:bg-peyk-blue hover:text-white">
+                  دریافت اطلاعات بیشتر
+                </button>
+              </div>
+            </div>
+          </a>
+        ) : (
+          // استایل برای تورهای خاص
+          <a 
+            href={(route as SpecialRoute).link} 
+            target="_blank" 
+            rel="noopener noreferrer" 
+            className="flex flex-col h-full"
+          >
+            {/* بخش تصویر برای تورهای خارجی */}
+            <div className="relative overflow-hidden p-0">
+              {(route as SpecialRoute).image ? (
+                <img 
+                  src={(route as SpecialRoute).image} 
+                  alt={`تور ${route.to}`} 
+                  className="w-full h-auto rounded-t-xl"
+                />
+              ) : (
+                <div className="w-full h-[200px] flex items-center justify-center bg-gradient-to-r from-peyk-blue/20 to-peyk-blue-dark/20">
+                  <Plane className={`h-12 w-12 plane-icon ${getAnimationClass(index)} text-peyk-blue/70`} />
+                </div>
+              )}
+            </div>
+            
+            {/* اطلاعات تور */}
+            <div className="p-4 flex-grow flex flex-col justify-between">
+              <div className="text-right">
+                <h3 className="font-bold text-base text-gray-800 mb-1">تور {route.to}</h3>
+                <p className="text-peyk-blue font-bold text-sm text-right">ماهیانه {route.price} میلیون تومان</p>
+              </div>
+              <div className="flex justify-end mt-4">
+                <span className="border border-peyk-blue text-peyk-blue font-medium rounded-full py-1.5 px-5 text-sm transition-all hover:bg-peyk-blue hover:text-white">
+                  دریافت اطلاعات بیشتر
+                </span>
+              </div>
+            </div>
+          </a>
+        )}
+      </div>
+    );
+  };
+
   return (
     <section id="popular-routes" className="section-padding bg-white">
       <div className="container mx-auto">
-        <div className="text-center mb-12">
+        <div className="text-center mb-8">
           <h2 className="text-3xl font-bold text-gray-900 mb-4">پرفروش‌ترین تورها</h2>
           <p className="text-gray-600 max-w-2xl mx-auto">
             محبوب‌ترین مسیرهای سفر داخلی و خارجی پیک خورشید
@@ -137,94 +247,49 @@ const PopularRoutes = () => {
           </div>
         </div>
 
-        {/* نمایش مسیرهای پرتردد */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {(activeTab === 'domestic' ? domesticRoutes : specialRoutes).map((route, index) => (
-            <div 
-              key={index} 
-              className="bg-white rounded-xl shadow-xl hover:shadow-2xl transition-all duration-500 overflow-hidden cursor-pointer hover:translate-y-[-8px] hover:scale-[1.02] route-card"
-            >
-              {activeTab === 'domestic' ? (
-                <a 
-                  href={(route as DomesticRoute).link} 
-                  target="_blank" 
-                  rel="noopener noreferrer" 
-                  className="flex flex-col h-full"
-                >
-                  {/* بخش تصویر برای تورهای داخلی */}
-                  <div className="relative overflow-hidden p-0">
-                    {(route as DomesticRoute).image ? (
-                      <img 
-                        src={(route as DomesticRoute).image} 
-                        alt={`تور ${route.to}`} 
-                        className="w-full h-auto rounded-t-xl"
-                      />
-                    ) : (
-                      <div className="w-full h-[200px] flex items-center justify-center bg-gradient-to-r from-peyk-orange/20 to-peyk-yellow/20">
-                        <Plane className="h-12 w-12 text-peyk-orange/70" />
-                      </div>
-                    )}
-                  </div>
-                  
-                  {/* اطلاعات تور */}
-                  <div className="p-4 flex-grow flex flex-col justify-between">
-                    <div className="text-right">
-                      <h3 className="font-bold text-base text-gray-800 mb-1">تور {route.to}</h3>
-                      <p className="text-peyk-blue font-bold text-sm text-right">ماهی {route.price} میلیون تومان</p>
-                    </div>
-                    <div className="flex justify-end mt-4">
-                      <button className="border border-peyk-blue text-peyk-blue font-medium rounded-full py-1.5 px-5 text-sm transition-all hover:bg-peyk-blue hover:text-white">
-                        دریافت اطلاعات بیشتر
-                      </button>
-                    </div>
-                  </div>
-                </a>
-              ) : (
-                // استایل جدید برای تورهای خاص (مشابه با تورهای داخلی)
-                <a 
-                  href={(route as SpecialRoute).link} 
-                  target="_blank" 
-                  rel="noopener noreferrer" 
-                  className="flex flex-col h-full"
-                >
-                  {/* بخش تصویر برای تورهای خارجی */}
-                  <div className="relative overflow-hidden p-0">
-                    {(route as SpecialRoute).image ? (
-                      <img 
-                        src={(route as SpecialRoute).image} 
-                        alt={`تور ${route.to}`} 
-                        className="w-full h-auto rounded-t-xl"
-                      />
-                    ) : (
-                      <div className="w-full h-[200px] flex items-center justify-center bg-gradient-to-r from-peyk-blue/20 to-peyk-blue-dark/20">
-                        <Plane className={`h-12 w-12 plane-icon ${getAnimationClass(index)} text-peyk-blue/70`} />
-                      </div>
-                    )}
-                  </div>
-                  
-                  {/* اطلاعات تور */}
-                  <div className="p-4 flex-grow flex flex-col justify-between">
-                    <div className="text-right">
-                      <h3 className="font-bold text-base text-gray-800 mb-1">تور {route.to}</h3>
-                      <p className="text-peyk-blue font-bold text-sm text-right">ماهی {route.price} میلیون تومان</p>
-                    </div>
-                    <div className="flex justify-end mt-4">
-                      <span className="border border-peyk-blue text-peyk-blue font-medium rounded-full py-1.5 px-5 text-sm transition-all hover:bg-peyk-blue hover:text-white">
-                        دریافت اطلاعات بیشتر
-                      </span>
-                    </div>
-                  </div>
-                </a>
-              )}
-            </div>
-          ))}
-        </div>
+        {/* نمایش مسیرهای پرتردد - استفاده از Swiper برای موبایل و تبلت */}
+        {isMobile ? (
+          <Swiper
+            modules={[Pagination, Autoplay, Navigation]}
+            spaceBetween={20}
+            slidesPerView={1}
+            pagination={{ clickable: true }}
+            navigation={true}
+            autoplay={{ delay: 3000 }}
+            breakpoints={{
+              640: { slidesPerView: 2 },
+              768: { slidesPerView: 2 }
+            }}
+            dir="rtl"
+            className="pb-12"
+          >
+            {(activeTab === 'domestic' ? domesticRoutes : specialRoutes).map((route, index) => (
+              <SwiperSlide key={index}>
+                {renderRouteCard(route, index, true)}
+              </SwiperSlide>
+            ))}
+          </Swiper>
+        ) : (
+          // نمایش گرید برای دسکتاپ
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {(activeTab === 'domestic' ? domesticRoutes : specialRoutes).map((route, index) => (
+              renderRouteCard(route, index)
+            ))}
+          </div>
+        )}
         
         {/* دکمه درخواست سفر */}
         <div className="text-center mt-10">
-          <button className="bg-gradient-to-r from-peyk-blue to-peyk-blue-dark hover:from-peyk-blue-dark hover:to-peyk-blue text-white py-3 px-8 rounded-lg font-bold shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
+          <a 
+            href={activeTab === 'domestic' 
+              ? "https://peykkhorshid.ir/tour-category/internal-tours/" 
+              : "https://peykkhorshid.ir/tour-category/foreign-tours/"}
+            target="_blank" 
+            rel="noopener noreferrer" 
+            className="bg-gradient-to-r from-peyk-blue to-peyk-blue-dark hover:from-peyk-blue-dark hover:to-peyk-blue text-white py-3 px-8 rounded-lg font-bold shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 inline-block"
+          >
             مشاهده تورهای {activeTab === 'domestic' ? 'داخلی' : 'خاص'} پیک خورشید
-          </button>
+          </a>
           <p className="text-gray-500 mt-3 text-sm">برنامه‌ریزی آسان و مطمئن برای سفر رویایی شما</p>
         </div>
       </div>

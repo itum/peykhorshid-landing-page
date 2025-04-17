@@ -78,6 +78,13 @@ export default {
 			fontFamily: {
 				'vazirmatn': ['Vazirmatn', 'sans-serif'],
 				'iranYekan': ['IranYekan', 'sans-serif'],
+				'estedad': ['Estedad', 'sans-serif'],
+			},
+			fontSize: {
+				'text-regular': '14px',
+				'heading-regular': '14px',
+				'button-regular': '14px',
+				'button-large': '16px',
 			},
 			borderRadius: {
 				lg: 'var(--radius)',

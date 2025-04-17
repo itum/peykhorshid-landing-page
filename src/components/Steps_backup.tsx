@@ -89,7 +89,7 @@ const Steps = () => {
                           {step.icon}
                         </div>
                         <div className="absolute -right-3 -top-3 w-10 h-10 bg-peyk-orange text-white rounded-full flex items-center justify-center text-xl font-bold shadow-md z-20">
-                          {index === 0 ? "۱" : index === 1 ? "۲" : "۳"}
+                          {index + 1}
                         </div>
                       </div>
                       <h3 className="text-2xl font-bold mb-4 text-gray-800">{step.title}</h3>
@@ -113,7 +113,7 @@ const Steps = () => {
                         {step.icon}
                       </div>
                       <div className="absolute -right-3 -top-3 w-10 h-10 bg-peyk-orange text-white rounded-full flex items-center justify-center text-xl font-bold shadow-md z-20">
-                        {index === 0 ? "۱" : index === 1 ? "۲" : "۳"}
+                        {index + 1}
                       </div>
                     </div>
                     <h3 className="text-2xl font-bold mb-4 text-gray-800">{step.title}</h3>

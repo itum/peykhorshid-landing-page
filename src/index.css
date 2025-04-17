@@ -1,5 +1,39 @@
 @import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@100;200;300;400;500;600;700;800;900&display=swap');
 
+/* فونت استعداد */
+@font-face {
+  font-family: 'Estedad';
+  src: url('/fonts/Estedad-Regular.eot');
+  src: url('/fonts/Estedad-Regular.eot?#iefix') format('embedded-opentype'),
+       url('/fonts/Estedad-Regular.woff2') format('woff2'),
+       url('/fonts/Estedad-Regular.woff') format('woff');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Estedad';
+  src: url('/fonts/Estedad-SemiBold.eot');
+  src: url('/fonts/Estedad-SemiBold.eot?#iefix') format('embedded-opentype'),
+       url('/fonts/Estedad-SemiBold.woff2') format('woff2'),
+       url('/fonts/Estedad-SemiBold.woff') format('woff');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Estedad';
+  src: url('/fonts/Estedad-Black.eot');
+  src: url('/fonts/Estedad-Black.eot?#iefix') format('embedded-opentype'),
+       url('/fonts/Estedad-Black.woff2') format('woff2'),
+       url('/fonts/Estedad-Black.woff') format('woff');
+  font-weight: 900;
+  font-style: normal;
+  font-display: swap;
+}
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -92,20 +126,30 @@
     --sidebar-border: 240 3.7% 15.9%;
     --sidebar-ring: 217.2 91.2% 59.8%;
   }
-}
 
-@layer base {
   * {
     @apply border-border;
   }
 
   html, body {
-    @apply font-vazirmatn;
+    @apply font-estedad font-normal text-text-regular;
     direction: rtl;
   }
 
   body {
     @apply bg-background text-foreground;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-estedad font-semibold text-heading-regular;
+  }
+  
+  button, .btn, [type='button'], [type='reset'], [type='submit'] {
+    @apply font-estedad font-semibold text-button-regular;
+  }
+  
+  .btn-large {
+    @apply text-button-large;
   }
 }
 
@@ -125,9 +169,26 @@
   background: linear-gradient(90deg, #053aa1 0%, #194999 100%);
 }
 
+/* کلاس‌های فونت استعداد */
+.font-estedad-regular {
+  @apply font-estedad font-normal text-text-regular;
+}
+
+.font-estedad-semibold {
+  @apply font-estedad font-semibold text-heading-regular;
+}
+
+.font-estedad-button {
+  @apply font-estedad font-semibold text-button-regular;
+}
+
+.font-estedad-button-large {
+  @apply font-estedad font-semibold text-button-large;
+}
+
 @layer components {
   .section-padding {
-    @apply py-16 px-4 md:px-8 lg:px-12 min-h-screen flex flex-col justify-center;
+    @apply py-8 px-4 md:px-8 lg:px-12 flex flex-col justify-center;
   }
   
   #hero {
@@ -136,12 +197,12 @@
   
   #contact-us {
     min-height: 100vh;
-    padding-bottom: 6rem;
+    padding-bottom: 4rem;
   }
   
   @media (max-width: 768px) {
     .section-padding {
-      @apply py-12 min-h-0;
+      @apply py-6 min-h-0;
     }
     
     #hero, #contact-us {
@@ -152,29 +213,29 @@
 
 /* استایل‌های اختصاصی برای استاندارد کردن فاصله بین سکشن‌ها */
 .section-padding {
-  padding-top: 3rem;
-  padding-bottom: 3rem;
+  padding-top: 2rem;
+  padding-bottom: 2rem;
   margin-top: 0;
   margin-bottom: 0;
 }
 
 @media (min-width: 768px) {
   .section-padding {
-    padding-top: 4rem;
-    padding-bottom: 4rem;
+    padding-top: 2.5rem;
+    padding-bottom: 2.5rem;
   }
 }
 
 @media (min-width: 1024px) {
   .section-padding {
-    padding-top: 5rem;
-    padding-bottom: 5rem;
+    padding-top: 3rem;
+    padding-bottom: 3rem;
   }
 }
 
 /* تنظیم فاصله برای آخرین سکشن قبل از فوتر */
 section:last-of-type.section-padding {
-  padding-bottom: 6rem;
+  padding-bottom: 4rem;
 }
 
 /* اسکرول انیمیشن ها */
@@ -398,13 +459,13 @@ section {
 
 #contact-us {
   min-height: 100vh;
-  padding-bottom: 6rem;
+  padding-bottom: 4rem;
 }
 
 /* تنظیمات واکنش‌گرا برای صفحات موبایل */
 @media (max-width: 768px) {
   .section-padding {
-    padding: 3rem 0;
+    padding: 2rem 0;
     min-height: auto;
   }
   
@@ -418,7 +479,7 @@ section {
   width: 100%;
   height: 100%;
   position: relative;
-  padding-bottom: 40px;
+  padding-bottom: 30px;
 }
 
 .swiper-pagination-bullet {
@@ -471,14 +532,14 @@ section {
 
 /* استایل اختصاصی برای اسلایدر مراحل دریافت وام */
 .steps-swiper {
-  min-height: 470px !important;
-  padding-bottom: 50px !important;
+  min-height: 420px !important;
+  padding-bottom: 40px !important;
 }
 
 .steps-swiper .swiper-slide {
-  height: 420px !important;
-  padding-top: 20px;
-  padding-bottom: 20px;
+  height: 380px !important;
+  padding-top: 15px;
+  padding-bottom: 15px;
 }
 
 .steps-swiper .swiper-button-next,

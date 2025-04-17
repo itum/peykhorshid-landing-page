@@ -50,7 +50,7 @@ const Calculator = () => {
   return (
     <section id="calculator" className="section-padding bg-white">
       <div className="container mx-auto">
-        <div className="text-center mb-12">
+        <div className="text-center mb-8">
           <h2 className="text-3xl font-bold text-gray-900 mb-4">محاسبه اقساط</h2>
           <p className="text-gray-600 max-w-2xl mx-auto">
             مبلغ و مدت بازپرداخت دلخواه خود را انتخاب کنید تا میزان اقساط ماهانه را محاسبه کنیم.
