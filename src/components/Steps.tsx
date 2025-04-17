@@ -36,20 +36,17 @@ const Steps = () => {
     {
       icon: <FileText className="h-16 w-16 text-white" />,
       title: "ثبت درخواست",
-      description: "فرم درخواست را تکمیل کرده و مدارک لازم را بارگذاری کنید",
-      buttonText: "ثبت‌نام"
+      description: "فرم درخواست سفر را تکمیل کرده و برنامه سفر خود را مشخص کنید"
     },
     {
       icon: <Check className="h-16 w-16 text-white" />,
-      title: "اعتبارسنجی سریع",
-      description: "اطلاعات شما به صورت آنلاین و در کمتر از ۲۴ ساعت اعتبارسنجی می‌شود",
-      buttonText: "مشاهده وضعیت"
+      title: "تایید و برنامه‌ریزی",
+      description: "برنامه سفر شما در کمتر از ۲۴ ساعت بررسی و تایید می‌شود"
     },
     {
       icon: <CreditCard className="h-16 w-16 text-white" />,
-      title: "دریافت تسهیلات",
-      description: "پس از تایید، کارت اعتباری شما صادر شده و می‌توانید خرید کنید",
-      buttonText: "شروع خرید"
+      title: "رزرو و پرداخت",
+      description: "پس از تایید، رزرو شما نهایی شده و می‌توانید هزینه را پرداخت کنید"
     }
   ];
 
@@ -60,7 +57,7 @@ const Steps = () => {
           <div className="text-center mb-16">
             <h2 className="text-4xl font-bold mb-6 text-gray-800">مراحل دریافت وام</h2>
             <p className="max-w-2xl mx-auto text-lg text-gray-600">
-              دریافت وام از پیک خورشید اهواز در سه گام ساده انجام می‌شود:
+              رزرو تور از پیک خورشید اهواز در سه گام ساده انجام می‌شود:
             </p>
           </div>
 
@@ -97,11 +94,6 @@ const Steps = () => {
                       </div>
                       <h3 className="text-2xl font-bold mb-4 text-gray-800">{step.title}</h3>
                       <p className="text-gray-600 mb-6 max-w-xs mx-auto">{step.description}</p>
-                      <Button 
-                        className="bg-gradient-to-r from-peyk-orange to-peyk-orange-dark hover:from-peyk-orange-dark hover:to-peyk-orange text-white transition-all duration-300 shadow-md hover:shadow-lg transform hover:-translate-y-1 mt-auto"
-                      >
-                        {step.buttonText}
-                      </Button>
                     </div>
                   </SwiperSlide>
                 ))}
@@ -126,11 +118,6 @@ const Steps = () => {
                     </div>
                     <h3 className="text-2xl font-bold mb-4 text-gray-800">{step.title}</h3>
                     <p className="text-gray-600 mb-6 max-w-xs mx-auto">{step.description}</p>
-                    <Button 
-                      className="bg-gradient-to-r from-peyk-orange to-peyk-orange-dark hover:from-peyk-orange-dark hover:to-peyk-orange text-white transition-all duration-300 shadow-md hover:shadow-lg transform hover:-translate-y-1"
-                    >
-                      {step.buttonText}
-                    </Button>
                   </div>
                 ))}
               </div>
@@ -145,7 +132,7 @@ const Steps = () => {
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold text-gray-900 mb-4">مدارک و تضامین</h2>
             <p className="text-gray-600 max-w-2xl mx-auto">
-              آشنایی با مدارک مورد نیاز و تضامین قابل ارائه برای دریافت وام از پیک خورشید اهواز
+              شرایط و مدارک مورد نیاز اعطای وام سفر
             </p>
           </div>
 
@@ -162,19 +149,23 @@ const Steps = () => {
                 <ul className="space-y-4">
                   <li className="flex items-start gap-3">
                     <Check className="text-peyk-blue h-5 w-5 mt-0.5 flex-shrink-0" />
-                    <span>کپی کارت ملی و شناسنامه متقاضی</span>
+                    <span>تکمیل فرم مشخصات فردی</span>
                   </li>
                   <li className="flex items-start gap-3">
                     <Check className="text-peyk-blue h-5 w-5 mt-0.5 flex-shrink-0" />
-                    <span>مدارک شغلی و درآمدی (بر اساس نوع شغل)</span>
+                    <span>کپی پشت و رو کارت ملی جدید وام گیرنده و مسافرین</span>
                   </li>
                   <li className="flex items-start gap-3">
                     <Check className="text-peyk-blue h-5 w-5 mt-0.5 flex-shrink-0" />
-                    <span>قبض آب یا برق یا گاز محل سکونت</span>
+                    <span>کپی شناسنامه وام گیرنده</span>
                   </li>
                   <li className="flex items-start gap-3">
                     <Check className="text-peyk-blue h-5 w-5 mt-0.5 flex-shrink-0" />
-                    <span>عکس پرسنلی جدید</span>
+                    <span>فرم معدل حساب</span>
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <Check className="text-peyk-blue h-5 w-5 mt-0.5 flex-shrink-0" />
+                    <span>کپی فرم ثنا</span>
                   </li>
                 </ul>
               </CardContent>
@@ -193,7 +184,7 @@ const Steps = () => {
                   <div className="space-y-3">
                     <div className="flex items-center gap-2">
                       <User className="text-peyk-orange h-5 w-5 flex-shrink-0" />
-                      <h4 className="font-bold">کارکنان بخش دولتی</h4>
+                      <h4 className="font-bold">الف) کارکنان بخش دولتی</h4>
                     </div>
                     <p className="text-gray-600 text-sm pr-7">
                       آخرین فیش حقوقی بهمراه چک جدید طرح صیاد به تعداد اقساط
@@ -205,7 +196,7 @@ const Steps = () => {
                   <div className="space-y-3">
                     <div className="flex items-center gap-2">
                       <Building className="text-peyk-orange h-5 w-5 flex-shrink-0" />
-                      <h4 className="font-bold">کارکنان بخش خصوصی</h4>
+                      <h4 className="font-bold">ب) کارکنان بخش خصوصی</h4>
                     </div>
                     <p className="text-gray-600 text-sm pr-7">
                       گواهی اشتغال به کار، آخرین لیست بیمه پرداختی ممهور به مهر
@@ -217,7 +208,7 @@ const Steps = () => {
                   <div className="space-y-3">
                     <div className="flex items-center gap-2">
                       <Briefcase className="text-peyk-orange h-5 w-5 flex-shrink-0" />
-                      <h4 className="font-bold">صاحبان کسب و کار</h4>
+                      <h4 className="font-bold">ج) صاحبان کسب و کار</h4>
                     </div>
                     <p className="text-gray-600 text-sm pr-7">
                       پروانه کسب معتبر با چک جدید طرح صیاد به تعداد اقساط
@@ -231,6 +222,9 @@ const Steps = () => {
                     </p>
                     <p className="text-gray-600 text-sm text-center mt-2">
                       یک چک ضمانت به مبلغ کل اقساط
+                    </p>
+                    <p className="text-gray-600 text-sm text-center mt-2 font-medium">
+                      باز پرداخت اقساط ۶ الی ۲۴ ماه
                     </p>
                   </div>
                 </div>

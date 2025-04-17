@@ -9,7 +9,6 @@ const Navbar = () => {
 
   const navItems = [
     { id: 'hero', label: 'صفحه اصلی' },
-    { id: 'travel-loans', label: 'طرح جامع سفر' },
     { id: 'features', label: 'امکانات' },
     { id: 'popular-routes', label: 'پرفروش‌ترین تورها' },
     { id: 'calculator', label: 'محاسبه اقساط' },

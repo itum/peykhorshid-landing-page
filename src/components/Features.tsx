@@ -46,8 +46,8 @@ const Features = () => {
     },
     {
       icon: <ShoppingBag className="h-10 w-10 text-peyk-blue" />,
-      title: "فقط با سفته الکترونیکی",
-      description: "بدون نیاز به ضامن یا چک، فرآیند کاملاً آنلاین و سریع"
+      title: "فقط با چک صیادی",
+      description: "نیاز به چک صیادی ثبت شده داری"
     },
   ];
 
@@ -55,9 +55,9 @@ const Features = () => {
     <section id="features" className="section-padding bg-gray-50">
       <div className="container mx-auto">
         <div className="text-center mb-12">
-          <h2 className="text-3xl font-bold text-gray-900 mb-4">چرا طرح جامع وام سفر پیک خورشید اهواز؟</h2>
+          <h2 className="text-3xl font-bold text-gray-900 mb-4">طرح جامع وام سفر پیک خورشید</h2>
           <p className="text-gray-600 max-w-2xl mx-auto">
-            به رویای سفرهای خود جامه عمل بپوشانید. بدون نیاز به ضامن یا چک، فقط با سفته الکترونیکی!
+          به رویای سفرهای خود جامه عمل بپوشانید. بدون نیاز به ضامن فقط با یک چک ضمانت !
           </p>
         </div>
 

@@ -28,7 +28,7 @@ const PopularRoutes = () => {
     { to: "کیش", price: "۳", image: "/city-icons/kish.jpg", link: "https://peykkhorshid.ir/kish-tour/" },
     { to: "مشهد", price: "۱.۵", image: "/city-icons/mashhad.jpg", link: "https://peykkhorshid.ir/mashhad-tour/" },
     { to: "شیراز", price: "۲", image: "/city-icons/shiraz.jpg", link: "https://peykkhorshid.ir/shiraz-tour/" },
-    { to: "اصفهان", price: "۲.۲", image: "/city-icons/isfahan.jpg", link: "https://peykkhorshid.ir/isfahan/" }
+    { to: "اصفهان", price: "۲.۲", image: "/city-icons/isfahan.jpg", link: "https://peykkhorshid.ir/isfahan-tour/" }
   ];
 
   // دیتای مسیرهای پرتردد خاص
@@ -111,7 +111,7 @@ const PopularRoutes = () => {
         <div className="text-center mb-12">
           <h2 className="text-3xl font-bold text-gray-900 mb-4">پرفروش‌ترین تورها</h2>
           <p className="text-gray-600 max-w-2xl mx-auto">
-            محبوب‌ترین مسیرهای سفر داخلی و خارجی برای دریافت وام سفر پیک خورشید
+            محبوب‌ترین مسیرهای سفر داخلی و خارجی پیک خورشید
           </p>
         </div>
 
@@ -220,12 +220,12 @@ const PopularRoutes = () => {
           ))}
         </div>
         
-        {/* دکمه درخواست وام سفر */}
+        {/* دکمه درخواست سفر */}
         <div className="text-center mt-10">
           <button className="bg-gradient-to-r from-peyk-blue to-peyk-blue-dark hover:from-peyk-blue-dark hover:to-peyk-blue text-white py-3 px-8 rounded-lg font-bold shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
-            درخواست وام سفر برای {activeTab === 'domestic' ? 'تورهای داخلی' : 'تورهای خاص'}
+            مشاهده تورهای {activeTab === 'domestic' ? 'داخلی' : 'خاص'} پیک خورشید
           </button>
-          <p className="text-gray-500 mt-3 text-sm">بدون نیاز به ضامن، فقط با سفته الکترونیکی</p>
+          <p className="text-gray-500 mt-3 text-sm">برنامه‌ریزی آسان و مطمئن برای سفر رویایی شما</p>
         </div>
       </div>
     </section>

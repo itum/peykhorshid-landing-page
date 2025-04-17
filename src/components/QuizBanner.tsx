@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Sparkles, MapPin, CalendarDays, Gift } from 'lucide-react';
@@ -7,28 +7,60 @@ const QuizBanner = () => {
   const [isVisible, setIsVisible] = useState(false);
   const [hasCompletedQuiz, setHasCompletedQuiz] = useState(false);
   const [destination, setDestination] = useState<string | null>(null);
+  const bannerInitializedRef = useRef(false);
 
   useEffect(() => {
-    // نمایش بنر پس از کمی تأخیر
-    const timer = setTimeout(() => {
-      // بررسی می‌کنیم که آیا کاربر قبلاً کوییز را کامل کرده است
-      const userData = localStorage.getItem('travel_quiz_user');
-      if (userData) {
-        try {
-          const parsedData = JSON.parse(userData);
-          if (parsedData.quizCompleted && parsedData.destination) {
-            setHasCompletedQuiz(true);
-            setDestination(parsedData.destination);
-          }
-        } catch (error) {
-          console.error('Error parsing quiz data:', error);
+    // بررسی وضعیت کوییز کاربر
+    const userData = localStorage.getItem('travel_quiz_user');
+    if (userData) {
+      try {
+        const parsedData = JSON.parse(userData);
+        if (parsedData.quizCompleted && parsedData.destination) {
+          setHasCompletedQuiz(true);
+          setDestination(parsedData.destination);
         }
+      } catch (error) {
+        console.error('Error parsing quiz data:', error);
       }
-      
-      setIsVisible(true);
-    }, 3000);
+    }
 
-    return () => clearTimeout(timer);
+    // راه‌اندازی observer برای مخفی کردن بنر هنگام بازگشت به بخش hero
+    const heroObserver = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting) {
+          // اگر در بخش هیرو هستیم، کارت را مخفی کن
+          setIsVisible(false);
+        } else if (bannerInitializedRef.current) {
+          // اگر از بخش هیرو خارج شدیم و قبلاً سایت بارگذاری شده، کارت را نمایش بده
+          setIsVisible(true);
+        }
+      },
+      { threshold: 0.3 } // وقتی 30% از بخش مورد نظر قابل مشاهده باشد
+    );
+
+    // یافتن و مشاهده بخش hero
+    const heroSection = document.getElementById('hero');
+    if (heroSection) {
+      heroObserver.observe(heroSection);
+    }
+
+    // یک تایمر کوتاه قرار می‌دهیم تا بعد از بارگذاری اولیه، بنر را فعال کنیم
+    setTimeout(() => {
+      bannerInitializedRef.current = true;
+      
+      // اگر در حال حاضر در بخش هیرو نیستیم، کارت را نمایش بده
+      const heroIsVisible = heroSection ? 
+        heroSection.getBoundingClientRect().top < window.innerHeight && 
+        heroSection.getBoundingClientRect().bottom > 0 : false;
+      
+      if (!heroIsVisible) {
+        setIsVisible(true);
+      }
+    }, 1000);
+
+    return () => {
+      heroObserver.disconnect();
+    };
   }, []);
 
   const closePopup = () => {
@@ -78,7 +110,7 @@ const QuizBanner = () => {
                 </div>
                 <div className="flex items-center gap-2">
                   <Gift className="text-peyk-orange h-5 w-5 flex-shrink-0" />
-                  <p className="text-gray-700 text-sm md:text-base">با تکمیل کوییز، پیشنهاد ویژه وام سفر دریافت کنید.</p>
+                  <p className="text-gray-700 text-sm md:text-base">با تکمیل کوییز، پیشنهاد ویژه تور دریافت کنید.</p>
                 </div>
               </div>
               
@@ -97,4 +129,4 @@ const QuizBanner = () => {
   );
 };
 
-export default QuizBanner; 
+export default QuizBanner;

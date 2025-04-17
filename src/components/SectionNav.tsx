@@ -12,7 +12,6 @@ const SectionNav = () => {
 
   const sections: SectionItem[] = [
     { id: 'hero', label: 'صفحه اصلی' },
-    { id: 'travel-loans', label: 'طرح جامع سفر' },
     { id: 'features', label: 'امکانات' },
     { id: 'popular-routes', label: 'پرفروش‌ترین تورها' },
     { id: 'calculator', label: 'محاسبه اقساط' },
@@ -28,11 +27,11 @@ const SectionNav = () => {
       // موقعیت فعلی اسکرول + 20% ارتفاع صفحه
       const scrollPosition = window.scrollY + viewportHeight * 0.2;
       
-      // بررسی آیا به بخش "چرا طرح جامع وام سفر پیک خورشید اهواز؟" رسیده‌ایم
-      const travelLoansSection = document.getElementById('travel-loans');
-      if (travelLoansSection) {
-        const travelLoansTop = travelLoansSection.offsetTop;
-        setIsVisible(scrollPosition >= travelLoansTop);
+      // نمایش منوی کناری بر اساس موقعیت اسکرول
+      const featuresSection = document.getElementById('features');
+      if (featuresSection) {
+        const featuresTop = featuresSection.offsetTop;
+        setIsVisible(scrollPosition >= featuresTop);
       }
       
       // بررسی موقعیت بخش‌های مختلف و تعیین بخش فعال
