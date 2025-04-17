@@ -14,9 +14,9 @@ const Calculator = () => {
   const [monthlyPayment, setMonthlyPayment] = useState<number>(0);
   
   // Constants
-  const MAX_LOAN = 20000000; // 20 million tomans
-  const MIN_LOAN = 100000000; // 100 million tomans
-  const INTEREST_RATE = 0.04; // 4% fixed interest rate
+  const MIN_LOAN = 20000000; // 20 million tomans
+  const MAX_LOAN = 100000000; // 100 million tomans
+  const MONTHLY_INTEREST_RATE = 0.04; // 4% monthly interest rate
 
   // Calculate payments whenever loan amount or duration changes
   useEffect(() => {
@@ -24,10 +24,10 @@ const Calculator = () => {
   }, [loanAmount, duration]);
 
   const calculatePayments = (principal: number, months: number) => {
-    // Simple interest calculation (principal * (1 + rate * years))
-    const interest = principal * INTEREST_RATE * (months / 12);
-    const total = principal + interest;
-    const monthly = total / months;
+    // محاسبه کل مبلغ با سود ساده ماهیانه
+    const totalInterest = principal * MONTHLY_INTEREST_RATE * months;
+    const totalAmount = principal + totalInterest;
+    const monthly = totalAmount / months;
     
     setMonthlyPayment(Math.round(monthly));
   };
@@ -45,8 +45,8 @@ const Calculator = () => {
   };
 
   return (
-    <section id="calculator" className="section-padding pt-6 md:pt-8">
-      <div className="container mx-auto pt-0">
+    <section id="calculator" className="section-padding bg-white">
+      <div className="container mx-auto">
         <div className="text-center mb-12">
           <h2 className="text-3xl font-bold text-gray-900 mb-4">محاسبه اقساط</h2>
           <p className="text-gray-600 max-w-2xl mx-auto">
@@ -60,8 +60,8 @@ const Calculator = () => {
             <div className="mb-4">
               <Slider
                 defaultValue={[loanAmount]}
-                min={MAX_LOAN}
-                max={MIN_LOAN}
+                min={MIN_LOAN}
+                max={MAX_LOAN}
                 step={10000000}
                 onValueChange={handleLoanChange}
                 className="my-4"
