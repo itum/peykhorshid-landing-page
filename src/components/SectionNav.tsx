@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 
 interface SectionItem {
   id: string;
@@ -7,14 +7,17 @@ interface SectionItem {
 
 const SectionNav = () => {
   const [activeSection, setActiveSection] = useState<string>('');
+  const [isVisible, setIsVisible] = useState<boolean>(false);
+  const navRef = useRef<HTMLDivElement>(null);
 
   const sections: SectionItem[] = [
     { id: 'hero', label: 'صفحه اصلی' },
+    { id: 'travel-loans', label: 'طرح جامع سفر' },
     { id: 'features', label: 'امکانات' },
+    { id: 'popular-routes', label: 'پرفروش‌ترین تورها' },
     { id: 'calculator', label: 'محاسبه اقساط' },
-    { id: 'steps', label: 'مراحل دریافت' },
-    { id: 'guarantees', label: 'مدارک و تضمین' },
-    { id: 'popular-routes', label: 'مسیرهای پرتردد' },
+    { id: 'steps', label: 'مراحل دریافت وام' },
+    { id: 'guarantees', label: 'مدارک و تضامین' },
     { id: 'contact-us', label: 'تماس با ما' }
   ];
 
@@ -24,6 +27,13 @@ const SectionNav = () => {
       const viewportHeight = window.innerHeight;
       // موقعیت فعلی اسکرول + 20% ارتفاع صفحه
       const scrollPosition = window.scrollY + viewportHeight * 0.2;
+      
+      // بررسی آیا به بخش "چرا طرح جامع وام سفر پیک خورشید اهواز؟" رسیده‌ایم
+      const travelLoansSection = document.getElementById('travel-loans');
+      if (travelLoansSection) {
+        const travelLoansTop = travelLoansSection.offsetTop;
+        setIsVisible(scrollPosition >= travelLoansTop);
+      }
       
       // بررسی موقعیت بخش‌های مختلف و تعیین بخش فعال
       for (const section of sections) {
@@ -76,36 +86,35 @@ const SectionNav = () => {
   };
 
   return (
-    <div className="fixed top-1/2 left-8 transform -translate-y-1/2 z-40 hidden lg:block">
-      <div className="bg-white/80 backdrop-blur-md shadow-lg rounded-full p-3 space-y-5">
+    <div 
+      ref={navRef}
+      className={`fixed left-[20px] bottom-[85px] z-40 hidden md:block section-nav-transition ${
+        isVisible ? 'section-nav-visible' : 'section-nav-hidden'
+      }`}
+    >
+      <div className="bg-white/70 backdrop-blur-sm shadow-md rounded-full px-3 py-4 flex flex-col items-center gap-5">
         {sections.map((section) => (
           <a
             key={section.id}
             href={`#${section.id}`}
             onClick={(e) => handleClick(e, section.id)}
-            className="block relative group section-item"
+            className="relative group flex items-center justify-center"
             aria-label={section.label}
           >
             <div 
-              className={`w-4 h-4 rounded-full mx-auto transition-all duration-500 
-                ${activeSection === section.id 
-                  ? 'bg-peyk-yellow scale-125 active-dot' 
-                  : 'bg-gray-300 hover:bg-gray-400'}`
-              }
+              className={`w-2.5 h-2.5 md:w-3 md:h-3 rounded-full transition-all duration-300 ${
+                activeSection === section.id 
+                  ? 'bg-peyk-yellow scale-110' 
+                  : 'bg-gray-300 hover:bg-gray-400'
+              }`}
             >
-              {/* نمایش نام بخش در حالت هاور و اکتیو */}
+              {/* نمایش نام بخش در حالت هاور */}
               <div 
-                className={`absolute top-1/2 left-9 transform -translate-y-1/2 whitespace-nowrap bg-peyk-yellow text-white text-xs py-1.5 px-3 rounded section-tooltip ${activeSection === section.id ? 'section-label-animation opacity-100 visible' : ''}`}
+                className="absolute top-1/2 left-8 transform -translate-y-1/2 whitespace-nowrap bg-peyk-yellow text-white text-[10px] md:text-xs py-1 px-2 rounded opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none"
               >
                 {section.label}
-                <div className="absolute top-1/2 right-0 transform translate-x-1 -translate-y-1/2 border-8 border-transparent border-l-peyk-yellow"></div>
               </div>
             </div>
-
-            {/* خط اتصال */}
-            {section.id !== sections[sections.length - 1].id && (
-              <div className="h-10 w-px bg-gray-300 mx-auto mt-1"></div>
-            )}
           </a>
         ))}
       </div>

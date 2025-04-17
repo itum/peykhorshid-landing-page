@@ -17,8 +17,7 @@ const Index = () => {
     <div className="min-h-screen flex flex-col">
       <Navbar />
       <Hero />
-      {/* سکشن "چرا طرح جامع وام سفر پیک خورشید اهواز؟" موقتا غیرفعال شده است */}
-      {/* <TravelLoans /> */}
+      <TravelLoans />
       <Features />
       <PopularRoutes />
       <Calculator />

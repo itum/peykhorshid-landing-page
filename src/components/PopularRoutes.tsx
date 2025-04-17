@@ -1,29 +1,48 @@
 import { Phone, Mail, MapPin, Clock, ChevronDown, Plane } from 'lucide-react';
 import { useState, useEffect } from 'react';
 
+// تعریف تایپ برای تورهای داخلی
+interface DomesticRoute {
+  to: string;
+  price: string;
+  image: string;
+  link?: string;
+}
+
+// تعریف تایپ برای تورهای خاص
+interface SpecialRoute {
+  to: string;
+  price: string;
+  image?: string; // اضافه کردن فیلد تصویر برای تورهای خارجی
+  link?: string;
+}
+
+// تعریف تایپ برای نوع مسیر
+type RouteType = DomesticRoute | SpecialRoute;
+
 const PopularRoutes = () => {
   const [activeTab, setActiveTab] = useState<'domestic' | 'special'>('domestic');
 
   // دیتای مسیرهای پرتردد داخلی
-  const domesticRoutes = [
-    { to: "کیش", price: "۳" },
-    { to: "مشهد", price: "۱.۵" },
-    { to: "شیراز", price: "۲" },
-    { to: "اصفهان", price: "۲.۲" }
+  const domesticRoutes: DomesticRoute[] = [
+    { to: "کیش", price: "۳", image: "/city-icons/kish.jpg", link: "https://peykkhorshid.ir/kish-tour/" },
+    { to: "مشهد", price: "۱.۵", image: "/city-icons/mashhad.jpg", link: "https://peykkhorshid.ir/mashhad-tour/" },
+    { to: "شیراز", price: "۲", image: "/city-icons/shiraz.jpg", link: "https://peykkhorshid.ir/shiraz-tour/" },
+    { to: "اصفهان", price: "۲.۲", image: "/city-icons/isfahan.jpg", link: "https://peykkhorshid.ir/isfahan/" }
   ];
 
   // دیتای مسیرهای پرتردد خاص
-  const specialRoutes = [
-    { to: "استانبول", price: "۳.۵" },
-    { to: "آنتالیا", price: "۳.۲" },
-    { to: "دبی", price: "۴" },
-    { to: "تایلند", price: "۳.۹" },
-    { to: "ارمنستان", price: "۲.۸" },
-    { to: "گرجستان", price: "۳.۱" },
-    { to: "روسیه", price: "۳.۶" },
-    { to: "آذربایجان", price: "۲.۹" },
-    { to: "قزاقستان", price: "۳.۳" },
-    { to: "اروپا", price: "۴" }
+  const specialRoutes: SpecialRoute[] = [
+    { to: "استانبول", price: "۳.۵", image: "/city-icons/istanbul.jpg", link: "https://peykkhorshid.ir/istanbul-tour/" },
+    { to: "آنتالیا", price: "۳.۲", image: "/city-icons/antalia.jpg", link: "https://peykkhorshid.ir/antalya/" },
+    { to: "دبی", price: "۴", image: "/city-icons/dubai.jpg", link: "https://peykkhorshid.ir/dubai/" },
+    { to: "تایلند", price: "۳.۹", image: "/city-icons/thailand.jpg", link: "https://peykkhorshid.ir/thailand/" },
+    { to: "ارمنستان", price: "۲.۸", image: "/city-icons/armenia.jpg", link: "https://peykkhorshid.ir/armenia/" },
+    { to: "گرجستان", price: "۳.۱", image: "/city-icons/teflis.jpg", link: "https://peykkhorshid.ir/georgia/" },
+    { to: "روسیه", price: "۳.۶", image: "/city-icons/russia.jpg", link: "https://peykkhorshid.ir/russia/" },
+    // { to: "آذربایجان", price: "۲.۹" },
+    { to: "قزاقستان", price: "۳.۳", image: "/city-icons/kazakhstan.jpg", link: "https://peykkhorshid.ir/tour/%D8%AA%D9%88%D8%B1-%D9%82%D8%B2%D8%A7%D9%82%D8%B3%D8%AA%D8%A7%D9%86-4-%D8%B4%D8%A8-%D9%88-5-%D8%B1%D9%88%D8%B2-%D8%A2%DA%A9%D8%AA%D8%A7%D8%A6%D9%88/" },
+    { to: "پاریس", price: "۴", image: "/city-icons/paris.jpg", link: "https://peykkhorshid.ir/france/" }
   ];
 
   // تعیین نوع انیمیشن براساس شاخص
@@ -119,38 +138,84 @@ const PopularRoutes = () => {
         </div>
 
         {/* نمایش مسیرهای پرتردد */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {(activeTab === 'domestic' ? domesticRoutes : specialRoutes).map((route, index) => (
             <div 
               key={index} 
-              className="bg-white rounded-xl shadow-md hover:shadow-lg transition-shadow duration-300 overflow-hidden cursor-pointer route-card"
+              className="bg-white rounded-xl shadow-xl hover:shadow-2xl transition-all duration-500 overflow-hidden cursor-pointer hover:translate-y-[-8px] hover:scale-[1.02] route-card"
             >
-              <div className={`p-4 ${
-                'border-r-4 border-peyk-yellow'
-              }`}>
-                <div className="flex items-center justify-between mb-2">
-                  <div className="flex items-center">
-                    <span className="font-bold text-lg">تور {route.to}</span>
+              {activeTab === 'domestic' ? (
+                <a 
+                  href={(route as DomesticRoute).link} 
+                  target="_blank" 
+                  rel="noopener noreferrer" 
+                  className="flex flex-col h-full"
+                >
+                  {/* بخش تصویر برای تورهای داخلی */}
+                  <div className="relative overflow-hidden p-0">
+                    {(route as DomesticRoute).image ? (
+                      <img 
+                        src={(route as DomesticRoute).image} 
+                        alt={`تور ${route.to}`} 
+                        className="w-full h-auto rounded-t-xl"
+                      />
+                    ) : (
+                      <div className="w-full h-[200px] flex items-center justify-center bg-gradient-to-r from-peyk-orange/20 to-peyk-yellow/20">
+                        <Plane className="h-12 w-12 text-peyk-orange/70" />
+                      </div>
+                    )}
                   </div>
-                  <div className={`w-10 h-10 rounded-full flex items-center justify-center ${
-                    index === 0 
-                      ? 'bg-peyk-yellow/10' 
-                      : activeTab === 'domestic' 
-                        ? 'bg-peyk-orange/10' 
-                        : 'bg-peyk-blue/10'
-                  }`}>
-                    <Plane className={`h-5 w-5 plane-icon ${getAnimationClass(index)} ${
-                      index === 0 
-                        ? 'text-peyk-yellow' 
-                        : activeTab === 'domestic' 
-                          ? 'text-peyk-orange' 
-                          : 'text-peyk-blue'
-                    }`} />
+                  
+                  {/* اطلاعات تور */}
+                  <div className="p-4 flex-grow flex flex-col justify-between">
+                    <div className="text-right">
+                      <h3 className="font-bold text-base text-gray-800 mb-1">تور {route.to}</h3>
+                      <p className="text-peyk-blue font-bold text-sm text-right">ماهی {route.price} میلیون تومان</p>
+                    </div>
+                    <div className="flex justify-end mt-4">
+                      <button className="border border-peyk-blue text-peyk-blue font-medium rounded-full py-1.5 px-5 text-sm transition-all hover:bg-peyk-blue hover:text-white">
+                        دریافت اطلاعات بیشتر
+                      </button>
+                    </div>
                   </div>
-                </div>
-                <p className="text-peyk-blue font-bold text-sm mb-2">ماهی {route.price} میلیون تومان</p>
-                <p className="text-gray-500 text-sm text-left hover:text-peyk-orange transition-colors">برای اطلاعات بیشتر کلیک کن</p>
-              </div>
+                </a>
+              ) : (
+                // استایل جدید برای تورهای خاص (مشابه با تورهای داخلی)
+                <a 
+                  href={(route as SpecialRoute).link} 
+                  target="_blank" 
+                  rel="noopener noreferrer" 
+                  className="flex flex-col h-full"
+                >
+                  {/* بخش تصویر برای تورهای خارجی */}
+                  <div className="relative overflow-hidden p-0">
+                    {(route as SpecialRoute).image ? (
+                      <img 
+                        src={(route as SpecialRoute).image} 
+                        alt={`تور ${route.to}`} 
+                        className="w-full h-auto rounded-t-xl"
+                      />
+                    ) : (
+                      <div className="w-full h-[200px] flex items-center justify-center bg-gradient-to-r from-peyk-blue/20 to-peyk-blue-dark/20">
+                        <Plane className={`h-12 w-12 plane-icon ${getAnimationClass(index)} text-peyk-blue/70`} />
+                      </div>
+                    )}
+                  </div>
+                  
+                  {/* اطلاعات تور */}
+                  <div className="p-4 flex-grow flex flex-col justify-between">
+                    <div className="text-right">
+                      <h3 className="font-bold text-base text-gray-800 mb-1">تور {route.to}</h3>
+                      <p className="text-peyk-blue font-bold text-sm text-right">ماهی {route.price} میلیون تومان</p>
+                    </div>
+                    <div className="flex justify-end mt-4">
+                      <span className="border border-peyk-blue text-peyk-blue font-medium rounded-full py-1.5 px-5 text-sm transition-all hover:bg-peyk-blue hover:text-white">
+                        دریافت اطلاعات بیشتر
+                      </span>
+                    </div>
+                  </div>
+                </a>
+              )}
             </div>
           ))}
         </div>

@@ -45,7 +45,7 @@ const Hero = () => {
         }}
       >
         <img 
-          src="/images/hero-image.jpg" 
+          src="/images/hero-image-bg.jpg" 
           alt="hero background" 
           className="w-full h-full object-cover" 
           style={{
