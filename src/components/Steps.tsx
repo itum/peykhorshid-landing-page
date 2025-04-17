@@ -55,7 +55,7 @@ const Steps = () => {
 
   return (
     <>
-      <section id="steps" className="section-padding py-20 bg-gradient-to-b from-peyk-blue/10 to-white">
+      <section id="steps" className="section-padding bg-gradient-to-b from-peyk-blue/10 to-white">
         <div className="container mx-auto">
           <div className="text-center mb-16">
             <h2 className="text-4xl font-bold mb-6 text-gray-800">مراحل دریافت وام</h2>

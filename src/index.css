@@ -150,6 +150,33 @@
   }
 }
 
+/* استایل‌های اختصاصی برای استاندارد کردن فاصله بین سکشن‌ها */
+.section-padding {
+  padding-top: 3rem;
+  padding-bottom: 3rem;
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+@media (min-width: 768px) {
+  .section-padding {
+    padding-top: 4rem;
+    padding-bottom: 4rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .section-padding {
+    padding-top: 5rem;
+    padding-bottom: 5rem;
+  }
+}
+
+/* تنظیم فاصله برای آخرین سکشن قبل از فوتر */
+section:last-of-type.section-padding {
+  padding-bottom: 6rem;
+}
+
 /* اسکرول انیمیشن ها */
 html {
   scroll-behavior: smooth;

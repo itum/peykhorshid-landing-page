@@ -87,10 +87,10 @@ const PopularRoutes = () => {
   }, []);
 
   return (
-    <section id="popular-routes" className="section-padding">
+    <section id="popular-routes" className="section-padding bg-white">
       <div className="container mx-auto">
         <div className="text-center mb-12">
-          <h2 className="text-3xl font-bold text-gray-900 mb-4">پرفروش‌ترین بلیط‌های پرواز</h2>
+          <h2 className="text-3xl font-bold text-gray-900 mb-4">پرفروش‌ترین تورها</h2>
           <p className="text-gray-600 max-w-2xl mx-auto">
             محبوب‌ترین مسیرهای سفر داخلی و خارجی برای دریافت وام سفر پیک خورشید
           </p>

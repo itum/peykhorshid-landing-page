@@ -38,7 +38,7 @@ const QuizBanner = () => {
   if (!isVisible) return null;
 
   return (
-    <div className="fixed bottom-4 right-4 z-40 max-w-sm w-full animate-slide-up">
+    <div className="fixed bottom-4 left-4 right-4 md:left-auto md:right-4 z-40 w-auto md:max-w-sm animate-slide-up">
       <div className="bg-white rounded-xl shadow-xl overflow-hidden border border-gray-100">
         <div className="bg-gradient-to-r from-peyk-blue to-peyk-blue-dark px-4 py-3 flex justify-between items-center">
           <div className="flex items-center">
@@ -59,10 +59,10 @@ const QuizBanner = () => {
             <div className="space-y-3">
               <div className="flex items-center gap-2">
                 <MapPin className="text-peyk-blue h-5 w-5 flex-shrink-0" />
-                <p className="text-gray-700">شما قبلاً در کوییز شرکت کرده‌اید و مقصد پیشنهادی شما <span className="font-bold text-peyk-blue">{destination}</span> است.</p>
+                <p className="text-gray-700 text-sm md:text-base">شما قبلاً در کوییز شرکت کرده‌اید و مقصد پیشنهادی شما <span className="font-bold text-peyk-blue">{destination}</span> است.</p>
               </div>
               <div className="flex justify-end space-x-2 space-x-reverse mt-3">
-                <Link to="/quiz">
+                <Link to="/quiz" className="w-full">
                   <Button variant="outline" size="sm" className="border-peyk-blue text-peyk-blue">
                     انجام مجدد کوییز
                   </Button>
@@ -74,17 +74,17 @@ const QuizBanner = () => {
               <div className="space-y-3 mb-4">
                 <div className="flex items-center gap-2">
                   <CalendarDays className="text-peyk-orange h-5 w-5 flex-shrink-0" />
-                  <p className="text-gray-700">مقصد سفر بعدی خود را با کوییز هوشمند ما کشف کنید!</p>
+                  <p className="text-gray-700 text-sm md:text-base">مقصد سفر بعدی خود را با کوییز هوشمند ما کشف کنید!</p>
                 </div>
                 <div className="flex items-center gap-2">
                   <Gift className="text-peyk-orange h-5 w-5 flex-shrink-0" />
-                  <p className="text-gray-700">با تکمیل کوییز، پیشنهاد ویژه وام سفر دریافت کنید.</p>
+                  <p className="text-gray-700 text-sm md:text-base">با تکمیل کوییز، پیشنهاد ویژه وام سفر دریافت کنید.</p>
                 </div>
               </div>
               
               <div className="flex justify-center mt-4">
-                <Link to="/quiz">
-                  <Button className="bg-gradient-to-r from-peyk-yellow to-peyk-yellow-light text-peyk-blue-dark font-bold">
+                <Link to="/quiz" className="w-full">
+                  <Button className="bg-gradient-to-r from-peyk-yellow to-peyk-yellow-light text-peyk-blue-dark font-bold w-full">
                     شروع کوییز سفر
                   </Button>
                 </Link>

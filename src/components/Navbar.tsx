@@ -91,14 +91,6 @@ const Navbar = () => {
               <span className={`absolute bottom-0 left-0 w-0 h-0.5 bg-peyk-orange group-hover:w-full transition-all duration-300 ${activeSection === item.id ? 'w-full width-grow' : ''}`}></span>
             </a>
           ))}
-          
-          <Link 
-            to="/quiz" 
-            className="bg-gradient-to-r from-peyk-yellow to-peyk-yellow-light text-peyk-blue-dark px-3 py-1.5 rounded-lg font-medium flex items-center hover:shadow-md transition-shadow duration-300 animate-pulse"
-          >
-            <Sparkles className="h-4 w-4 ml-1" />
-            کوییز سفر رویایی
-          </Link>
         </div>
 
         {/* Mobile Menu Button */}
@@ -125,15 +117,6 @@ const Navbar = () => {
                 <span className={`absolute bottom-0 right-0 w-0 h-0.5 bg-peyk-orange group-hover:w-full transition-all duration-300 ${activeSection === item.id ? 'w-full width-grow' : ''}`}></span>
               </a>
             ))}
-            
-            <Link 
-              to="/quiz" 
-              className="bg-gradient-to-r from-peyk-yellow to-peyk-yellow-light text-peyk-blue-dark px-3 py-2 rounded-lg font-medium text-center flex items-center justify-center mt-4"
-              onClick={() => setIsMenuOpen(false)}
-            >
-              <Sparkles className="h-4 w-4 ml-1" />
-              کوییز سفر رویایی
-            </Link>
           </div>
         </div>
       )}
