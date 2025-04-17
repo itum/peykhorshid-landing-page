@@ -5,6 +5,8 @@ import { Input } from '@/components/ui/input';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Check, Plane, Map, Palmtree, Mountain, Car, Train, Anchor, Phone, User, Lock } from 'lucide-react';
+import { addUser, sendSMS, sendSMSAlternative, UserInfo } from '@/lib/services/userService';
+import { sendSMSWithJSONP, sendSMSWithIframe } from '@/lib/services/smsUtils';
 
 type QuizOption = {
   id: string;
@@ -123,9 +125,13 @@ const TravelQuiz = () => {
   // شروع آزمون سفر رویایی
   const handleStartExam = () => {
     if (isPhoneValid) {
-      const userData = { phone };
+      const userData = { phone, name };
       localStorage.setItem('travel_exam_user', JSON.stringify(userData));
       setShowPhoneModal(false);
+      
+      // ذخیره در localStorage برای استفاده نهایی
+      localStorage.setItem('quiz_user_name', name);
+      localStorage.setItem('quiz_user_phone', phone);
     }
   };
 
@@ -183,9 +189,53 @@ const TravelQuiz = () => {
     setShowResult(true);
     triggerConfetti();
     
-    // ذخیره اطلاعات کاربر در localStorage برای استفاده بعدی
+    // دریافت اطلاعات کاربر از localStorage (چون ممکن است به آخرین حالت متغیرها دسترسی نداشته باشیم)
+    const savedName = localStorage.getItem('quiz_user_name') || name || '';
+    const savedPhone = localStorage.getItem('quiz_user_phone') || phone || '';
+    
+    if (!savedPhone || savedPhone.trim() === '') {
+      console.error('شماره موبایل معتبر یافت نشد!');
+      return; // توقف اگر شماره موبایل معتبر نیست
+    }
+    
+    // ذخیره اطلاعات کاربر در سیستم
+    const userData: Omit<UserInfo, 'timestamp'> = {
+      name: savedName,
+      phone: savedPhone,
+      quizAnswers: answers,
+      travelDestination: destination,
+      score: totalScore
+    };
+    
+    // افزودن کاربر به سیستم و ذخیره در اکسل
+    addUser(userData);
+    
+    console.log('ارسال پیامک به:', savedPhone, 'با نام:', savedName);
+    
+    // ارسال پیامک با استفاده از سرویس sendSMS
+    sendSMS(savedPhone, savedName)
+      .then(success => {
+        if (success) {
+          console.log('پیامک با موفقیت ارسال شد');
+        } else {
+          console.warn('ارسال پیامک با مشکل مواجه شد، تلاش با روش جایگزین...');
+          // تلاش با روش جایگزین
+          return sendSMSAlternative(savedPhone, savedName);
+        }
+      })
+      .then(success => {
+        if (success) {
+          console.log('پیامک با موفقیت با روش جایگزین ارسال شد');
+        }
+      })
+      .catch(error => {
+        console.error('خطا در ارسال پیامک:', error);
+      });
+    
+    // ذخیره اطلاعات در localStorage برای استفاده بعدی
     localStorage.setItem('travel_exam_user', JSON.stringify({
-      phone,
+      phone: savedPhone,
+      name: savedName,
       quizCompleted: true,
       destination: destination,
       score: totalScore,
