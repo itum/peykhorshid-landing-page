@@ -29,8 +29,10 @@ const Calculator = () => {
     const totalAmount = principal + totalInterest;
     const monthly = totalAmount / months;
     
-    // رند کردن به بالا با استفاده از Math.ceil
-    setMonthlyPayment(Math.ceil(monthly));
+    // رند کردن به بالا با ضرایب پنج هزار تومانی
+    const roundedUp = Math.ceil(monthly / 5000) * 5000;
+    
+    setMonthlyPayment(roundedUp);
   };
 
   const formatCurrency = (amount: number) => {
