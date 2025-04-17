@@ -29,7 +29,8 @@ const Calculator = () => {
     const totalAmount = principal + totalInterest;
     const monthly = totalAmount / months;
     
-    setMonthlyPayment(Math.round(monthly));
+    // رند کردن به بالا با استفاده از Math.ceil
+    setMonthlyPayment(Math.ceil(monthly));
   };
 
   const formatCurrency = (amount: number) => {
