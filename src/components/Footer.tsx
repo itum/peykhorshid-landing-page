@@ -11,7 +11,7 @@ const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           <div className="space-y-4">
             <h3 className="text-xl font-bold text-gray-900 mb-4 border-r-4 border-peyk-blue pr-3">پیک خورشید اهواز</h3>
-            <p className="leading-relaxed">سامانه خرید اقساطی آنلاین بدون ضامن و چک، با سفته الکترونیکی. همراه شما در مسیر خرید آسان و مطمئن.</p>
+            <p className="leading-relaxed text-justify">شرکت خدمات مسافرت هوایی جهانگردی و زیارتی پیک خورشید اهواز با مجوز رسمی از سازمان هواپیمایی کشوری (بندالف) و مجوز رسمی از سازمان میراث فرهنگی و گردشگری (مجوز ب) و سازمان حج و زیارت (مجوز ب) و نمایندگی فروش رجا و با عضویت در انجمن بین المللی حمل و نقل هوایی iata از سال 1380 فعالیت خود را آغاز نموده است در این سال ها همیشه رضایت کامل مسافران را مهمترین هدف خود قرار داده است</p>
             <div className="flex space-x-3 space-x-reverse">
               <a href="#" className="bg-white p-2 rounded-full shadow-sm hover:shadow-md hover:bg-peyk-blue hover:text-white transition-all duration-300" aria-label="اینستاگرام">
                 <Instagram className="h-5 w-5" />
@@ -37,31 +37,31 @@ const Footer = () => {
               <li>
                 <a href="#" className="hover:text-peyk-blue transition-colors duration-300 flex items-center">
                   <span className="inline-block w-2 h-2 bg-peyk-blue rounded-full ml-2"></span>
-                  وام خرید کالا
+                  خرید بلیط هواپیما
                 </a>
               </li>
               <li>
                 <a href="#" className="hover:text-peyk-blue transition-colors duration-300 flex items-center">
                   <span className="inline-block w-2 h-2 bg-peyk-blue rounded-full ml-2"></span>
-                  فروشگاه‌های طرف قرارداد
+                  تور داخلی و خارجی
                 </a>
               </li>
               <li>
                 <a href="#" className="hover:text-peyk-blue transition-colors duration-300 flex items-center">
                   <span className="inline-block w-2 h-2 bg-peyk-blue rounded-full ml-2"></span>
-                  محاسبه اقساط
+                  رزرو هتل
                 </a>
               </li>
               <li>
                 <a href="#" className="hover:text-peyk-blue transition-colors duration-300 flex items-center">
                   <span className="inline-block w-2 h-2 bg-peyk-blue rounded-full ml-2"></span>
-                  سوالات متداول
+                  خدمات ویزا
                 </a>
               </li>
               <li>
                 <a href="#" className="hover:text-peyk-blue transition-colors duration-300 flex items-center">
                   <span className="inline-block w-2 h-2 bg-peyk-blue rounded-full ml-2"></span>
-                  راهنمای خرید
+                  تورهای زیارتی
                 </a>
               </li>
             </ul>

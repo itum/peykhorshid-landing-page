@@ -99,78 +99,24 @@ export const downloadExcel = (): void => {
 // ذخیره اطلاعات کاربران در فایل اکسل
 const saveUsersToExcel = (download = false): void => {
   try {
-    // تابع کمکی برای تبدیل فعالیت‌ها به فارسی
-    const translateActivities = (activities: any): string => {
-      const activitiesMap: Record<string, string> = {
-        'beach': 'ساحل و دریا',
-        'hiking': 'طبیعت‌گردی و کوه',
-        'city': 'گشت‌وگذار شهری',
-        'cultural': 'جاذبه‌های تاریخی و فرهنگی'
-      };
-      
-      if (Array.isArray(activities)) {
-        return activities.map(act => activitiesMap[act] || act).join('، ');
-      } else if (typeof activities === 'string') {
-        if (activities.includes(',')) {
-          return activities.split(',').map(act => activitiesMap[act.trim()] || act.trim()).join('، ');
-        } else {
-          return activitiesMap[activities] || activities;
-        }
-      }
-      return '';
-    };
-    
-    // تابع کمکی برای تبدیل مدت سفر به فارسی
-    const translateDuration = (duration: string): string => {
-      const durationMap: Record<string, string> = {
-        'short': 'کمتر از ۵ روز',
-        'medium': '۵ تا ۱۰ روز',
-        'long': 'بیشتر از ۱۰ روز'
-      };
-      return durationMap[duration] || duration;
-    };
-    
-    // تابع کمکی برای تبدیل فصل به فارسی
-    const translateSeason = (season: string): string => {
-      const seasonMap: Record<string, string> = {
-        'spring': 'بهار',
-        'summer': 'تابستان',
-        'fall': 'پاییز',
-        'winter': 'زمستان'
-      };
-      return seasonMap[season] || season;
-    };
-
     // تبدیل اطلاعات به فرمت مناسب برای اکسل
-    const excelData = users.map(user => {
-      // آماده‌سازی فعالیت‌ها
-      const activities = user.activities || (user.quizAnswers?.activities);
-      const translatedActivities = translateActivities(activities);
-      
-      // آماده‌سازی مدت سفر
-      const duration = user.duration || user.quizAnswers?.duration || '';
-      const translatedDuration = duration ? translateDuration(duration) : '';
-      
-      // آماده‌سازی فصل
-      const season = user.season || user.quizAnswers?.season || '';
-      const translatedSeason = season ? translateSeason(season) : '';
-      
-      return {
-        'نام و نام خانوادگی': user.name || 'بدون نام',
-        'شماره موبایل': user.phone,
-        'مقصد سفر': user.travel_destination || user.travelDestination || '',
-        'امتیاز': user.score || 0,
-        'ترجیح سفر': user.location || (user.quizAnswers?.location) || '',
-        'فعالیت‌ها': translatedActivities,
-        'مدت سفر': translatedDuration,
-        'فصل مورد علاقه': translatedSeason,
-        'بودجه': user.budget || user.quizAnswers?.budget || '',
-        'میزان ماجراجویی': user.adventure || user.quizAnswers?.adventure || '',
-        'تاریخ ثبت': user.created_at 
-          ? new Date(user.created_at).toLocaleString('fa-IR')
-          : new Date(user.timestamp).toLocaleString('fa-IR'),
-      };
-    });
+    const excelData = users.map(user => ({
+      'نام و نام خانوادگی': user.name || 'بدون نام',
+      'شماره موبایل': user.phone,
+      'مقصد سفر': user.travel_destination || user.travelDestination || '',
+      'امتیاز': user.score || 0,
+      'ترجیح سفر': user.location || (user.quizAnswers?.location) || '',
+      'فعالیت‌ها': user.activities || (Array.isArray(user.quizAnswers?.activities) 
+        ? user.quizAnswers.activities.join(', ') 
+        : user.quizAnswers?.activities) || '',
+      'مدت سفر': user.duration || user.quizAnswers?.duration || '',
+      'فصل مورد علاقه': user.season || user.quizAnswers?.season || '',
+      'بودجه': user.budget || user.quizAnswers?.budget || '',
+      'میزان ماجراجویی': user.adventure || user.quizAnswers?.adventure || '',
+      'تاریخ ثبت': user.created_at 
+        ? new Date(user.created_at).toLocaleString('fa-IR')
+        : new Date(user.timestamp).toLocaleString('fa-IR'),
+    }));
 
     // ایجاد کتاب کار اکسل
     const worksheet = XLSX.utils.json_to_sheet(excelData);
