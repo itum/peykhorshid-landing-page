@@ -1,7 +1,7 @@
 const mysql = require('mysql2/promise');
 
 // تنظیمات اتصال به پایگاه داده
-const pool = mysql.createPool({
+const connection = {
   host: 'localhost',
   user: 'root',
   password: '',
@@ -10,14 +10,17 @@ const pool = mysql.createPool({
   waitForConnections: true,
   connectionLimit: 10,
   queueLimit: 0
-});
+};
+
+// ایجاد پول اتصال
+const pool = mysql.createPool(connection);
 
 // بررسی اتصال به پایگاه داده
 const testConnection = async () => {
   try {
-    const connection = await pool.getConnection();
+    const conn = await pool.getConnection();
     console.log('اتصال به پایگاه داده با موفقیت برقرار شد!');
-    connection.release();
+    conn.release();
     return true;
   } catch (error) {
     console.error('خطا در اتصال به پایگاه داده:', error);
@@ -27,5 +30,6 @@ const testConnection = async () => {
 
 module.exports = {
   pool,
+  connection,
   testConnection
 }; 

@@ -3,7 +3,9 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 const { testConnection } = require('./config/db');
 const Quiz = require('./models/Quiz');
+const Contact = require('./models/Contact');
 const quizRoutes = require('./routes/quizRoutes');
+const contactRoutes = require('./routes/contactRoutes');
 
 // تنظیمات اولیه برنامه
 const app = express();
@@ -16,6 +18,7 @@ app.use(express.urlencoded({ extended: true }));
 
 // تنظیم مسیرهای API
 app.use('/api/quiz', quizRoutes);
+app.use('/api/contacts', contactRoutes);
 
 // مسیر اصلی
 app.get('/', (req, res) => {
@@ -35,6 +38,7 @@ const startServer = async () => {
     
     // ایجاد جدول‌های مورد نیاز در صورت عدم وجود
     await Quiz.createTable();
+    await Contact.createTable();
     
     app.listen(PORT, () => {
       console.log(`سرور با موفقیت در پورت ${PORT} راه‌اندازی شد.`);

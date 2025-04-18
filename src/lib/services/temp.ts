@@ -3,7 +3,7 @@ import * as XLSX from 'xlsx';
 import { sendSMSWithJSONP, sendSMSWithIframe } from './smsUtils';
 
 // آدرس API سرور
-const API_URL = 'http://localhost:3001/api/quiz';
+const API_URL = `${import.meta.env.VITE_API_URL}/quiz`;
 
 // تعریف تایپ اطلاعات کاربر
 export type UserInfo = {

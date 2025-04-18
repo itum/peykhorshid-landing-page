@@ -2,8 +2,14 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import ScrollToTop from "@/components/ScrollToTop";
 import TravelQuiz from "@/components/TravelQuiz";
+import { useEffect } from "react";
 
 const TravelQuizPage = () => {
+  // اسکرول به بالای صفحه به محض ورود
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   return (
     <div className="min-h-screen flex flex-col">
       <Navbar />

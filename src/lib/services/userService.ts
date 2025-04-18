@@ -3,7 +3,7 @@ import * as XLSX from 'xlsx';
 import { sendSMSWithJSONP, sendSMSWithIframe } from './smsUtils';
 
 // آدرس API سرور
-const API_URL = `${import.meta.env.VITE_API_URL}/quiz`;
+const API_URL = 'http://localhost:3001/api/quiz';
 
 // تعریف تایپ اطلاعات کاربر
 export type UserInfo = {
@@ -12,7 +12,6 @@ export type UserInfo = {
   quizAnswers: Record<string, any>;
   travelDestination?: string;
   travel_destination?: string; // فیلد از دیتابیس
-  desiredDestination?: string; // مقصد مورد نظر کاربر
   score?: number;
   timestamp: string;
   created_at?: string; // فیلد از دیتابیس
@@ -160,7 +159,6 @@ const saveUsersToExcel = (download = false): void => {
         'نام و نام خانوادگی': user.name || 'بدون نام',
         'شماره موبایل': user.phone,
         'مقصد سفر': user.travel_destination || user.travelDestination || '',
-        'مقصد مورد نظر': user.desiredDestination || '',
         'امتیاز': user.score || 0,
         'ترجیح سفر': user.location || (user.quizAnswers?.location) || '',
         'فعالیت‌ها': translatedActivities,
