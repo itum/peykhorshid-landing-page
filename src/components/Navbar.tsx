@@ -1,11 +1,13 @@
 import { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { Menu, X, Sparkles } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState<string>('');
+  const location = useLocation();
+  const isHomePage = location.pathname === '/';
 
   const navItems = [
     { id: 'hero', label: 'صفحه اصلی' },
@@ -22,6 +24,8 @@ const Navbar = () => {
   };
 
   useEffect(() => {
+    if (!isHomePage) return;
+    
     const handleScroll = () => {
       const scrollPosition = window.scrollY + 100;
       
@@ -46,10 +50,17 @@ const Navbar = () => {
     return () => {
       window.removeEventListener('scroll', handleScroll);
     };
-  }, [navItems]);
+  }, [navItems, isHomePage]);
 
   const smoothScroll = (e: React.MouseEvent<HTMLAnchorElement>, targetId: string) => {
     e.preventDefault();
+    
+    if (!isHomePage) {
+      // اگر در صفحه اصلی نیستیم، به صفحه اصلی هدایت شویم
+      window.location.href = `/${targetId ? '#' + targetId : ''}`;
+      return;
+    }
+    
     const targetElement = document.getElementById(targetId);
     
     if (targetElement) {
@@ -73,23 +84,40 @@ const Navbar = () => {
     <nav className="sticky top-0 z-50 bg-white/90 backdrop-blur-md shadow-sm py-4 px-6 transition-all duration-300">
       <div className="container mx-auto flex justify-between items-center">
         <div className="flex items-center">
-          <a href="#hero" className="flex items-center" onClick={(e) => smoothScroll(e, 'hero')}>
-            <img src="/peykhorshid-logo.png" alt="پیک خورشید اهواز" className="h-12 hover:scale-105 transition-transform duration-300" />
-          </a>
+          {isHomePage ? (
+            <a href="#hero" className="flex items-center" onClick={(e) => smoothScroll(e, 'hero')}>
+              <img src="/peykhorshid-logo.png" alt="پیک خورشید اهواز" className="h-12 hover:scale-105 transition-transform duration-300" />
+            </a>
+          ) : (
+            <Link to="/" className="flex items-center">
+              <img src="/peykhorshid-logo.png" alt="پیک خورشید اهواز" className="h-12 hover:scale-105 transition-transform duration-300" />
+            </Link>
+          )}
         </div>
 
         {/* Desktop Menu */}
         <div className="hidden md:flex items-center space-x-4 space-x-reverse">
           {navItems.map((item) => (
-            <a 
-              key={item.id}
-              href={`#${item.id}`}
-              className={`relative group px-2 py-1 ${activeSection === item.id ? 'text-peyk-orange font-medium nav-link-active' : 'text-gray-700 hover:text-peyk-orange'} transition-colors`}
-              onClick={(e) => smoothScroll(e, item.id)}
-            >
-              {item.label}
-              <span className={`absolute bottom-0 left-0 w-0 h-0.5 bg-peyk-orange group-hover:w-full transition-all duration-300 ${activeSection === item.id ? 'w-full width-grow' : ''}`}></span>
-            </a>
+            isHomePage ? (
+              <a 
+                key={item.id}
+                href={`#${item.id}`}
+                className={`relative group px-2 py-1 ${activeSection === item.id ? 'text-peyk-orange font-medium nav-link-active' : 'text-gray-700 hover:text-peyk-orange'} transition-colors`}
+                onClick={(e) => smoothScroll(e, item.id)}
+              >
+                {item.label}
+                <span className={`absolute bottom-0 left-0 w-0 h-0.5 bg-peyk-orange group-hover:w-full transition-all duration-300 ${activeSection === item.id ? 'w-full width-grow' : ''}`}></span>
+              </a>
+            ) : (
+              <Link 
+                key={item.id}
+                to={`/#${item.id}`}
+                className={`relative group px-2 py-1 text-gray-700 hover:text-peyk-orange transition-colors`}
+              >
+                {item.label}
+                <span className={`absolute bottom-0 left-0 w-0 h-0.5 bg-peyk-orange group-hover:w-full transition-all duration-300`}></span>
+              </Link>
+            )
           ))}
         </div>
 
@@ -106,16 +134,28 @@ const Navbar = () => {
         <div className="md:hidden absolute top-16 right-0 left-0 bg-white shadow-md py-4 px-6 z-50 animate-fadeInDown">
           <div className="flex flex-col space-y-4">
             {navItems.map((item, index) => (
-              <a 
-                key={item.id}
-                href={`#${item.id}`}
-                className={`relative overflow-hidden group pb-2 ${activeSection === item.id ? 'text-peyk-orange font-medium' : 'text-gray-700 hover:text-peyk-orange'} transition-colors`}
-                onClick={(e) => smoothScroll(e, item.id)}
-                style={{ animationDelay: `${index * 0.1}s` }}
-              >
-                {item.label}
-                <span className={`absolute bottom-0 right-0 w-0 h-0.5 bg-peyk-orange group-hover:w-full transition-all duration-300 ${activeSection === item.id ? 'w-full width-grow' : ''}`}></span>
-              </a>
+              isHomePage ? (
+                <a 
+                  key={item.id}
+                  href={`#${item.id}`}
+                  className={`relative overflow-hidden group pb-2 ${activeSection === item.id ? 'text-peyk-orange font-medium' : 'text-gray-700 hover:text-peyk-orange'} transition-colors`}
+                  onClick={(e) => smoothScroll(e, item.id)}
+                  style={{ animationDelay: `${index * 0.1}s` }}
+                >
+                  {item.label}
+                  <span className={`absolute bottom-0 right-0 w-0 h-0.5 bg-peyk-orange group-hover:w-full transition-all duration-300 ${activeSection === item.id ? 'w-full width-grow' : ''}`}></span>
+                </a>
+              ) : (
+                <Link 
+                  key={item.id}
+                  to={`/#${item.id}`}
+                  className={`relative overflow-hidden group pb-2 text-gray-700 hover:text-peyk-orange transition-colors`}
+                  style={{ animationDelay: `${index * 0.1}s` }}
+                >
+                  {item.label}
+                  <span className={`absolute bottom-0 right-0 w-0 h-0.5 bg-peyk-orange group-hover:w-full transition-all duration-300`}></span>
+                </Link>
+              )
             ))}
           </div>
         </div>
