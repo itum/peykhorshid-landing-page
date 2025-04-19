@@ -1,73 +1,111 @@
-# Welcome to your project
+# اسکریپت نصب خودکار سرور برای اوبونتو ۲۲
 
-## Project info
+این اسکریپت به‌صورت خودکار نصب و پیکربندی پیش‌نیازهای نرم‌افزاری را برای اوبونتو ۲۲ انجام می‌دهد.
 
-**URL**: https://8f9c3957-2e64-46cf-8d7d-f5143bd01e88
+## قابلیت‌ها
 
-## How can I edit this code?
+- نصب و پیکربندی MySQL
+- نصب و راه‌اندازی phpMyAdmin
+- ایجاد کاربر و رمز عبور امن تصادفی
+- نصب Node.js و NPM
+- نصب و راه‌اندازی Express.js
+- ایجاد پروژه نمونه با فرانت‌اند ساده
+- ایجاد اسکریپت برای ایمپورت دیتابیس
+- راه‌اندازی خودکار سرور با PM2
 
-There are several ways of editing your application.
+## پیش‌نیازها
 
-**Use App**
+- سیستم عامل Ubuntu 22.04 LTS
+- دسترسی روت (sudo)
+- اتصال به اینترنت
 
-Simply visit the [Project](https://8f9c3957-2e64-46cf-8d7d-f5143bd01e88) and start prompting.
+## نحوه نصب
 
-Changes made via the app will be committed automatically to this repo.
+### ۱. دریافت اسکریپت
 
-**Use your preferred IDE**
-
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in the app.
-
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
-
-Follow these steps:
-
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
-
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
-
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
+```bash
+git clone https://github.com/username/repository.git
+cd repository
 ```
 
-**Edit a file directly in GitHub**
+یا می‌توانید فایل اسکریپت را مستقیما دانلود کنید:
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+```bash
+wget https://raw.githubusercontent.com/username/repository/main/setup_ubuntu22.sh
+```
 
-**Use GitHub Codespaces**
+### ۲. دادن دسترسی اجرا به اسکریپت
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+```bash
+chmod +x setup_ubuntu22.sh
+```
 
-## What technologies are used for this project?
+### ۳. اجرای اسکریپت با دسترسی روت
 
-This project is built with:
+```bash
+sudo ./setup_ubuntu22.sh
+```
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+## مستندات
 
-## How can I deploy this project?
+در طول اجرای اسکریپت، اطلاعات زیر ایجاد و نمایش داده می‌شوند:
 
-Simply open [App](https://8f9c3957-2e64-46cf-8d7d-f5143bd01e88) and click on Share -> Publish.
+- نام کاربری و رمز عبور تصادفی برای MySQL
+- نام کاربری و رمز عبور برای phpMyAdmin
+- نام کاربری و رمز عبور برای کاربر root
 
-## Can I connect a custom domain to my project?
+تمام این اطلاعات در فایل `mysql_credentials.txt` در همان دایرکتوری ذخیره می‌شوند.
 
-Yes, you can!
+### دسترسی به phpMyAdmin
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
+پس از نصب، می‌توانید به phpMyAdmin از طریق آدرس زیر دسترسی داشته باشید:
 
-Read more here: [Setting up a custom domain](https://docs.dev/tips-tricks/custom-domain#step-by-step-guide)
+```
+http://server-ip/phpmyadmin
+```
+
+### دسترسی به برنامه Express.js
+
+برنامه Express.js در پورت ۳۰۰۰ اجرا می‌شود و می‌توانید از طریق آدرس زیر به آن دسترسی داشته باشید:
+
+```
+http://server-ip:3000
+```
+
+### مدیریت سرور با PM2
+
+برای مدیریت سرور Express.js، دستورات زیر را می‌توانید استفاده کنید:
+
+```bash
+# نمایش وضعیت سرور
+pm2 status
+
+# راه‌اندازی مجدد سرور
+pm2 restart expressapp
+
+# مشاهده لاگ‌ها
+pm2 logs expressapp
+```
+
+### ایمپورت دیتابیس
+
+برای ایمپورت دیتابیس، می‌توانید از اسکریپت `import_database.sh` استفاده کنید:
+
+```bash
+cd /opt/expressapp
+./import_database.sh path/to/your/database.sql
+```
+
+## توجه
+
+- رمزهای عبور به‌صورت تصادفی ایجاد می‌شوند و باید در مکانی امن نگهداری شوند.
+- این اسکریپت برای استفاده در محیط‌های توسعه و آزمایشی طراحی شده است.
+- برای محیط‌های تولیدی، توصیه می‌شود تنظیمات امنیتی بیشتری اعمال شود.
+
+## تغییرات نسخه v2.3
+
+- اضافه شدن تولید خودکار رمز عبور و نام کاربری تصادفی
+- اضافه شدن پیکربندی خودکار MySQL با expect
+- بهبود مستندات و راهنمای نصب
+- ذخیره اطلاعات احراز هویت در فایل جداگانه
+- بهبود امنیت و خودکارسازی بیشتر فرآیند نصب
