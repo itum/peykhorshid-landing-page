@@ -14,7 +14,11 @@ const app = express();
 const PORT = process.env.PORT || 3001;
 
 // middleware ها
-app.use(cors());
+app.use(cors({
+  origin: '*', // اجازه دسترسی از همه دامنه‌ها
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  allowedHeaders: ['Content-Type', 'Authorization']
+}));
 app.use(bodyParser.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -44,7 +48,7 @@ const startServer = async () => {
     await Contact.createTable();
     await ClickStats.createTable();
     
-    app.listen(PORT, () => {
+    app.listen(PORT, '0.0.0.0', () => {
       console.log(`سرور با موفقیت در پورت ${PORT} راه‌اندازی شد.`);
       console.log(`آدرس: http://localhost:${PORT}`);
     });
