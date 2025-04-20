@@ -60,7 +60,7 @@ const Guarantees = () => {
                     <h4 className="font-bold">کارکنان بخش دولتی</h4>
                   </div>
                   <p className="text-gray-600 text-sm pr-7">
-                    آخرین فیش حقوقی بهمراه چک جدید طرح صیاد به تعداد اقساط
+                    آخرین فیش حقوقی بهمراه چک صیادی جدید طرح صیاد به تعداد اقساط
                   </p>
                 </div>
 
@@ -84,17 +84,17 @@ const Guarantees = () => {
                     <h4 className="font-bold">صاحبان کسب و کار</h4>
                   </div>
                   <p className="text-gray-600 text-sm pr-7">
-                    پروانه کسب معتبر با چک جدید طرح صیاد به تعداد اقساط
+                    پروانه کسب معتبر با چک صیادی جدید طرح صیاد به تعداد اقساط
                   </p>
                 </div>
 
                 <div className="mt-6 bg-gray-50 p-4 rounded-lg border border-gray-200">
                   <h4 className="font-bold text-center mb-3">نوع تضمین</h4>
                   <p className="text-gray-600 text-sm text-center">
-                    واگذاری چک طرح صیادی بنفش به تعداد اقساط با کارمزد هرچک ۴ درصد
+                    واگذاری چک صیادی طرح صیادی بنفش به تعداد اقساط با کارمزد هرچک صیادی ۴ درصد
                   </p>
                   <p className="text-gray-600 text-sm text-center mt-2">
-                    یک چک ضمانت به مبلغ کل اقساط
+                    یک چک صیادی ضمانت به مبلغ کل اقساط
                   </p>
                 </div>
               </div>

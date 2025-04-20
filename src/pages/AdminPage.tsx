@@ -7,7 +7,8 @@ import { getUsers, downloadExcel, UserInfo } from '@/lib/services/userService';
 import { getContactMessages, markMessageAsRead, ContactMessage } from '@/lib/services/contactService';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { toast } from 'sonner';
-import { Mail, Check, Bell } from 'lucide-react';
+import { Mail, Check, Bell, BarChart } from 'lucide-react';
+import StatsPanel from '@/components/admin/StatsPanel';
 
 const AdminPage = () => {
   const [password, setPassword] = useState('');
@@ -116,7 +117,7 @@ const AdminPage = () => {
       
       <main className="flex-grow py-16 bg-gradient-to-b from-gray-50 to-white">
         <div className="container mx-auto px-4">
-          <div className="max-w-5xl mx-auto">
+          <div className="max-w-5xl mx-auto" dir="rtl">
             <div className="text-center mb-10">
               <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">پنل مدیریت سایت</h1>
               <p className="text-gray-600 max-w-2xl mx-auto">
@@ -126,10 +127,10 @@ const AdminPage = () => {
             
             {!isAuthenticated ? (
               <div className="bg-white p-6 rounded-xl shadow-md max-w-md mx-auto">
-                <h2 className="text-xl font-bold mb-4">ورود به پنل مدیریت</h2>
+                <h2 className="text-xl font-bold mb-4 text-right">ورود به پنل مدیریت</h2>
                 <form onSubmit={handleLogin} className="space-y-4">
                   <div>
-                    <label htmlFor="password" className="block text-sm font-medium mb-1">رمز عبور</label>
+                    <label htmlFor="password" className="block text-sm font-medium mb-1 text-right">رمز عبور</label>
                     <Input
                       id="password"
                       type="password"
@@ -155,8 +156,11 @@ const AdminPage = () => {
                 </div>
                 
                 <Tabs defaultValue="users" className="w-full">
-                  <TabsList className="mb-6 w-full justify-start bg-gray-100 p-1">
-                    <TabsTrigger value="users" className="data-[state=active]:bg-white">کاربران کوییز سفر</TabsTrigger>
+                  <TabsList className="mb-6 w-full justify-end bg-gray-100 p-1">
+                    <TabsTrigger value="stats" className="data-[state=active]:bg-white flex items-center">
+                      <BarChart className="h-4 w-4 ml-1" />
+                      <span>آمار کلیک‌ها</span>
+                    </TabsTrigger>
                     <TabsTrigger value="contact-messages" className="data-[state=active]:bg-white flex items-center">
                       <span>پیام‌های تماس با ما</span>
                       {unreadCount > 0 && (
@@ -165,6 +169,7 @@ const AdminPage = () => {
                         </span>
                       )}
                     </TabsTrigger>
+                    <TabsTrigger value="users" className="data-[state=active]:bg-white">کاربران کوییز سفر</TabsTrigger>
                   </TabsList>
                   
                   <TabsContent value="users" className="mt-0">
@@ -202,12 +207,12 @@ const AdminPage = () => {
                           {users.length > 0 ? (
                             users.map((user, index) => (
                               <tr key={index} className="hover:bg-gray-50">
-                                <td className="py-2 px-2 border-b">{index + 1}</td>
-                                <td className="py-2 px-2 border-b">{user.name || 'بدون نام'}</td>
-                                <td className="py-2 px-2 border-b">{user.phone}</td>
-                                <td className="py-2 px-2 border-b">{user.travel_destination || user.travelDestination || '-'}</td>
-                                <td className="py-2 px-2 border-b">{user.location || (user.quizAnswers?.location) || '-'}</td>
-                                <td className="py-2 px-2 border-b">
+                                <td className="py-2 px-2 border-b text-right">{index + 1}</td>
+                                <td className="py-2 px-2 border-b text-right">{user.name || 'بدون نام'}</td>
+                                <td className="py-2 px-2 border-b text-right">{user.phone}</td>
+                                <td className="py-2 px-2 border-b text-right">{user.travel_destination || user.travelDestination || '-'}</td>
+                                <td className="py-2 px-2 border-b text-right">{user.location || (user.quizAnswers?.location) || '-'}</td>
+                                <td className="py-2 px-2 border-b text-right">
                                   {(() => {
                                     // تبدیل مقادیر فعالیت‌ها به فارسی
                                     const activities = user.activities || (Array.isArray(user.quizAnswers?.activities) 
@@ -237,7 +242,7 @@ const AdminPage = () => {
                                     }
                                   })()}
                                 </td>
-                                <td className="py-2 px-2 border-b">
+                                <td className="py-2 px-2 border-b text-right">
                                   {(() => {
                                     // تبدیل مقادیر مدت سفر به فارسی
                                     const duration = user.duration || user.quizAnswers?.duration;
@@ -253,7 +258,7 @@ const AdminPage = () => {
                                     return durationMap[duration] || duration;
                                   })()}
                                 </td>
-                                <td className="py-2 px-2 border-b">
+                                <td className="py-2 px-2 border-b text-right">
                                   {(() => {
                                     // تبدیل مقادیر فصل به فارسی
                                     const season = user.season || user.quizAnswers?.season;
@@ -270,19 +275,48 @@ const AdminPage = () => {
                                     return seasonMap[season] || season;
                                   })()}
                                 </td>
-                                <td className="py-2 px-2 border-b">{user.budget || user.quizAnswers?.budget || '-'}</td>
-                                <td className="py-2 px-2 border-b">{user.adventure || user.quizAnswers?.adventure || '-'}</td>
-                                <td className="py-2 px-2 border-b">{user.score || 0}</td>
-                                <td className="py-2 px-2 border-b">
-                                  {user.created_at ? new Date(user.created_at).toLocaleString('fa-IR') : 
-                                  user.timestamp ? new Date(user.timestamp).toLocaleString('fa-IR') : '-'}
+                                <td className="py-2 px-2 border-b text-right">
+                                  {(() => {
+                                    // تبدیل مقادیر بودجه به فارسی
+                                    const budget = user.budget || user.quizAnswers?.budget;
+                                    
+                                    if (!budget) return '-';
+                                    
+                                    const budgetMap: Record<string, string> = {
+                                      'low': 'کم',
+                                      'medium': 'متوسط',
+                                      'high': 'زیاد'
+                                    };
+                                    
+                                    return budgetMap[budget] || budget;
+                                  })()}
+                                </td>
+                                <td className="py-2 px-2 border-b text-right">
+                                  {(() => {
+                                    // تبدیل مقادیر ماجراجویی به فارسی
+                                    const adventure = user.adventure || user.quizAnswers?.adventure;
+                                    
+                                    if (!adventure) return '-';
+                                    
+                                    const adventureMap: Record<string, string> = {
+                                      'low': 'کم',
+                                      'medium': 'متوسط',
+                                      'high': 'زیاد'
+                                    };
+                                    
+                                    return adventureMap[adventure] || adventure;
+                                  })()}
+                                </td>
+                                <td className="py-2 px-2 border-b text-right">{user.score || 0}</td>
+                                <td className="py-2 px-2 border-b text-right">
+                                  {user.created_at ? new Date(user.created_at).toLocaleDateString('fa-IR') : '-'}
                                 </td>
                               </tr>
                             ))
                           ) : (
                             <tr>
                               <td colSpan={12} className="py-4 text-center text-gray-500">
-                                هیچ کاربری ثبت نشده است
+                                هنوز کاربری ثبت نشده است
                               </td>
                             </tr>
                           )}
@@ -293,94 +327,71 @@ const AdminPage = () => {
                   
                   <TabsContent value="contact-messages" className="mt-0">
                     <div className="flex justify-between items-center mb-4">
-                      <div className="flex items-center">
-                        <h3 className="text-lg font-semibold ml-2">پیام‌های تماس با ما ({contactMessages.length})</h3>
+                      <h3 className="text-lg font-semibold">
+                        پیام‌های تماس با ما 
                         {unreadCount > 0 && (
-                          <span className="bg-red-100 text-red-800 text-xs font-medium px-2.5 py-0.5 rounded flex items-center">
-                            <Bell className="h-3 w-3 ml-1" />
+                          <span className="mr-2 text-sm bg-red-500 text-white rounded-full px-2 py-0.5">
                             {unreadCount} پیام جدید
                           </span>
                         )}
-                      </div>
-                      <Button 
-                        onClick={refreshContactMessages} 
-                        disabled={isLoadingContacts}
-                        className="bg-blue-600 hover:bg-blue-700"
-                      >
-                        {isLoadingContacts ? 'در حال بارگیری...' : 'به‌روزرسانی پیام‌ها'}
+                      </h3>
+                      <Button onClick={refreshContactMessages} disabled={isLoadingContacts} className="bg-blue-600 hover:bg-blue-700">
+                        {isLoadingContacts ? 'در حال بارگذاری...' : 'به‌روزرسانی پیام‌ها'}
                       </Button>
                     </div>
                     
-                    <div className="overflow-x-auto">
-                      <table className="min-w-full bg-white border border-gray-200 text-sm">
-                        <thead>
-                          <tr className="bg-gray-100">
-                            <th className="py-2 px-2 border-b text-right">#</th>
-                            <th className="py-2 px-2 border-b text-right">نام و نام خانوادگی</th>
-                            <th className="py-2 px-2 border-b text-right">شماره موبایل</th>
-                            <th className="py-2 px-2 border-b text-right">پیام</th>
-                            <th className="py-2 px-2 border-b text-right">تاریخ ارسال</th>
-                            <th className="py-2 px-2 border-b text-right">وضعیت</th>
-                            <th className="py-2 px-2 border-b text-right">عملیات</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {contactMessages.length > 0 ? (
-                            contactMessages.map((message, index) => (
-                              <tr key={index} className={`hover:bg-gray-50 ${!message.is_read ? 'bg-blue-50' : ''}`}>
-                                <td className="py-2 px-2 border-b">{index + 1}</td>
-                                <td className="py-2 px-2 border-b font-medium">{message.name}</td>
-                                <td className="py-2 px-2 border-b">
-                                  <a 
-                                    href={`tel:${message.phone}`} 
-                                    className="text-blue-600 hover:text-blue-800 hover:underline"
+                    <div className="space-y-4">
+                      {contactMessages.length > 0 ? (
+                        contactMessages.map((message, index) => (
+                          <div 
+                            key={index} 
+                            className={`border rounded-lg p-4 ${!message.is_read ? 'bg-blue-50 border-blue-200' : 'bg-white'}`}
+                          >
+                            <div className="flex justify-between items-start mb-2">
+                              <div className="flex items-center">
+                                <Mail className="h-5 w-5 text-gray-500 ml-2" />
+                                <h4 className="font-semibold">
+                                  {message.name} - {message.email}
+                                </h4>
+                                {!message.is_read && (
+                                  <span className="mr-2 bg-blue-500 text-white text-xs rounded-full px-2 py-0.5">
+                                    جدید
+                                  </span>
+                                )}
+                              </div>
+                              <div className="flex items-center">
+                                <span className="text-sm text-gray-500 ml-2">
+                                  {new Date(message.created_at).toLocaleDateString('fa-IR')}
+                                </span>
+                                {!message.is_read && (
+                                  <Button 
+                                    variant="ghost" 
+                                    size="sm" 
+                                    onClick={() => handleMarkAsRead(message.id)}
+                                    className="text-green-600 hover:text-green-700 hover:bg-green-50 p-1"
                                   >
-                                    {message.phone}
-                                  </a>
-                                </td>
-                                <td className="py-2 px-2 border-b max-w-xs">
-                                  <div className="line-clamp-2">{message.message}</div>
-                                </td>
-                                <td className="py-2 px-2 border-b text-gray-600">
-                                  {message.created_at ? new Date(message.created_at).toLocaleString('fa-IR') : '-'}
-                                </td>
-                                <td className="py-2 px-2 border-b">
-                                  {message.is_read ? (
-                                    <span className="inline-flex items-center bg-green-100 text-green-800 text-xs font-medium px-2.5 py-0.5 rounded">
-                                      <Check className="h-3 w-3 ml-1" />
-                                      خوانده شده
-                                    </span>
-                                  ) : (
-                                    <span className="inline-flex items-center bg-red-100 text-red-800 text-xs font-medium px-2.5 py-0.5 rounded">
-                                      <Mail className="h-3 w-3 ml-1" />
-                                      جدید
-                                    </span>
-                                  )}
-                                </td>
-                                <td className="py-2 px-2 border-b">
-                                  {!message.is_read && (
-                                    <Button 
-                                      variant="outline" 
-                                      size="sm" 
-                                      className="text-xs"
-                                      onClick={() => handleMarkAsRead(message.id as number)}
-                                    >
-                                      علامت خوانده شده
-                                    </Button>
-                                  )}
-                                </td>
-                              </tr>
-                            ))
-                          ) : (
-                            <tr>
-                              <td colSpan={7} className="py-4 text-center text-gray-500">
-                                {isLoadingContacts ? 'در حال بارگیری پیام‌ها...' : 'هیچ پیامی دریافت نشده است'}
-                              </td>
-                            </tr>
-                          )}
-                        </tbody>
-                      </table>
+                                    <Check className="h-4 w-4 ml-1" />
+                                    <span className="text-xs">علامت‌گذاری به عنوان خوانده شده</span>
+                                  </Button>
+                                )}
+                              </div>
+                            </div>
+                            <p className="text-gray-700 whitespace-pre-wrap mb-2 text-right">{message.message}</p>
+                            <div className="text-sm text-gray-500 text-right">
+                              شماره تماس: {message.phone || 'ندارد'}
+                            </div>
+                          </div>
+                        ))
+                      ) : (
+                        <div className="text-center py-8 text-gray-500">
+                          هنوز پیامی دریافت نشده است
+                        </div>
+                      )}
                     </div>
+                  </TabsContent>
+                  
+                  <TabsContent value="stats" className="mt-0">
+                    <StatsPanel />
                   </TabsContent>
                 </Tabs>
               </div>

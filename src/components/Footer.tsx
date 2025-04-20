@@ -1,6 +1,7 @@
 import { Phone, MapPin, Instagram, Twitter, Linkedin, Facebook, Youtube, CreditCard, ShieldCheck, Heart, Clock } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import ClickTracker from "./ClickTracker";
 
 const Footer = () => {
   return (
@@ -35,34 +36,26 @@ const Footer = () => {
             <h3 className="text-xl font-bold text-gray-900 mb-4 border-r-4 border-peyk-blue pr-3">خدمات ما</h3>
             <ul className="space-y-3">
               <li>
-                <a href="#" className="hover:text-peyk-blue transition-colors duration-300 flex items-center">
+                <a href="https://peykkhorshid.ir/" className="hover:text-peyk-blue transition-colors duration-300 flex items-center" target="_blank" rel="noopener noreferrer">
                   <span className="inline-block w-2 h-2 bg-peyk-blue rounded-full ml-2"></span>
                   خرید بلیط هواپیما
                 </a>
               </li>
               <li>
-                <a href="#" className="hover:text-peyk-blue transition-colors duration-300 flex items-center">
-                  <span className="inline-block w-2 h-2 bg-peyk-blue rounded-full ml-2"></span>
-                  تور داخلی و خارجی
-                </a>
+                <ClickTracker itemType="service" itemId="tours" itemName="تور داخلی و خارجی">
+                  <a href="https://peykkhorshid.ir/tours/" className="hover:text-peyk-blue transition-colors duration-300 flex items-center" target="_blank" rel="noopener noreferrer">
+                    <span className="inline-block w-2 h-2 bg-peyk-blue rounded-full ml-2"></span>
+                    تور داخلی و خارجی
+                  </a>
+                </ClickTracker>
               </li>
               <li>
-                <a href="#" className="hover:text-peyk-blue transition-colors duration-300 flex items-center">
-                  <span className="inline-block w-2 h-2 bg-peyk-blue rounded-full ml-2"></span>
-                  رزرو هتل
-                </a>
-              </li>
-              <li>
-                <a href="#" className="hover:text-peyk-blue transition-colors duration-300 flex items-center">
-                  <span className="inline-block w-2 h-2 bg-peyk-blue rounded-full ml-2"></span>
-                  خدمات ویزا
-                </a>
-              </li>
-              <li>
-                <a href="#" className="hover:text-peyk-blue transition-colors duration-300 flex items-center">
-                  <span className="inline-block w-2 h-2 bg-peyk-blue rounded-full ml-2"></span>
-                  تورهای زیارتی
-                </a>
+                <ClickTracker itemType="service" itemId="religious-tours" itemName="تورهای زیارتی">
+                  <a href="http://peykkhorshid.ir/tour/%D8%AA%D9%88%D8%B1-%D9%85%D8%B4%D9%87%D8%AF-%D9%88%DB%8C%DA%98%D9%87-%D9%85%DB%8C%D9%84%D8%A7%D8%AF-%D8%A7%D9%85%D8%A7%D9%85-%D8%B1%D8%B6%D8%A7-%D8%B9/" className="hover:text-peyk-blue transition-colors duration-300 flex items-center" target="_blank" rel="noopener noreferrer">
+                    <span className="inline-block w-2 h-2 bg-peyk-blue rounded-full ml-2"></span>
+                    تورهای زیارتی
+                  </a>
+                </ClickTracker>
               </li>
             </ul>
           </div>
@@ -71,33 +64,33 @@ const Footer = () => {
             <h3 className="text-xl font-bold text-gray-900 mb-4 border-r-4 border-peyk-blue pr-3">لینک‌های مفید</h3>
             <ul className="space-y-3">
               <li>
-                <a href="#" className="hover:text-peyk-blue transition-colors duration-300 flex items-center">
+                <a href="https://peykkhorshid.ir/aboutus/" className="hover:text-peyk-blue transition-colors duration-300 flex items-center" target="_blank" rel="noopener noreferrer">
                   <span className="inline-block w-2 h-2 bg-peyk-blue rounded-full ml-2"></span>
                   درباره ما
                 </a>
               </li>
               <li>
-                <a href="#" className="hover:text-peyk-blue transition-colors duration-300 flex items-center">
+                <a href="https://peykkhorshid.ir/%d8%AE%d8%b1%db%8c%d8%af-%d9%82%d8%b3%d8%b7%db%8c-%d8%a2%d9%86%d9%84%d8%a7%db%8c%d9%86-%d9%be%db%8c%da%a9-%d8%ae%d9%88%d8%b1%d8%b4%db%8c%d8%af/" className="hover:text-peyk-blue transition-colors duration-300 flex items-center" target="_blank" rel="noopener noreferrer">
                   <span className="inline-block w-2 h-2 bg-peyk-blue rounded-full ml-2"></span>
-                  قوانین و مقررات
+                  شرایط اقساطی
                 </a>
               </li>
               <li>
-                <a href="#" className="hover:text-peyk-blue transition-colors duration-300 flex items-center">
+                <a href="https://club.peykkhorshid.ir/" className="hover:text-peyk-blue transition-colors duration-300 flex items-center" target="_blank" rel="noopener noreferrer">
                   <span className="inline-block w-2 h-2 bg-peyk-blue rounded-full ml-2"></span>
-                  حریم خصوصی
+                  باشگاه مشتریان
                 </a>
               </li>
               <li>
-                <a href="#" className="hover:text-peyk-blue transition-colors duration-300 flex items-center">
+                <a href="https://peykkhorshid.ir/contactus/" className="hover:text-peyk-blue transition-colors duration-300 flex items-center" target="_blank" rel="noopener noreferrer">
                   <span className="inline-block w-2 h-2 bg-peyk-blue rounded-full ml-2"></span>
                   تماس با ما
                 </a>
               </li>
               <li>
-                <a href="#" className="hover:text-peyk-blue transition-colors duration-300 flex items-center">
+                <a href="https://peykkhorshid.ir/mag/" className="hover:text-peyk-blue transition-colors duration-300 flex items-center" target="_blank" rel="noopener noreferrer">
                   <span className="inline-block w-2 h-2 bg-peyk-blue rounded-full ml-2"></span>
-                  استخدام
+                  مجله
                 </a>
               </li>
             </ul>
@@ -130,7 +123,30 @@ const Footer = () => {
                 </div>
                 <div>
                   <span className="block font-bold text-sm text-gray-800">تلفن پشتیبانی 24 ساعته:</span>
-                  <a href="tel:02191313485" className="group-hover:text-peyk-blue transition-colors duration-300 text-sm hover:underline">۰۲۱-۹۱۳۱۳۴۸۵</a>
+                  <a href="tel:06135518880" className="group-hover:text-peyk-blue transition-colors duration-300 text-sm hover:underline">۰۶۱-۳۵۵۱۸۸۸۰</a>
+                </div>
+              </li>
+              <li className="mt-4">
+                <span className="block font-bold text-sm text-gray-800 mb-2 border-r-2 border-peyk-blue pr-2">پشتیبانی تور:</span>
+                <div className="flex flex-wrap gap-2 mt-1">
+                  <ClickTracker itemType="support" itemId="09902483117" itemName="پشتیبانی تور 1">
+                    <a href="tel:09902483117" className="bg-gradient-to-r from-peyk-blue to-blue-500 text-white text-xs px-3 py-1.5 rounded-full hover:shadow-md transition-all duration-300 hover:scale-105 flex items-center">
+                      <Phone className="h-3 w-3 ml-1 animate-pulse" />
+                      ۰۹۹۰۲۴۸۳۱۱۷
+                    </a>
+                  </ClickTracker>
+                  <ClickTracker itemType="support" itemId="09018880438" itemName="پشتیبانی تور 2">
+                    <a href="tel:09018880438" className="bg-gradient-to-r from-blue-500 to-peyk-blue-dark text-white text-xs px-3 py-1.5 rounded-full hover:shadow-md transition-all duration-300 hover:scale-105 flex items-center">
+                      <Phone className="h-3 w-3 ml-1 animate-pulse" />
+                      ۰۹۰۱۸۸۸۰۴۳۸
+                    </a>
+                  </ClickTracker>
+                  <ClickTracker itemType="support" itemId="09017770438" itemName="پشتیبانی تور 3">
+                    <a href="tel:09017770438" className="bg-gradient-to-r from-peyk-blue-dark to-peyk-blue text-white text-xs px-3 py-1.5 rounded-full hover:shadow-md transition-all duration-300 hover:scale-105 flex items-center">
+                      <Phone className="h-3 w-3 ml-1 animate-pulse" />
+                      ۰۹۰۱۷۷۷۰۴۳۸
+                    </a>
+                  </ClickTracker>
                 </div>
               </li>
             </ul>

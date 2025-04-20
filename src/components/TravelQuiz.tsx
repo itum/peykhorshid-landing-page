@@ -7,6 +7,10 @@ import { Badge } from '@/components/ui/badge';
 import { Check, Plane, Map, Palmtree, Mountain, Car, Train, Anchor, Phone, User, Lock } from 'lucide-react';
 import { addUser, sendSMS, sendSMSAlternative, UserInfo } from '@/lib/services/userService';
 import { sendSMSWithJSONP, sendSMSWithIframe } from '@/lib/services/smsUtils';
+import confetti from 'canvas-confetti';
+import { doc, setDoc, collection } from 'firebase/firestore';
+import { db } from '@/config/firebase';
+import ClickTracker from './ClickTracker';
 
 // تابع تبدیل اعداد فارسی و عربی به انگلیسی
 const convertToEnglishNumber = (str: string): string => {
@@ -204,14 +208,18 @@ const TravelQuiz = () => {
     } else if (budgetScore <= 70) {
       if (adventureScore <= 50) {
         destination = locationPreference === 'داخلی' ? 'شیراز' : 'ارمنستان';
-      } else {
+      } else if (adventureScore <= 70) {
         destination = locationPreference === 'داخلی' ? 'قشم' : 'آنتالیا';
+      } else {
+        destination = locationPreference === 'داخلی' ? 'قشم' : 'گرجستان';
       }
     } else {
-      if (adventureScore <= 70) {
-        destination = locationPreference === 'داخلی' ? 'اصفهان' : 'روسیه';
+      if (adventureScore <= 50) {
+        destination = locationPreference === 'داخلی' ? 'اصفهان' : 'تایلند';
+      } else if (adventureScore <= 80) {
+        destination = locationPreference === 'داخلی' ? 'جنگل‌های شمال' : 'باکو';
       } else {
-        destination = locationPreference === 'داخلی' ? 'جنگل‌های شمال' : 'تایلند';
+        destination = locationPreference === 'داخلی' ? 'جنگل‌های شمال' : 'روسیه';
       }
     }
     
@@ -321,26 +329,40 @@ const TravelQuiz = () => {
   // محاسبه مبلغ وام پیشنهادی
   const calculateLoanAmount = () => {
     const destinations: Record<string, number> = {
-      'مشهد': 20,
-      'کیش': 30,
-      'شیراز': 25,
+      'مشهد': 0.900, // قیمت جدید برای مشهد
+      'کیش': 0.750, // قیمت جدید برای کیش
+      'شیراز': 0.680, // قیمت جدید برای شیراز
       'قشم': 35,
       'اصفهان': 25,
       'جنگل‌های شمال': 40,
-      'استانبول': 50,
-      'دبی': 60,
-      'ارمنستان': 45,
-      'آنتالیا': 55,
-      'روسیه': 80,
-      'تایلند': 100
+      'استانبول': 1.780, // قیمت جدید برای استانبول
+      'دبی': 2.200, // قیمت جدید برای دبی
+      'ارمنستان': 1.700, // قیمت جدید برای ارمنستان
+      'آنتالیا': 2.690, // قیمت جدید برای آنتالیا
+      'روسیه': 5.300, // قیمت جدید برای روسیه
+      'تایلند': 2.400, // قیمت جدید برای تایلند
+      'گرجستان': 1.750, // قیمت جدید برای گرجستان
+      'باکو': 4.800, // قیمت جدید برای باکو
     };
     
-    return destinations[travelDestination] || 50;
+    return destinations[travelDestination] || 1.800;
   };
 
   // فرمت‌کردن اعداد به فارسی
   const formatNumber = (num: number) => {
     return new Intl.NumberFormat('fa-IR').format(num);
+  };
+
+  // ریست کردن آزمون برای انجام مجدد
+  const resetQuiz = () => {
+    setStep(0);
+    setScore(0);
+    setAnswers({});
+    setTravelDestination('');
+    setShowResult(false);
+    setQuizCompleted(false);
+    setSelectedOptions([]);
+    setShowPhoneModal(true);
   };
 
   return (
@@ -399,13 +421,15 @@ const TravelQuiz = () => {
               </p>
             </div>
             
-            <Button
-              type="submit"
-              className="w-full bg-gradient-to-r from-peyk-blue to-peyk-blue-dark text-white font-bold py-3"
-              disabled={!isPhoneValid}
-            >
-              شروع آزمون
-            </Button>
+            <ClickTracker itemType="quiz" itemId="start-exam" itemName="دکمه شروع آزمون سفر رویایی">
+              <Button
+                type="submit"
+                className="w-full bg-gradient-to-r from-peyk-blue to-peyk-blue-dark text-white font-bold py-3"
+                disabled={!isPhoneValid}
+              >
+                شروع آزمون
+              </Button>
+            </ClickTracker>
           </form>
           
           <div className="flex items-center justify-center gap-2 mt-4">
@@ -485,13 +509,7 @@ const TravelQuiz = () => {
             <div className="flex flex-col items-center">
               <Badge className="mb-2 bg-peyk-blue">{answers.location === 'داخلی' ? 'داخلی' : 'خارجی'}</Badge>
               <h3 className="text-3xl font-bold text-peyk-blue mb-2">{travelDestination}</h3>
-              <p className="text-gray-600 mb-4">با وام سفر {formatNumber(calculateLoanAmount())} میلیون تومانی</p>
-              
-              <div className="mt-4 bg-white rounded-lg p-4 shadow-sm w-full">
-                <h4 className="font-bold text-gray-800 mb-2">پیشنهاد ویژه برای شما</h4>
-                <p className="text-sm text-gray-600">اقساط ماهانه {formatNumber(Math.round(calculateLoanAmount() * 1000000 / 12 * 1.04 / 1000000))} میلیون تومان</p>
-                <p className="text-sm text-gray-600">مدت بازپرداخت: ۱۲ ماه</p>
-              </div>
+              <p className="text-gray-600 mb-4">با وام سفر ۲.۴ میلیون تومانی</p>
             </div>
           </div>
           
@@ -511,6 +529,18 @@ const TravelQuiz = () => {
           </div>
           
           <p className="text-sm text-gray-500 mt-4">به زودی با شما تماس خواهیم گرفت</p>
+          
+          <div className="mt-6">
+            <ClickTracker itemType="quiz" itemId="restart-quiz" itemName="دکمه انجام مجدد آزمون سفر رویایی">
+              <Button 
+                onClick={resetQuiz}
+                variant="outline"
+                className="border-peyk-blue text-peyk-blue hover:bg-peyk-blue/5"
+              >
+                انجام مجدد آزمون
+              </Button>
+            </ClickTracker>
+          </div>
         </div>
       )}
     </div>

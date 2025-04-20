@@ -5,6 +5,7 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { sendContactMessage } from '@/lib/services/contactService';
 import { toast } from 'sonner';
+import ClickTracker from './ClickTracker';
 
 // تابع تبدیل اعداد فارسی و عربی به انگلیسی
 const convertToEnglishNumber = (str: string): string => {
@@ -153,14 +154,42 @@ const ContactUs = () => {
             کارشناسان پیک خورشید آماده‌اند تا به تمام سوالات شما پاسخ دهند. فقط کافیست پیام خود را برای ما ارسال کنید و در کوتاه‌ترین زمان ممکن، راهنمایی‌های لازم را دریافت کنید.
           </p>
           <div className="flex flex-wrap justify-center gap-4 mt-4">
-            <a href="tel:02191313485" className="flex items-center bg-white px-4 py-2 rounded-lg shadow-sm hover:shadow-md transition-all duration-300 text-gray-800 hover:text-peyk-blue">
-              <Phone className="h-5 w-5 ml-2 text-peyk-blue" />
-              <span>۰۲۱-۹۱۳۱۳۴۸۵</span>
-            </a>
-            <a href="mailto:info@peykkhorshid.ir" className="flex items-center bg-white px-4 py-2 rounded-lg shadow-sm hover:shadow-md transition-all duration-300 text-gray-800 hover:text-peyk-blue">
-              <Mail className="h-5 w-5 ml-2 text-peyk-blue" />
-              <span>info@peykkhorshid.ir</span>
-            </a>
+            <ClickTracker itemType="support" itemId="06135518880" itemName="تلفن پشتیبانی 24 ساعته">
+              <a href="tel:06135518880" className="flex items-center bg-white px-4 py-2 rounded-lg shadow-sm hover:shadow-md transition-all duration-300 text-gray-800 hover:text-peyk-blue">
+                <Phone className="h-5 w-5 ml-2 text-peyk-blue" />
+                <span>۰۶۱-۳۵۵۱۸۸۸۰</span>
+              </a>
+            </ClickTracker>
+            <ClickTracker itemType="contact" itemId="email" itemName="ایمیل پشتیبانی">
+              <a href="mailto:info@peykkhorshid.ir" className="flex items-center bg-white px-4 py-2 rounded-lg shadow-sm hover:shadow-md transition-all duration-300 text-gray-800 hover:text-peyk-blue">
+                <Mail className="h-5 w-5 ml-2 text-peyk-blue" />
+                <span>info@peykkhorshid.ir</span>
+              </a>
+            </ClickTracker>
+          </div>
+          
+          <div className="mt-6">
+            <h3 className="text-lg font-semibold text-gray-900 mb-3">پشتیبانی تور</h3>
+            <div className="flex flex-wrap justify-center gap-4">
+              <ClickTracker itemType="support" itemId="09902483117" itemName="پشتیبانی تور 1">
+                <a href="tel:09902483117" className="flex items-center bg-gradient-to-r from-peyk-blue to-blue-500 px-4 py-2 rounded-lg shadow-md hover:shadow-lg transition-all duration-300 text-white transform hover:scale-105">
+                  <Phone className="h-5 w-5 ml-2 animate-pulse" />
+                  <span>۰۹۹۰۲۴۸۳۱۱۷</span>
+                </a>
+              </ClickTracker>
+              <ClickTracker itemType="support" itemId="09018880438" itemName="پشتیبانی تور 2">
+                <a href="tel:09018880438" className="flex items-center bg-gradient-to-r from-blue-500 to-peyk-blue-dark px-4 py-2 rounded-lg shadow-md hover:shadow-lg transition-all duration-300 text-white transform hover:scale-105">
+                  <Phone className="h-5 w-5 ml-2 animate-pulse" />
+                  <span>۰۹۰۱۸۸۸۰۴۳۸</span>
+                </a>
+              </ClickTracker>
+              <ClickTracker itemType="support" itemId="09017770438" itemName="پشتیبانی تور 3">
+                <a href="tel:09017770438" className="flex items-center bg-gradient-to-r from-peyk-blue-dark to-peyk-blue px-4 py-2 rounded-lg shadow-md hover:shadow-lg transition-all duration-300 text-white transform hover:scale-105">
+                  <Phone className="h-5 w-5 ml-2 animate-pulse" />
+                  <span>۰۹۰۱۷۷۷۰۴۳۸</span>
+                </a>
+              </ClickTracker>
+            </div>
           </div>
         </div>
 

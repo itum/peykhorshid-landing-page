@@ -57,7 +57,7 @@ const Features = () => {
         <div className="text-center mb-8">
           <h2 className="text-3xl font-bold text-gray-900 mb-4">طرح جامع وام سفر پیک خورشید</h2>
           <p className="text-gray-600 max-w-2xl mx-auto">
-          به رویای سفرهای خود جامه عمل بپوشانید. بدون نیاز به ضامن فقط با یک چک ضمانت !
+          به رویای سفرهای خود جامه عمل بپوشانید. بدون نیاز به ضامن فقط با یک چک صیادی ضمانت !
           </p>
         </div>
 

@@ -11,7 +11,7 @@ const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           <div className="space-y-4">
             <h3 className="text-xl font-bold text-gray-900 mb-4 border-r-4 border-peyk-blue pr-3">پیک خورشید اهواز</h3>
-            <p className="leading-relaxed">سامانه خرید اقساطی آنلاین بدون ضامن و چک، با سفته الکترونیکی. همراه شما در مسیر خرید آسان و مطمئن.</p>
+            <p className="leading-relaxed">سامانه خرید اقساطی آنلاین بدون ضامن و چک صیادی، با سفته الکترونیکی. همراه شما در مسیر خرید آسان و مطمئن.</p>
             <div className="flex space-x-3 space-x-reverse">
               <a href="#" className="bg-white p-2 rounded-full shadow-sm hover:shadow-md hover:bg-peyk-blue hover:text-white transition-all duration-300" aria-label="اینستاگرام">
                 <Instagram className="h-5 w-5" />
@@ -35,33 +35,21 @@ const Footer = () => {
             <h3 className="text-xl font-bold text-gray-900 mb-4 border-r-4 border-peyk-blue pr-3">خدمات ما</h3>
             <ul className="space-y-3">
               <li>
-                <a href="#" className="hover:text-peyk-blue transition-colors duration-300 flex items-center">
+                <a href="https://peykkhorshid.ir/" className="hover:text-peyk-blue transition-colors duration-300 flex items-center" target="_blank" rel="noopener noreferrer">
                   <span className="inline-block w-2 h-2 bg-peyk-blue rounded-full ml-2"></span>
-                  وام خرید کالا
+                  خرید بلیط هواپیما
                 </a>
               </li>
               <li>
-                <a href="#" className="hover:text-peyk-blue transition-colors duration-300 flex items-center">
+                <a href="https://peykkhorshid.ir/tours/" className="hover:text-peyk-blue transition-colors duration-300 flex items-center" target="_blank" rel="noopener noreferrer">
                   <span className="inline-block w-2 h-2 bg-peyk-blue rounded-full ml-2"></span>
-                  فروشگاه‌های طرف قرارداد
+                  تور داخلی و خارجی
                 </a>
               </li>
               <li>
-                <a href="#" className="hover:text-peyk-blue transition-colors duration-300 flex items-center">
+                <a href="http://peykkhorshid.ir/tour/%D8%AA%D9%88%D8%B1-%D9%85%D8%B4%D9%87%D8%AF-%D9%88%DB%8C%DA%98%D9%87-%D9%85%DB%8C%D9%84%D8%A7%D8%AF-%D8%A7%D9%85%D8%A7%D9%85-%D8%B1%D8%B6%D8%A7-%D8%B9/" className="hover:text-peyk-blue transition-colors duration-300 flex items-center" target="_blank" rel="noopener noreferrer">
                   <span className="inline-block w-2 h-2 bg-peyk-blue rounded-full ml-2"></span>
-                  محاسبه اقساط
-                </a>
-              </li>
-              <li>
-                <a href="#" className="hover:text-peyk-blue transition-colors duration-300 flex items-center">
-                  <span className="inline-block w-2 h-2 bg-peyk-blue rounded-full ml-2"></span>
-                  سوالات متداول
-                </a>
-              </li>
-              <li>
-                <a href="#" className="hover:text-peyk-blue transition-colors duration-300 flex items-center">
-                  <span className="inline-block w-2 h-2 bg-peyk-blue rounded-full ml-2"></span>
-                  راهنمای خرید
+                  تورهای زیارتی
                 </a>
               </li>
             </ul>
@@ -71,33 +59,33 @@ const Footer = () => {
             <h3 className="text-xl font-bold text-gray-900 mb-4 border-r-4 border-peyk-blue pr-3">لینک‌های مفید</h3>
             <ul className="space-y-3">
               <li>
-                <a href="#" className="hover:text-peyk-blue transition-colors duration-300 flex items-center">
+                <a href="https://peykkhorshid.ir/aboutus/" className="hover:text-peyk-blue transition-colors duration-300 flex items-center" target="_blank" rel="noopener noreferrer">
                   <span className="inline-block w-2 h-2 bg-peyk-blue rounded-full ml-2"></span>
                   درباره ما
                 </a>
               </li>
               <li>
-                <a href="#" className="hover:text-peyk-blue transition-colors duration-300 flex items-center">
+                <a href="https://peykkhorshid.ir/%d8%AE%d8%b1%db%8c%d8%af-%d9%82%d8%b3%d8%b7%db%8c-%d8%a2%d9%86%d9%84%d8%a7%db%8c%d9%86-%d9%be%db%8c%da%a9-%d8%ae%d9%88%d8%b1%d8%b4%db%8c%d8%af/" className="hover:text-peyk-blue transition-colors duration-300 flex items-center" target="_blank" rel="noopener noreferrer">
                   <span className="inline-block w-2 h-2 bg-peyk-blue rounded-full ml-2"></span>
-                  قوانین و مقررات
+                  شرایط اقساطی
                 </a>
               </li>
               <li>
-                <a href="#" className="hover:text-peyk-blue transition-colors duration-300 flex items-center">
+                <a href="https://club.peykkhorshid.ir/" className="hover:text-peyk-blue transition-colors duration-300 flex items-center" target="_blank" rel="noopener noreferrer">
                   <span className="inline-block w-2 h-2 bg-peyk-blue rounded-full ml-2"></span>
-                  حریم خصوصی
+                  باشگاه مشتریان
                 </a>
               </li>
               <li>
-                <a href="#" className="hover:text-peyk-blue transition-colors duration-300 flex items-center">
+                <a href="https://peykkhorshid.ir/contactus/" className="hover:text-peyk-blue transition-colors duration-300 flex items-center" target="_blank" rel="noopener noreferrer">
                   <span className="inline-block w-2 h-2 bg-peyk-blue rounded-full ml-2"></span>
                   تماس با ما
                 </a>
               </li>
               <li>
-                <a href="#" className="hover:text-peyk-blue transition-colors duration-300 flex items-center">
+                <a href="https://peykkhorshid.ir/mag/" className="hover:text-peyk-blue transition-colors duration-300 flex items-center" target="_blank" rel="noopener noreferrer">
                   <span className="inline-block w-2 h-2 bg-peyk-blue rounded-full ml-2"></span>
-                  استخدام
+                  مجله
                 </a>
               </li>
             </ul>
@@ -130,7 +118,24 @@ const Footer = () => {
                 </div>
                 <div>
                   <span className="block font-bold text-sm text-gray-800">تلفن پشتیبانی 24 ساعته:</span>
-                  <a href="tel:02191313485" className="group-hover:text-peyk-blue transition-colors duration-300 text-sm hover:underline">۰۲۱-۹۱۳۱۳۴۸۵</a>
+                  <a href="tel:06135518880" className="group-hover:text-peyk-blue transition-colors duration-300 text-sm hover:underline">۰۶۱-۳۵۵۱۸۸۸۰</a>
+                </div>
+              </li>
+              <li className="mt-4">
+                <span className="block font-bold text-sm text-gray-800 mb-2 border-r-2 border-peyk-blue pr-2">پشتیبانی تور:</span>
+                <div className="flex flex-wrap gap-2 mt-1">
+                  <a href="tel:09902483117" className="bg-gradient-to-r from-peyk-blue to-blue-500 text-white text-xs px-3 py-1.5 rounded-full hover:shadow-md transition-all duration-300 hover:scale-105 flex items-center">
+                    <Phone className="h-3 w-3 ml-1 animate-pulse" />
+                    ۰۹۹۰۲۴۸۳۱۱۷
+                  </a>
+                  <a href="tel:09018880438" className="bg-gradient-to-r from-blue-500 to-peyk-blue-dark text-white text-xs px-3 py-1.5 rounded-full hover:shadow-md transition-all duration-300 hover:scale-105 flex items-center">
+                    <Phone className="h-3 w-3 ml-1 animate-pulse" />
+                    ۰۹۰۱۸۸۸۰۴۳۸
+                  </a>
+                  <a href="tel:09017770438" className="bg-gradient-to-r from-peyk-blue-dark to-peyk-blue text-white text-xs px-3 py-1.5 rounded-full hover:shadow-md transition-all duration-300 hover:scale-105 flex items-center">
+                    <Phone className="h-3 w-3 ml-1 animate-pulse" />
+                    ۰۹۰۱۷۷۷۰۴۳۸
+                  </a>
                 </div>
               </li>
             </ul>

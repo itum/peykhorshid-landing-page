@@ -8,6 +8,7 @@ export type ContactMessage = {
   id?: number;
   name: string;
   phone: string;
+  email?: string;
   message: string;
   destination: string;
   is_read?: boolean;

@@ -4,8 +4,10 @@ const bodyParser = require('body-parser');
 const { testConnection } = require('./config/db');
 const Quiz = require('./models/Quiz');
 const Contact = require('./models/Contact');
+const ClickStats = require('./models/ClickStats');
 const quizRoutes = require('./routes/quizRoutes');
 const contactRoutes = require('./routes/contactRoutes');
+const statsRoutes = require('./routes/statsRoutes');
 
 // تنظیمات اولیه برنامه
 const app = express();
@@ -19,6 +21,7 @@ app.use(express.urlencoded({ extended: true }));
 // تنظیم مسیرهای API
 app.use('/api/quiz', quizRoutes);
 app.use('/api/contacts', contactRoutes);
+app.use('/api/stats', statsRoutes);
 
 // مسیر اصلی
 app.get('/', (req, res) => {
@@ -39,6 +42,7 @@ const startServer = async () => {
     // ایجاد جدول‌های مورد نیاز در صورت عدم وجود
     await Quiz.createTable();
     await Contact.createTable();
+    await ClickStats.createTable();
     
     app.listen(PORT, () => {
       console.log(`سرور با موفقیت در پورت ${PORT} راه‌اندازی شد.`);

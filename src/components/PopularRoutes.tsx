@@ -2,6 +2,8 @@ import { Phone, Mail, MapPin, Clock, ChevronDown, Plane } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Pagination, Autoplay, Navigation } from 'swiper/modules';
+import ClickTracker from './ClickTracker';
+import { getLocalStats } from '@/lib/services/statsService';
 
 // Import Swiper styles
 import 'swiper/css';
@@ -31,6 +33,8 @@ type RouteType = DomesticRoute | SpecialRoute;
 const PopularRoutes = () => {
   const [activeTab, setActiveTab] = useState<'domestic' | 'special'>('domestic');
   const [isMobile, setIsMobile] = useState(false);
+  const [showStats, setShowStats] = useState(false);
+  const [localStats, setLocalStats] = useState<any[]>([]);
 
   // دیتای مسیرهای پرتردد داخلی
   const domesticRoutes: DomesticRoute[] = [
@@ -134,18 +138,29 @@ const PopularRoutes = () => {
 
   // متد رندر کارت تور
   const renderRouteCard = (route: RouteType, index: number, isInSwiper = false) => {
+    const tourType = activeTab === 'domestic' ? 'domestic' : 'special';
+    const tourId = `${tourType}-${route.to}`;
+    const tourName = `تور ${route.to}`;
+    
+    // ایجاد تابع هندلر کلیک
+    const handleCardClick = () => {
+      // باز کردن لینک در پنجره جدید
+      if (route.link) {
+        window.open(route.link, '_blank', 'noopener,noreferrer');
+      }
+    };
+    
     return (
-      <div 
+      <ClickTracker 
         key={isInSwiper ? undefined : index} 
+        itemType={tourType}
+        itemId={tourId}
+        itemName={tourName}
         className={`bg-white rounded-xl shadow-xl hover:shadow-2xl transition-all duration-500 overflow-hidden cursor-pointer hover:translate-y-[-8px] hover:scale-[1.02] route-card ${isInSwiper ? 'h-full' : ''}`}
+        onClick={handleCardClick}
       >
         {activeTab === 'domestic' ? (
-          <a 
-            href={(route as DomesticRoute).link} 
-            target="_blank" 
-            rel="noopener noreferrer" 
-            className="flex flex-col h-full"
-          >
+          <div className="flex flex-col h-full">
             {/* بخش تصویر برای تورهای داخلی */}
             <div className="relative overflow-hidden p-0">
               {(route as DomesticRoute).image ? (
@@ -168,20 +183,15 @@ const PopularRoutes = () => {
                 <p className="text-peyk-blue font-bold text-sm text-right">ماهیانه {route.price} میلیون تومان</p>
               </div>
               <div className="flex justify-end mt-4">
-                <button className="border border-peyk-blue text-peyk-blue font-medium rounded-full py-1.5 px-5 text-sm transition-all hover:bg-peyk-blue hover:text-white">
+                <span className="border border-peyk-blue text-peyk-blue font-medium rounded-full py-1.5 px-5 text-sm transition-all hover:bg-peyk-blue hover:text-white">
                   دریافت اطلاعات بیشتر
-                </button>
+                </span>
               </div>
             </div>
-          </a>
+          </div>
         ) : (
           // استایل برای تورهای خاص
-          <a 
-            href={(route as SpecialRoute).link} 
-            target="_blank" 
-            rel="noopener noreferrer" 
-            className="flex flex-col h-full"
-          >
+          <div className="flex flex-col h-full">
             {/* بخش تصویر برای تورهای خارجی */}
             <div className="relative overflow-hidden p-0">
               {(route as SpecialRoute).image ? (
@@ -209,10 +219,17 @@ const PopularRoutes = () => {
                 </span>
               </div>
             </div>
-          </a>
+          </div>
         )}
-      </div>
+      </ClickTracker>
     );
+  };
+
+  // نمایش آمار محلی برای دیباگ
+  const toggleLocalStats = () => {
+    const stats = getLocalStats();
+    setLocalStats(stats);
+    setShowStats(!showStats);
   };
 
   return (
@@ -223,6 +240,18 @@ const PopularRoutes = () => {
           <p className="text-gray-600 max-w-2xl mx-auto">
             محبوب‌ترین مسیرهای سفر داخلی و خارجی پیک خورشید
           </p>
+
+          {/* دکمه مخفی برای دیباگ - فقط با کلید مخفی قابل دسترسی */}
+          <div className="mt-4" onDoubleClick={toggleLocalStats} style={{ cursor: 'default' }}>
+            {showStats && (
+              <div className="border p-4 rounded-md text-left bg-gray-50 max-h-60 overflow-y-auto">
+                <h4 className="font-bold mb-2">آمار کلیک‌های محلی:</h4>
+                <pre className="text-xs">
+                  {JSON.stringify(localStats, null, 2)}
+                </pre>
+              </div>
+            )}
+          </div>
         </div>
 
         {/* تب‌ها */}
