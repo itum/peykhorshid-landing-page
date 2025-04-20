@@ -9,6 +9,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { toast } from 'sonner';
 import { Mail, Check, Bell, BarChart } from 'lucide-react';
 import StatsPanel from '@/components/admin/StatsPanel';
+import { ADMIN_PASSWORD } from '@/lib/config/admin';
 
 const AdminPage = () => {
   const [password, setPassword] = useState('');
@@ -16,7 +17,7 @@ const AdminPage = () => {
   const [users, setUsers] = useState<UserInfo[]>([]);
   const [contactMessages, setContactMessages] = useState<ContactMessage[]>([]);
   const [isLoadingContacts, setIsLoadingContacts] = useState(false);
-  const correctPassword = 'peykhorshid1234'; // رمز عبور ساده برای دسترسی به پنل
+  const correctPassword = ADMIN_PASSWORD; // استفاده از رمز عبور از فایل کانفیگ
 
   useEffect(() => {
     // بررسی احراز هویت از localStorage

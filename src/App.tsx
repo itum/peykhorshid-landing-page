@@ -9,6 +9,7 @@ import TravelQuizPage from "./pages/TravelQuizPage";
 import AdminPage from "./pages/AdminPage";
 import SMSTestPage from "./pages/SMSTestPage";
 import KavehnegarDemo from "./pages/KavehnegarDemo";
+import { ADMIN_PATH } from "@/lib/config/admin";
 
 const queryClient = new QueryClient();
 
@@ -21,7 +22,7 @@ const App = () => (
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/quiz" element={<TravelQuizPage />} />
-          <Route path="/admin" element={<AdminPage />} />
+          <Route path={`/${ADMIN_PATH}`} element={<AdminPage />} />
           <Route path="/sms-test" element={<SMSTestPage />} />
           <Route path="/kavenegar" element={<KavehnegarDemo />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}

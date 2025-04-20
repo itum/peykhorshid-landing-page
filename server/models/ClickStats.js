@@ -126,7 +126,7 @@ class ClickStats {
   }
 
   // دریافت پربازدیدترین آیتم‌ها (همه انواع)
-  static async getTopItems(limit = 10) {
+  static async getTopItems(limit = 100) {
     try {
       const connection = await pool.getConnection();
       const query = `

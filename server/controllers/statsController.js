@@ -112,7 +112,7 @@ exports.getAllStats = async (req, res) => {
 // کنترلر برای دریافت پربازدیدترین آیتم‌ها
 exports.getTopItems = async (req, res) => {
   try {
-    const limit = req.query.limit ? parseInt(req.query.limit) : 10;
+    const limit = req.query.limit ? parseInt(req.query.limit) : 100;
     
     const items = await ClickStats.getTopItems(limit);
     

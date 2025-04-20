@@ -255,7 +255,7 @@ export const getAllStats = async (): Promise<AllStats[]> => {
 };
 
 // دریافت پربازدیدترین آیتم‌ها
-export const getTopItems = async (limit: number = 10): Promise<TopItem[]> => {
+export const getTopItems = async (limit: number = 100): Promise<TopItem[]> => {
   try {
     const response = await axios.get(`${API_URL}/stats/top?limit=${limit}`);
     return response.data.data;

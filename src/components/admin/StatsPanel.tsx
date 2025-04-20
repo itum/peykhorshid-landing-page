@@ -3,7 +3,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from '@/components/ui/button';
 import { getDailyStats, getTotalStatsByType, getAllStats, getTopItems, DailyStats, TypeStats, AllStats, TopItem } from '@/lib/services/statsService';
-import { BarChart, LineChart, PieChart } from 'lucide-react';
+import { BarChart, LineChart, PieChart, ChevronRight, ChevronLeft } from 'lucide-react';
 import { toast } from 'sonner';
 
 // کامپوننت نمایش آمار کلیک‌ها
@@ -14,6 +14,9 @@ const StatsPanel = () => {
   const [tourStats, setTourStats] = useState<TypeStats[]>([]);
   const [allStats, setAllStats] = useState<AllStats[]>([]);
   const [topItems, setTopItems] = useState<TopItem[]>([]);
+  const [allTopItems, setAllTopItems] = useState<TopItem[]>([]);
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const [itemsPerPage, setItemsPerPage] = useState<number>(5);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [activeTab, setActiveTab] = useState<string>('overview');
 
@@ -37,9 +40,12 @@ const StatsPanel = () => {
       const tourData = await getTotalStatsByType('tour');
       setTourStats(tourData);
 
-      // دریافت پربازدیدترین آیتم‌ها
-      const topItemsData = await getTopItems(10);
-      setTopItems(topItemsData);
+      // دریافت پربازدیدترین آیتم‌ها (همه)
+      const topItemsData = await getTopItems(100);
+      setAllTopItems(topItemsData);
+      
+      // نمایش فقط آیتم‌های صفحه اول
+      updateTopItemsPage(1, topItemsData);
 
       toast.success('آمارها با موفقیت به‌روزرسانی شدند');
     } catch (error) {
@@ -48,6 +54,19 @@ const StatsPanel = () => {
     } finally {
       setIsLoading(false);
     }
+  };
+
+  // به‌روزرسانی آیتم‌های صفحه فعلی
+  const updateTopItemsPage = (page: number, items: TopItem[] = allTopItems) => {
+    const startIndex = (page - 1) * itemsPerPage;
+    const endIndex = startIndex + itemsPerPage;
+    setTopItems(items.slice(startIndex, endIndex));
+    setCurrentPage(page);
+  };
+
+  // تغییر صفحه
+  const handlePageChange = (page: number) => {
+    updateTopItemsPage(page);
   };
 
   // دریافت آمارها در زمان بارگذاری کامپوننت
@@ -65,6 +84,9 @@ const StatsPanel = () => {
     const date = new Date(dateString);
     return new Intl.DateTimeFormat('fa-IR').format(date);
   };
+
+  // محاسبه تعداد کل صفحات
+  const totalPages = Math.ceil(allTopItems.length / itemsPerPage);
 
   return (
     <div dir="rtl" className="stats-panel space-y-6">
@@ -168,6 +190,49 @@ const StatsPanel = () => {
                   )}
                 </tbody>
               </table>
+              {/* پیجینیشن برای پربازدیدترین آیتم‌ها */}
+              {allTopItems.length > itemsPerPage && (
+                <div className="px-4 py-3 flex items-center justify-between border-t">
+                  <div className="flex items-center space-x-2 space-x-reverse">
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => handlePageChange(currentPage - 1)}
+                      disabled={currentPage === 1}
+                      className="h-8 w-8 p-0 flex items-center justify-center ml-2"
+                    >
+                      <ChevronRight className="h-4 w-4" />
+                    </Button>
+                    <span className="text-sm">
+                      صفحه {currentPage.toLocaleString('fa-IR')} از {totalPages.toLocaleString('fa-IR')}
+                    </span>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => handlePageChange(currentPage + 1)}
+                      disabled={currentPage === totalPages}
+                      className="h-8 w-8 p-0 flex items-center justify-center mr-2"
+                    >
+                      <ChevronLeft className="h-4 w-4" />
+                    </Button>
+                  </div>
+                  <div className="flex items-center">
+                    <span className="text-sm ml-2">تعداد کل: {allTopItems.length.toLocaleString('fa-IR')}</span>
+                    <select
+                      value={itemsPerPage}
+                      onChange={(e) => {
+                        setItemsPerPage(Number(e.target.value));
+                        updateTopItemsPage(1);
+                      }}
+                      className="border rounded-md text-sm px-2 py-1 ml-2"
+                    >
+                      <option value="5">۵ آیتم</option>
+                      <option value="10">۱۰ آیتم</option>
+                      <option value="20">۲۰ آیتم</option>
+                    </select>
+                  </div>
+                </div>
+              )}
             </div>
           </div>
         </TabsContent>
