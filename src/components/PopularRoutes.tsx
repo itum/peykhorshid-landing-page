@@ -38,22 +38,22 @@ const PopularRoutes = () => {
 
   // دیتای مسیرهای پرتردد داخلی
   const domesticRoutes: DomesticRoute[] = [
-    { to: "کیش", price: "۳", image: "/city-icons/kish.jpg", link: "https://peykkhorshid.ir/kish-tour/" },
-    { to: "مشهد", price: "۱.۵", image: "/city-icons/mashhad.jpg", link: "https://peykkhorshid.ir/mashhad-tour/" },
-    { to: "شیراز", price: "۲", image: "/city-icons/shiraz.jpg", link: "https://peykkhorshid.ir/shiraz-tour/" },
-    { to: "اصفهان", price: "۲.۲", image: "/city-icons/isfahan.jpg", link: "https://peykkhorshid.ir/isfahan-tour/" }
+    { to: "کیش", price: "۷۵۰ هزار", image: "/city-icons/kish.jpg", link: "https://peykkhorshid.ir/kish-tour/" },
+    { to: "مشهد", price: "۹۰۰ هزار", image: "/city-icons/mashhad.jpg", link: "https://peykkhorshid.ir/mashhad-tour/" },
+    { to: "شیراز", price: "۶۸۰ هزار", image: "/city-icons/shiraz.jpg", link: "https://peykkhorshid.ir/shiraz-tour/" },
+    { to: "اصفهان", price: "۹۰۰ هزار", image: "/city-icons/isfahan.jpg", link: "https://peykkhorshid.ir/isfahan-tour/" }
   ];
 
   // دیتای مسیرهای پرتردد خاص
   const specialRoutes: SpecialRoute[] = [
-    { to: "استانبول", price: "۳.۵", image: "/city-icons/istanbul.jpg", link: "https://peykkhorshid.ir/istanbul-tour/" },
-    { to: "آنتالیا", price: "۳.۲", image: "/city-icons/antalia.jpg", link: "https://peykkhorshid.ir/antalya/" },
-    { to: "دبی", price: "۴", image: "/city-icons/dubai.jpg", link: "https://peykkhorshid.ir/dubai/" },
-    { to: "تایلند", price: "۳.۹", image: "/city-icons/thailand.jpg", link: "https://peykkhorshid.ir/thailand/" },
-    { to: "ارمنستان", price: "۲.۸", image: "/city-icons/armenia.jpg", link: "https://peykkhorshid.ir/armenia/" },
-    { to: "گرجستان", price: "۳.۱", image: "/city-icons/teflis.jpg", link: "https://peykkhorshid.ir/georgia/" },
-    { to: "روسیه", price: "۳.۶", image: "/city-icons/russia.jpg", link: "https://peykkhorshid.ir/russia/" },
-    // { to: "آذربایجان", price: "۲.۹" },
+    { to: "استانبول", price: "۱.۷۸۰", image: "/city-icons/istanbul.jpg", link: "https://peykkhorshid.ir/istanbul-tour/" },
+    { to: "آنتالیا", price: "۲.۶۹۰", image: "/city-icons/antalia.jpg", link: "https://peykkhorshid.ir/antalya/" },
+    { to: "دبی", price: "۲.۲۰۰", image: "/city-icons/dubai.jpg", link: "https://peykkhorshid.ir/dubai/" },
+    { to: "تایلند", price: "۲.۴۰۰", image: "/city-icons/thailand.jpg", link: "https://peykkhorshid.ir/thailand/" },
+    { to: "ارمنستان", price: "۱.۷۰۰", image: "/city-icons/armenia.jpg", link: "https://peykkhorshid.ir/armenia/" },
+    { to: "گرجستان", price: "۱.۷۵۰", image: "/city-icons/teflis.jpg", link: "https://peykkhorshid.ir/georgia/" },
+    { to: "روسیه", price: "۵.۳۰۰", image: "/city-icons/russia.jpg", link: "https://peykkhorshid.ir/russia/" },
+    { to: "باکو", price: "۴.۸۰۰", image: "/city-icons/baku.jpg", link: "https://peykkhorshid.ir/azerbaijan/" },
     { to: "قزاقستان", price: "۳.۳", image: "/city-icons/kazakhstan.jpg", link: "https://peykkhorshid.ir/tour/%D8%AA%D9%88%D8%B1-%D9%82%D8%B2%D8%A7%D9%82%D8%B3%D8%AA%D8%A7%D9%86-4-%D8%B4%D8%A8-%D9%88-5-%D8%B1%D9%88%D8%B2-%D8%A2%DA%A9%D8%AA%D8%A7%D8%A6%D9%88/" },
     { to: "پاریس", price: "۴", image: "/city-icons/paris.jpg", link: "https://peykkhorshid.ir/france/" }
   ];

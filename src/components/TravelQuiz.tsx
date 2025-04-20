@@ -328,24 +328,24 @@ const TravelQuiz = () => {
 
   // محاسبه مبلغ وام پیشنهادی
   const calculateLoanAmount = () => {
-    const destinations: Record<string, number> = {
-      'مشهد': 0.900, // قیمت جدید برای مشهد
-      'کیش': 0.750, // قیمت جدید برای کیش
-      'شیراز': 0.680, // قیمت جدید برای شیراز
-      'قشم': 35,
-      'اصفهان': 25,
-      'جنگل‌های شمال': 40,
-      'استانبول': 1.780, // قیمت جدید برای استانبول
-      'دبی': 2.200, // قیمت جدید برای دبی
-      'ارمنستان': 1.700, // قیمت جدید برای ارمنستان
-      'آنتالیا': 2.690, // قیمت جدید برای آنتالیا
-      'روسیه': 5.300, // قیمت جدید برای روسیه
-      'تایلند': 2.400, // قیمت جدید برای تایلند
-      'گرجستان': 1.750, // قیمت جدید برای گرجستان
-      'باکو': 4.800, // قیمت جدید برای باکو
+    const destinations: Record<string, string> = {
+      'مشهد': '۹۰۰ هزار',
+      'کیش': '۷۵۰ هزار',
+      'شیراز': '۶۸۰ هزار',
+      'اصفهان': '۹۰۰ هزار',
+      'قشم': '۳۵ میلیون',
+      'جنگل‌های شمال': '۴۰ میلیون',
+      'استانبول': '۱.۷۸۰ میلیون',
+      'دبی': '۲.۲۰۰ میلیون',
+      'ارمنستان': '۱.۷۰۰ میلیون',
+      'آنتالیا': '۲.۶۹۰ میلیون',
+      'روسیه': '۵.۳۰۰ میلیون',
+      'تایلند': '۲.۴۰۰ میلیون',
+      'گرجستان': '۱.۷۵۰ میلیون',
+      'باکو': '۴.۸۰۰ میلیون',
     };
     
-    return destinations[travelDestination] || 1.800;
+    return destinations[travelDestination] || '۱.۸۰۰ میلیون';
   };
 
   // فرمت‌کردن اعداد به فارسی
@@ -509,7 +509,10 @@ const TravelQuiz = () => {
             <div className="flex flex-col items-center">
               <Badge className="mb-2 bg-peyk-blue">{answers.location === 'داخلی' ? 'داخلی' : 'خارجی'}</Badge>
               <h3 className="text-3xl font-bold text-peyk-blue mb-2">{travelDestination}</h3>
-              <p className="text-gray-600 mb-4">با وام سفر ۲.۴ میلیون تومانی</p>
+              <p className="text-gray-600 mb-2">
+                {name ? `${name} عزیز، ` : ''} شما می‌توانید با ماهیانه {calculateLoanAmount()} تومان به {travelDestination} سفر کنید!
+              </p>
+              <p className="text-gray-600 mb-4">با وام سفر ۱۰۰ میلیون تومانی</p>
             </div>
           </div>
           
@@ -522,7 +525,7 @@ const TravelQuiz = () => {
                     {name ? `${name} عزیز، ` : ''}
                     کارشناسان ما با شماره <a href={`tel:${phone}`} className="text-peyk-blue hover:underline">{phone}</a> تماس خواهند گرفت
                   </span> تا 
-                  جزئیات بیشتر درباره وام سفر به {travelDestination} را توضیح دهند.
+                  جزئیات بیشتر درباره وام سفر و تور {travelDestination} را توضیح دهند.
                 </p>
               </div>
             </div>

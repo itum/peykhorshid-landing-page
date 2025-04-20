@@ -1,12 +1,23 @@
 const mysql = require('mysql2/promise');
 
 // تنظیمات اتصال به پایگاه داده
+// const connection = {
+//   host: 'localhost',
+//   user: 'farazec',
+//   password: 'M@@sdfsfsdf2138123',
+//   database: 'peykkhorshid',
+//   port: 3306,
+//   waitForConnections: true,
+//   connectionLimit: 10,
+//   queueLimit: 0
+// };
+// Localhost
 const connection = {
   host: 'localhost',
-  user: 'farazec',
-  password: 'M@@sdfsfsdf2138123',
-  database: 'peykkhorshid',
-  port: 3306,
+  user: 'root',
+  password: '',
+  database: 'peykhorshid',
+  port: 3308,
   waitForConnections: true,
   connectionLimit: 10,
   queueLimit: 0
