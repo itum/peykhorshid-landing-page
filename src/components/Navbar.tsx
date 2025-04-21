@@ -86,11 +86,23 @@ const Navbar = () => {
         <div className="flex items-center">
           {isHomePage ? (
             <a href="#hero" className="flex items-center" onClick={(e) => smoothScroll(e, 'hero')}>
-              <img src="/peykhorshid-logo.png" alt="پیک خورشید اهواز" className="h-12 hover:scale-105 transition-transform duration-300" />
+              <img 
+                src="/peykhorshid-logo.png" 
+                alt="پیک خورشید اهواز" 
+                className="h-12 hover:scale-105 transition-transform duration-300"
+                width="48"
+                height="48"
+              />
             </a>
           ) : (
             <Link to="/" className="flex items-center">
-              <img src="/peykhorshid-logo.png" alt="پیک خورشید اهواز" className="h-12 hover:scale-105 transition-transform duration-300" />
+              <img 
+                src="/peykhorshid-logo.png" 
+                alt="پیک خورشید اهواز" 
+                className="h-12 hover:scale-105 transition-transform duration-300"
+                width="48"
+                height="48"
+              />
             </Link>
           )}
         </div>

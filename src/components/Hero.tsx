@@ -1,7 +1,8 @@
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { CSSProperties } from "react";
+import { useMediaQuery } from '@/hooks/useMediaQuery';
 
 const Hero = () => {
   const [isMobile, setIsMobile] = useState(false);
@@ -83,6 +84,9 @@ const Hero = () => {
             alt="hero background mobile" 
             className={`w-full h-full object-cover ${isIphoneXR ? 'scale-[1.02]' : ''}`}
             style={imageStyle}
+            loading="lazy"
+            width="1080"
+            height="1920"
           />
         ) : (
           <img 
@@ -90,6 +94,9 @@ const Hero = () => {
             alt="hero background" 
             className="w-full h-full object-cover" 
             style={imageStyle}
+            loading="lazy"
+            width="1920"
+            height="1080"
           />
         )}
       </div>

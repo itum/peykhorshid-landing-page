@@ -168,6 +168,9 @@ const PopularRoutes = () => {
                   src={(route as DomesticRoute).image} 
                   alt={`تور ${route.to}`} 
                   className="w-full h-auto rounded-t-xl"
+                  loading="lazy"
+                  width="350"
+                  height="200"
                 />
               ) : (
                 <div className="w-full h-[200px] flex items-center justify-center bg-gradient-to-r from-peyk-orange/20 to-peyk-yellow/20">
@@ -199,6 +202,9 @@ const PopularRoutes = () => {
                   src={(route as SpecialRoute).image} 
                   alt={`تور ${route.to}`} 
                   className="w-full h-auto rounded-t-xl"
+                  loading="lazy"
+                  width="350"
+                  height="200"
                 />
               ) : (
                 <div className="w-full h-[200px] flex items-center justify-center bg-gradient-to-r from-peyk-blue/20 to-peyk-blue-dark/20">

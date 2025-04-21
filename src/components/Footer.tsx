@@ -160,19 +160,54 @@ const Footer = () => {
             </div>
             <div className="flex flex-wrap items-center justify-center gap-4">
               <div className="bg-white p-2 rounded-lg shadow-sm hover:shadow-md transition-all duration-300">
-                <img src="/enamad.jpg" alt="نماد اعتماد الکترونیکی" className="h-14 w-auto" />
+                <img 
+                  src="/enamad.jpg" 
+                  alt="نماد اعتماد الکترونیکی" 
+                  className="h-14 w-auto" 
+                  loading="lazy"
+                  width="56"
+                  height="56"
+                />
               </div>
               <div className="bg-white p-2 rounded-lg shadow-sm hover:shadow-md transition-all duration-300">
-                <img src="/samadehi.png" alt="نشان ساماندهی" className="h-14 w-auto" />
+                <img 
+                  src="/samadehi.png" 
+                  alt="نشان ساماندهی" 
+                  className="h-14 w-auto"
+                  loading="lazy"
+                  width="56"
+                  height="56"
+                />
               </div>
               <div className="bg-white p-2 rounded-lg shadow-sm hover:shadow-md transition-all duration-300">
-                <img src="/images/havapeymaei-keshvari.png" alt="هواپیمایی کشوری" className="h-14 w-auto" />
+                <img 
+                  src="/images/havapeymaei-keshvari.png" 
+                  alt="هواپیمایی کشوری" 
+                  className="h-14 w-auto"
+                  loading="lazy"
+                  width="56"
+                  height="56"
+                />
               </div>
               <div className="bg-white p-2 rounded-lg shadow-sm hover:shadow-md transition-all duration-300">
-                <img src="/images/hoghoghe-mosafer.png" alt="حقوق مسافر" className="h-14 w-auto" />
+                <img 
+                  src="/images/hoghoghe-mosafer.png" 
+                  alt="حقوق مسافر" 
+                  className="h-14 w-auto"
+                  loading="lazy"
+                  width="56"
+                  height="56"
+                />
               </div>
               <div className="bg-white p-2 rounded-lg shadow-sm hover:shadow-md transition-all duration-300">
-                <img src="/images/nerkhebilit.png" alt="نرخ بلیط" className="h-14 w-auto" />
+                <img 
+                  src="/images/nerkhebilit.png" 
+                  alt="نرخ بلیط" 
+                  className="h-14 w-auto"
+                  loading="lazy"
+                  width="56"
+                  height="56"
+                />
               </div>
             </div>
           </div>

@@ -3,15 +3,24 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Index from "./pages/Index";
-import NotFound from "./pages/NotFound";
-import TravelQuizPage from "./pages/TravelQuizPage";
-import AdminPage from "./pages/AdminPage";
-import SMSTestPage from "./pages/SMSTestPage";
-import KavehnegarDemo from "./pages/KavehnegarDemo";
+import { lazy, Suspense } from "react";
 import { ADMIN_PATH } from "@/lib/config/admin";
 
+// Lazy load components
+const Index = lazy(() => import("./pages/Index"));
+const NotFound = lazy(() => import("./pages/NotFound"));
+const TravelQuizPage = lazy(() => import("./pages/TravelQuizPage"));
+const AdminPage = lazy(() => import("./pages/AdminPage"));
+const SMSTestPage = lazy(() => import("./pages/SMSTestPage"));
+const KavehnegarDemo = lazy(() => import("./pages/KavehnegarDemo"));
+
 const queryClient = new QueryClient();
+
+const loadingFallback = (
+  <div className="h-screen w-screen flex items-center justify-center">
+    در حال بارگذاری...
+  </div>
+);
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
@@ -20,13 +29,55 @@ const App = () => (
       <Sonner />
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<Index />} />
-          <Route path="/quiz" element={<TravelQuizPage />} />
-          <Route path={`/${ADMIN_PATH}`} element={<AdminPage />} />
-          <Route path="/sms-test" element={<SMSTestPage />} />
-          <Route path="/kavenegar" element={<KavehnegarDemo />} />
+          <Route 
+            path="/" 
+            element={
+              <Suspense fallback={loadingFallback}>
+                <Index />
+              </Suspense>
+            } 
+          />
+          <Route 
+            path="/quiz" 
+            element={
+              <Suspense fallback={loadingFallback}>
+                <TravelQuizPage />
+              </Suspense>
+            } 
+          />
+          <Route 
+            path={`/${ADMIN_PATH}`} 
+            element={
+              <Suspense fallback={loadingFallback}>
+                <AdminPage />
+              </Suspense>
+            } 
+          />
+          <Route 
+            path="/sms-test" 
+            element={
+              <Suspense fallback={loadingFallback}>
+                <SMSTestPage />
+              </Suspense>
+            } 
+          />
+          <Route 
+            path="/kavenegar" 
+            element={
+              <Suspense fallback={loadingFallback}>
+                <KavehnegarDemo />
+              </Suspense>
+            } 
+          />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-          <Route path="*" element={<NotFound />} />
+          <Route 
+            path="*" 
+            element={
+              <Suspense fallback={loadingFallback}>
+                <NotFound />
+              </Suspense>
+            } 
+          />
         </Routes>
       </BrowserRouter>
     </TooltipProvider>
