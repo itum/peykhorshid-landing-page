@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { ChevronDown, Send, Phone, Mail, CheckCircle, Loader2 } from 'lucide-react';
+import { ChevronDown, Send, Phone, Mail, CheckCircle, Loader2, AlertTriangle, User, Smartphone, MapPin, MessageSquare } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
@@ -42,7 +42,12 @@ const ContactUs = () => {
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
-  const [phoneError, setPhoneError] = useState('');
+  const [formErrors, setFormErrors] = useState({
+    name: '',
+    phone: '',
+    message: '',
+    destination: ''
+  });
 
   const toggleFaq = (index: number) => {
     if (expandedFaq === index) {
@@ -55,10 +60,11 @@ const ContactUs = () => {
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     
-    if (name === 'phone') {
-      // پاک کردن پیام خطا در صورت تغییر شماره موبایل
-      setPhoneError('');
-    }
+    // پاک کردن پیام خطا در صورت تغییر مقدار فیلد
+    setFormErrors(prev => ({
+      ...prev,
+      [name]: ''
+    }));
     
     setFormData(prev => ({
       ...prev,
@@ -69,30 +75,39 @@ const ContactUs = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    // اعتبارسنجی فرم
+    // بررسی و تنظیم خطاها
+    let hasError = false;
+    const newErrors = { ...formErrors };
+    
     if (!formData.name.trim()) {
-      toast.error('لطفاً نام خود را وارد کنید');
-      return;
+      newErrors.name = 'نام شما برای برنامه‌ریزی سفر رویایی‌تان ضروری است! 🧳';
+      hasError = true;
     }
 
     if (!formData.phone.trim()) {
-      toast.error('لطفاً شماره موبایل خود را وارد کنید');
-      return;
-    }
-
-    // اعتبارسنجی فرمت شماره موبایل
-    if (!isValidIranianMobile(formData.phone)) {
-      setPhoneError('شماره موبایل باید با 09 شروع شود و 11 رقم باشد');
-      return;
+      newErrors.phone = 'بدون شماره تماس چطور می‌توانیم شما را از تخفیف‌های ویژه باخبر کنیم؟ 📱';
+      hasError = true;
+    } else if (!isValidIranianMobile(formData.phone)) {
+      newErrors.phone = 'شماره موبایل باید با 09 شروع شود و 11 رقم باشد ☎️';
+      hasError = true;
     }
 
     if (!formData.destination.trim()) {
-      toast.error('لطفاً مقصد مورد نظر خود را وارد کنید');
-      return;
+      newErrors.destination = 'مقصد بعدی سفر شما کجاست؟ بگذارید کمکتان کنیم! 🗺️';
+      hasError = true;
     }
 
     if (!formData.message.trim()) {
-      toast.error('لطفاً توضیحات خود را وارد کنید');
+      newErrors.message = 'کمی درباره سفر رویایی‌تان به ما بگویید، منتظر شنیدن هستیم! ✈️';
+      hasError = true;
+    }
+    
+    setFormErrors(newErrors);
+    
+    if (hasError) {
+      toast.error('لطفاً همه فیلدها را به درستی تکمیل کنید', {
+        icon: <AlertTriangle className="text-red-500 h-5 w-5" />
+      });
       return;
     }
 
@@ -113,7 +128,12 @@ const ContactUs = () => {
         message: '',
         destination: ''
       });
-      setPhoneError('');
+      setFormErrors({
+        name: '',
+        phone: '',
+        message: '',
+        destination: ''
+      });
     } catch (error) {
       console.error('خطا در ارسال درخواست مشاوره:', error);
       toast.error('خطا در ارسال درخواست مشاوره. لطفاً دوباره تلاش کنید');
@@ -251,44 +271,73 @@ const ContactUs = () => {
               ) : (
                 <form onSubmit={handleSubmit} className="space-y-4 flex-grow flex flex-col">
                   <div className="relative">
-                    <Input 
-                      name="name"
-                      value={formData.name}
-                      onChange={handleInputChange}
-                      placeholder="نام و نام خانوادگی" 
-                      className="rtl pr-5 focus:border-peyk-blue bg-white/90 placeholder:text-gray-500"
-                    />
-                  </div>
-                  <div className="relative">
-                    <Input 
-                      name="phone"
-                      value={formData.phone}
-                      onChange={handleInputChange}
-                      placeholder="شماره موبایل (با ۰۹ شروع شود)" 
-                      className={`rtl pr-5 focus:border-peyk-blue bg-white/90 placeholder:text-gray-500 ${phoneError ? 'border-red-500 focus:border-red-500' : ''}`}
-                    />
-                    {phoneError && (
-                      <p className="text-red-300 text-xs mt-1 mr-1">{phoneError}</p>
+                    <div className="flex items-center relative">
+                      <User className="absolute right-3 text-gray-500 h-4 w-4" />
+                      <Input 
+                        name="name"
+                        value={formData.name}
+                        onChange={handleInputChange}
+                        placeholder="نام و نام خانوادگی" 
+                        className={`rtl pr-10 focus:border-peyk-blue bg-white/90 placeholder:text-gray-500 ${formErrors.name ? 'border-red-400 focus:border-red-400' : ''}`}
+                      />
+                    </div>
+                    {formErrors.name && (
+                      <p className="text-peyk-orange text-xs mt-1 mr-1 flex items-center bg-white/90 px-2 py-1 rounded-md">
+                        <AlertTriangle className="h-3 w-3 ml-1 animate-pulse" /> {formErrors.name}
+                      </p>
                     )}
                   </div>
                   <div className="relative">
-                    <Input 
-                      name="destination"
-                      value={formData.destination}
-                      onChange={handleInputChange}
-                      placeholder="مقصد مورد نظر" 
-                      className="rtl pr-5 focus:border-peyk-blue bg-white/90 placeholder:text-gray-500"
-                    />
+                    <div className="flex items-center relative">
+                      <Smartphone className="absolute right-3 text-gray-500 h-4 w-4" />
+                      <Input 
+                        name="phone"
+                        value={formData.phone}
+                        onChange={handleInputChange}
+                        placeholder="شماره موبایل (با ۰۹ شروع شود)" 
+                        className={`rtl pr-10 focus:border-peyk-blue bg-white/90 placeholder:text-gray-500 ${formErrors.phone ? 'border-red-400 focus:border-red-400' : ''}`}
+                      />
+                    </div>
+                    {formErrors.phone && (
+                      <p className="text-peyk-orange text-xs mt-1 mr-1 flex items-center bg-white/90 px-2 py-1 rounded-md">
+                        <AlertTriangle className="h-3 w-3 ml-1 animate-pulse" /> {formErrors.phone}
+                      </p>
+                    )}
+                  </div>
+                  <div className="relative">
+                    <div className="flex items-center relative">
+                      <MapPin className="absolute right-3 text-gray-500 h-4 w-4" />
+                      <Input 
+                        name="destination"
+                        value={formData.destination}
+                        onChange={handleInputChange}
+                        placeholder="مقصد مورد نظر" 
+                        className={`rtl pr-10 focus:border-peyk-blue bg-white/90 placeholder:text-gray-500 ${formErrors.destination ? 'border-red-400 focus:border-red-400' : ''}`}
+                      />
+                    </div>
+                    {formErrors.destination && (
+                      <p className="text-peyk-orange text-xs mt-1 mr-1 flex items-center bg-white/90 px-2 py-1 rounded-md">
+                        <AlertTriangle className="h-3 w-3 ml-1 animate-pulse" /> {formErrors.destination}
+                      </p>
+                    )}
                   </div>
                   <div className="relative flex-grow">
-                    <Textarea 
-                      name="message"
-                      value={formData.message}
-                      onChange={handleInputChange}
-                      placeholder="توضیحات و سوالات خود را بنویسید" 
-                      className="rtl resize-none min-h-[150px] h-full focus:border-peyk-blue bg-white/90 placeholder:text-gray-500" 
-                      rows={5}
-                    />
+                    <div className="flex items-start relative">
+                      <MessageSquare className="absolute right-3 top-3 text-gray-500 h-4 w-4" />
+                      <Textarea 
+                        name="message"
+                        value={formData.message}
+                        onChange={handleInputChange}
+                        placeholder="توضیحات و سوالات خود را بنویسید" 
+                        className={`rtl pr-10 resize-none min-h-[150px] h-full focus:border-peyk-blue bg-white/90 placeholder:text-gray-500 ${formErrors.message ? 'border-red-400 focus:border-red-400' : ''}`}
+                        rows={5}
+                      />
+                    </div>
+                    {formErrors.message && (
+                      <p className="text-peyk-orange text-xs mt-1 mr-1 flex items-center bg-white/90 px-2 py-1 rounded-md">
+                        <AlertTriangle className="h-3 w-3 ml-1 animate-pulse" /> {formErrors.message}
+                      </p>
+                    )}
                   </div>
                   <Button 
                     type="submit" 
