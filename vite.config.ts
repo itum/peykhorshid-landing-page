@@ -32,7 +32,13 @@ export default defineConfig(({ mode }) => ({
       output: {
         manualChunks: {
           'react-vendor': ['react', 'react-dom'],
-          'ui-components': ['@/components/ui'],
+          'ui-components': [
+            '@/components/ui/button',
+            '@/components/ui/toast',
+            '@/components/ui/toaster',
+            '@/components/ui/sonner',
+            '@/components/ui/tooltip',
+          ],
         },
       },
     },
