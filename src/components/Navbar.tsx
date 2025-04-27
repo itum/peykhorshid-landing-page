@@ -90,7 +90,7 @@ const Navbar = () => {
                 src="/peykhorshid-logo.png" 
                 alt="پیک خورشید اهواز" 
                 className="hover:scale-105 transition-transform duration-300"
-                width="250"
+                width="150"
                 height="80"
               />
             </a>
