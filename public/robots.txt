@@ -1,5 +1,14 @@
 User-agent: *
-Allow: /
-Disallow: /admin
+Disallow: /
 
-Sitemap: https://ghesti.peykkhorshid.ir/sitemap.xml
+User-agent: Googlebot
+Disallow: /
+
+User-agent: Bingbot
+Disallow: /
+
+User-agent: Twitterbot
+Disallow: /
+
+User-agent: facebookexternalhit
+Disallow: /
