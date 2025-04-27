@@ -89,9 +89,9 @@ const Navbar = () => {
               <img 
                 src="/peykhorshid-logo.png" 
                 alt="پیک خورشید اهواز" 
-                className="h-12 hover:scale-105 transition-transform duration-300"
-                width="48"
-                height="48"
+                className="h-20 hover:scale-105 transition-transform duration-300"
+                width="80"
+                height="80"
               />
             </a>
           ) : (
@@ -99,9 +99,9 @@ const Navbar = () => {
               <img 
                 src="/peykhorshid-logo.png" 
                 alt="پیک خورشید اهواز" 
-                className="h-12 hover:scale-105 transition-transform duration-300"
-                width="48"
-                height="48"
+                className="h-20 hover:scale-105 transition-transform duration-300"
+                width="80"
+                height="80"
               />
             </Link>
           )}
