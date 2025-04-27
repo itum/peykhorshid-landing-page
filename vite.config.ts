@@ -29,7 +29,7 @@ export default defineConfig(({ mode }) => ({
     }),
     VitePWA({ 
       registerType: 'autoUpdate',
-      includeAssets: ['favicon.ico', 'peykhorshid-logo.png', 'apple-touch-icon.png'],
+      includeAssets: ['favicon.ico', 'icons/icon-192x192.png', 'icons/icon-512x512.png', 'apple-touch-icon.png'],
       manifest: {
         name: 'پیک خورشید اهواز',
         short_name: 'پیک خورشید',
@@ -37,12 +37,12 @@ export default defineConfig(({ mode }) => ({
         theme_color: '#ffffff',
         icons: [
           {
-            src: 'peykhorshid-logo.png',
+            src: 'icons/icon-192x192.png',
             sizes: '192x192',
             type: 'image/png'
           },
           {
-            src: 'peykhorshid-logo.png',
+            src: 'icons/icon-512x512.png',
             sizes: '512x512',
             type: 'image/png'
           }
@@ -50,6 +50,8 @@ export default defineConfig(({ mode }) => ({
       },
       workbox: {
         globPatterns: ['**/*.{js,css,html,ico,png,svg,jpg,jpeg}'],
+        globIgnores: ['**/__WB_REVISION__*'],
+        cleanupOutdatedCaches: true,
         runtimeCaching: [
           {
             urlPattern: /^https:\/\/fonts\.googleapis\.com\/.*/i,
