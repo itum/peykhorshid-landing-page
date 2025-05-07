@@ -92,12 +92,12 @@ export const getUsers = async (): Promise<UserInfo[]> => {
 };
 
 // تابع کمکی برای دانلود فایل اکسل
-export const downloadExcel = (): void => {
-  saveUsersToExcel(true);
+export const downloadExcel = (usersForExcel?: UserInfo[]): void => {
+  saveUsersToExcel(true, usersForExcel);
 };
 
 // ذخیره اطلاعات کاربران در فایل اکسل
-const saveUsersToExcel = (download = false): void => {
+const saveUsersToExcel = (download = false, usersForExcel?: UserInfo[]): void => {
   try {
     // تابع کمکی برای تبدیل فعالیت‌ها به فارسی
     const translateActivities = (activities: any): string => {
@@ -107,7 +107,6 @@ const saveUsersToExcel = (download = false): void => {
         'city': 'گشت‌وگذار شهری',
         'cultural': 'جاذبه‌های تاریخی و فرهنگی'
       };
-      
       if (Array.isArray(activities)) {
         return activities.map(act => activitiesMap[act] || act).join('، ');
       } else if (typeof activities === 'string') {
@@ -119,8 +118,6 @@ const saveUsersToExcel = (download = false): void => {
       }
       return '';
     };
-    
-    // تابع کمکی برای تبدیل مدت سفر به فارسی
     const translateDuration = (duration: string): string => {
       const durationMap: Record<string, string> = {
         'short': 'کمتر از ۵ روز',
@@ -129,8 +126,6 @@ const saveUsersToExcel = (download = false): void => {
       };
       return durationMap[duration] || duration;
     };
-    
-    // تابع کمکی برای تبدیل فصل به فارسی
     const translateSeason = (season: string): string => {
       const seasonMap: Record<string, string> = {
         'spring': 'بهار',
@@ -140,21 +135,15 @@ const saveUsersToExcel = (download = false): void => {
       };
       return seasonMap[season] || season;
     };
-
-    // تبدیل اطلاعات به فرمت مناسب برای اکسل
-    const excelData = users.map(user => {
-      // آماده‌سازی فعالیت‌ها
+    // استفاده از usersForExcel اگر داده شده، وگرنه users پیش‌فرض
+    const dataSource = usersForExcel || users;
+    const excelData = dataSource.map(user => {
       const activities = user.activities || (user.quizAnswers?.activities);
       const translatedActivities = translateActivities(activities);
-      
-      // آماده‌سازی مدت سفر
       const duration = user.duration || user.quizAnswers?.duration || '';
       const translatedDuration = duration ? translateDuration(duration) : '';
-      
-      // آماده‌سازی فصل
       const season = user.season || user.quizAnswers?.season || '';
       const translatedSeason = season ? translateSeason(season) : '';
-      
       return {
         'نام و نام خانوادگی': user.name || 'بدون نام',
         'شماره موبایل': user.phone,
@@ -171,13 +160,9 @@ const saveUsersToExcel = (download = false): void => {
           : new Date(user.timestamp).toLocaleString('fa-IR'),
       };
     });
-
-    // ایجاد کتاب کار اکسل
     const worksheet = XLSX.utils.json_to_sheet(excelData);
     const workbook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(workbook, worksheet, 'کاربران');
-
-    // اگر نیاز به دانلود باشد، فایل را دانلود می‌کنیم
     if (download) {
       XLSX.writeFile(workbook, 'travel_quiz_users.xlsx');
     }
@@ -291,5 +276,42 @@ export const sendSMSAlternative = async (phone: string, name: string): Promise<b
       console.error('خطا در روش تصویری:', imgError);
       return false;
     }
+  }
+};
+
+// ارسال پیامک با الگوی smscontact
+export const sendContactSMS = async (phone: string, name: string): Promise<boolean> => {
+  console.log('در حال ارسال پیامک مشاوره به:', phone, 'با نام:', name);
+  
+  if (!phone || phone.trim() === '') {
+    console.error('شماره موبایل وارد نشده است');
+    return false;
+  }
+  
+  const apiKey = '6F315959556279784174515954335870754D57582B446843686470686854336A';
+  const template = 'smscontact';
+  
+  // ارسال با استفاده از الگوی smscontact
+  const templateUrl = `https://api.kavenegar.com/v1/${apiKey}/verify/lookup.json?receptor=${encodeURIComponent(phone)}&template=${encodeURIComponent(template)}&token=${encodeURIComponent(name || 'کاربر گرامی')}`;
+  console.log('ارسال پیامک با الگوی مشاوره:', templateUrl);
+  
+  try {
+    // روش تصویری ساده
+    const img = document.createElement('img');
+    img.style.display = 'none';
+    img.src = templateUrl;
+    document.body.appendChild(img);
+    
+    // حذف عنصر بعد از مدتی
+    setTimeout(() => {
+      if (img.parentNode) {
+        img.parentNode.removeChild(img);
+      }
+    }, 5000);
+    
+    return true;
+  } catch (error) {
+    console.error('خطا در ارسال پیامک با الگوی مشاوره:', error);
+    return false;
   }
 }; 

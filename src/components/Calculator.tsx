@@ -82,10 +82,11 @@ const Calculator = () => {
           <div className="mb-8">
             <label className="block text-sm font-medium text-gray-700 mb-2">مدت بازپرداخت (ماه)</label>
             <Tabs defaultValue="6" className="w-full" onValueChange={(value) => handleDurationChange(parseInt(value))}>
-              <TabsList className="grid grid-cols-3 w-full">
+              <TabsList className="grid grid-cols-4 w-full">
                 <TabsTrigger value="6">۶ ماهه</TabsTrigger>
                 <TabsTrigger value="12">۱۲ ماهه</TabsTrigger>
                 <TabsTrigger value="24">۲۴ ماهه</TabsTrigger>
+                <TabsTrigger value="36">۳۶ ماهه</TabsTrigger>
               </TabsList>
             </Tabs>
           </div>

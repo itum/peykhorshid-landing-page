@@ -78,13 +78,9 @@ const AdminPage = () => {
     try {
       // ابتدا لیست کاربران را به‌روزرسانی می‌کنیم
       const usersList = await getUsers();
-      
-      // به روزرسانی لیست کاربران در UI
       setUsers(usersList);
-      
-      // سپس فایل اکسل را دانلود می‌کنیم
-      downloadExcel();
-      
+      // سپس فایل اکسل را فقط با کاربران فیلترشده دانلود می‌کنیم
+      downloadExcel(filteredUsers);
       console.log('فایل اکسل با موفقیت دانلود شد');
     } catch (error) {
       console.error('خطا در دانلود فایل اکسل:', error);
@@ -111,6 +107,33 @@ const AdminPage = () => {
 
   // شمارش پیام‌های خوانده نشده
   const unreadCount = contactMessages.filter(msg => !msg.is_read).length;
+
+  // فیلتر کردن کاربران برای حذف شماره‌های تکراری و نمایش فقط رکورد کامل یا اولیه
+  const filteredUsers = Array.from(
+    users.reduce((acc, user) => {
+      const phone = user.phone;
+      // شرط تکمیل بودن کوییز: داشتن travel_destination یا travelDestination یا حداقل یک quizAnswers کامل
+      const isComplete = Boolean(
+        user.travel_destination || user.travelDestination ||
+        (user.quizAnswers && Object.keys(user.quizAnswers).length > 0)
+      );
+      if (!acc.has(phone)) {
+        acc.set(phone, user);
+      } else {
+        const existing = acc.get(phone);
+        const existingIsComplete = Boolean(
+          existing.travel_destination || existing.travelDestination ||
+          (existing.quizAnswers && Object.keys(existing.quizAnswers).length > 0)
+        );
+        // اگر رکورد جدید کامل‌تر است، جایگزین کن
+        if (isComplete && !existingIsComplete) {
+          acc.set(phone, user);
+        }
+      }
+      return acc;
+    }, new Map()),
+    ([, user]) => user
+  );
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -175,7 +198,7 @@ const AdminPage = () => {
                   
                   <TabsContent value="users" className="mt-0">
                     <div className="flex justify-between items-center mb-4">
-                      <h3 className="text-lg font-semibold">لیست کاربران ({users.length} نفر)</h3>
+                      <h3 className="text-lg font-semibold">لیست کاربران ({filteredUsers.length} نفر)</h3>
                       <div className="flex gap-2">
                         <Button onClick={handleRefresh} className="bg-blue-600 hover:bg-blue-700 ml-2">
                           به‌روزرسانی لیست
@@ -205,8 +228,8 @@ const AdminPage = () => {
                           </tr>
                         </thead>
                         <tbody>
-                          {users.length > 0 ? (
-                            users.map((user, index) => (
+                          {filteredUsers.length > 0 ? (
+                            filteredUsers.map((user, index) => (
                               <tr key={index} className="hover:bg-gray-50">
                                 <td className="py-2 px-2 border-b text-right">{index + 1}</td>
                                 <td className="py-2 px-2 border-b text-right">{user.name || 'بدون نام'}</td>
