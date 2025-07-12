@@ -1,9 +1,6 @@
-import axios from 'axios';
+import apiClient from './apiClient';
 import * as XLSX from 'xlsx';
 import { sendSMSWithJSONP, sendSMSWithIframe } from './smsUtils';
-
-// آدرس API سرور
-const API_URL = import.meta.env.VITE_API_URL ? `${import.meta.env.VITE_API_URL}/quiz` : 'http://localhost:3001/api/quiz';
 
 // تعریف تایپ اطلاعات کاربر
 export type UserInfo = {
@@ -66,7 +63,7 @@ export const addUser = async (user: Omit<UserInfo, 'timestamp'>): Promise<void> 
   
   // ارسال به سرور
   try {
-    await axios.post(`${API_URL}/users`, newUser);
+    await apiClient.post(`/quiz/users`, newUser);
     console.log('اطلاعات کاربر با موفقیت در سرور ثبت شد');
   } catch (error) {
     console.error('خطا در ارسال اطلاعات کاربر به سرور:', error);
@@ -77,7 +74,7 @@ export const addUser = async (user: Omit<UserInfo, 'timestamp'>): Promise<void> 
 export const getUsers = async (): Promise<UserInfo[]> => {
   try {
     // تلاش برای دریافت اطلاعات از سرور
-    const response = await axios.get(`${API_URL}/users`);
+    const response = await apiClient.get(`/quiz/users`);
     if (response.data.success) {
       return response.data.data;
     }
