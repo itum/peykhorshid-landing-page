@@ -108,7 +108,7 @@ const TravelQuiz2: React.FC = () => {
     }
 
     try {
-      const response = await apiClient.post('/quiz/quiz2', { name, phone });
+      const response = await apiClient.post('/api/quiz/quiz2', { name, phone });
       setQuizId(response.data.quizId);
       setStep(1);
     } catch (error) {
@@ -133,7 +133,7 @@ const TravelQuiz2: React.FC = () => {
 
   const submitQuiz = async (finalAnswers: string[]) => {
     try {
-      const response = await apiClient.post('/quiz/quiz2/submit', { 
+      const response = await apiClient.post('/api/quiz/quiz2/submit', { 
         quizId, 
         answers: finalAnswers 
       });
