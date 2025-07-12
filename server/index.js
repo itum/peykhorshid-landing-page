@@ -5,6 +5,7 @@ const { testConnection } = require('./config/db');
 const Quiz = require('./models/Quiz');
 const Contact = require('./models/Contact');
 const ClickStats = require('./models/ClickStats');
+const Quiz2 = require('./models/Quiz2');
 const quizRoutes = require('./routes/quizRoutes');
 const contactRoutes = require('./routes/contactRoutes');
 const statsRoutes = require('./routes/statsRoutes');
@@ -47,6 +48,7 @@ const startServer = async () => {
     await Quiz.createTable();
     await Contact.createTable();
     await ClickStats.createTable();
+    await Quiz2.createTable();
     
     app.listen(PORT, '0.0.0.0', () => {
       console.log(`سرور با موفقیت در پورت ${PORT} راه‌اندازی شد.`);

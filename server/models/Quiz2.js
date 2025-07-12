@@ -2,6 +2,26 @@ const mysql = require('mysql2/promise');
 const { pool } = require('../config/db');
 
 class Quiz2 {
+  static async createTable() {
+    const query = `
+      CREATE TABLE IF NOT EXISTS quiz2 (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        name VARCHAR(255) NOT NULL,
+        phone VARCHAR(20) NOT NULL,
+        answers JSON,
+        result VARCHAR(255),
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+      )
+    `;
+    try {
+      await pool.execute(query);
+      console.log('جدول quiz2 با موفقیت ایجاد شد یا از قبل وجود داشت.');
+    } catch (error) {
+      console.error('خطا در ایجاد جدول quiz2:', error);
+      throw error;
+    }
+  }
+
   static async createQuiz(name, phone) {
     const query = 'INSERT INTO quiz2 (name, phone) VALUES (?, ?)';
     try {
