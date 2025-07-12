@@ -149,23 +149,27 @@ const Steps = () => {
                 <ul className="space-y-4">
                   <li className="flex items-start gap-3">
                     <Check className="text-peyk-blue h-5 w-5 mt-0.5 flex-shrink-0" />
-                    <span>تکمیل فرم مشخصات فردی</span>
+                    <span>چک صیادی بنفش</span>
                   </li>
                   <li className="flex items-start gap-3">
                     <Check className="text-peyk-blue h-5 w-5 mt-0.5 flex-shrink-0" />
-                    <span>کپی پشت و رو کارت ملی جدید وام گیرنده و مسافرین</span>
+                    <span>فیش حقوقی ویا جواز کسب</span>
                   </li>
                   <li className="flex items-start gap-3">
                     <Check className="text-peyk-blue h-5 w-5 mt-0.5 flex-shrink-0" />
-                    <span>کپی شناسنامه وام گیرنده</span>
+                    <span>پرینت حساب سه ماهه همراه با مهر بانک</span>
                   </li>
                   <li className="flex items-start gap-3">
                     <Check className="text-peyk-blue h-5 w-5 mt-0.5 flex-shrink-0" />
-                    <span>فرم معدل حساب</span>
+                    <span>کپی شناسنامه تمام صفحات</span>
                   </li>
                   <li className="flex items-start gap-3">
                     <Check className="text-peyk-blue h-5 w-5 mt-0.5 flex-shrink-0" />
-                    <span>کپی فرم ثنا</span>
+                    <span>کپی کارت ملی پشت و رو</span>
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <Check className="text-peyk-blue h-5 w-5 mt-0.5 flex-shrink-0" />
+                    <span>فرم ثنا</span>
                   </li>
                 </ul>
               </CardContent>
@@ -224,7 +228,7 @@ const Steps = () => {
                       یک چک صیادی ضمانت به مبلغ کل اقساط
                     </p>
                     <p className="text-gray-600 text-sm text-center mt-2 font-medium">
-                      باز پرداخت اقساط ۶ الی ۲۴ ماه
+                      باز پرداخت اقساط ۶ الی ۳۶ ماه
                     </p>
                   </div>
                 </div>

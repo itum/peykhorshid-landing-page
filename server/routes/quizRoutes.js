@@ -2,16 +2,12 @@ const express = require('express');
 const router = express.Router();
 const quizController = require('../controllers/quizController');
 
-// مسیر برای افزودن کاربر جدید
-router.post('/users', quizController.addUser);
+// مسیرهای مربوط به کوییز اصلی
+router.post('/', (req, res) => quizController.addUser(req, res));
+router.post('/submit', (req, res) => quizController.updateUser(req, res));
 
-// مسیر برای دریافت تمام کاربران
-router.get('/users', quizController.getAllUsers);
-
-// مسیر برای دریافت کاربر با شماره موبایل
-router.get('/users/phone/:phone', quizController.getUserByPhone);
-
-// مسیر برای به‌روزرسانی اطلاعات کاربر
-router.put('/users/:id', quizController.updateUser);
+// مسیرهای مربوط به کوییز دوم
+router.post('/quiz2', (req, res) => quizController.createQuiz2(req, res));
+router.post('/quiz2/submit', (req, res) => quizController.submitQuiz2(req, res));
 
 module.exports = router; 

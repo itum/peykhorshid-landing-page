@@ -26,19 +26,27 @@ const Guarantees = () => {
               <ul className="space-y-4">
                 <li className="flex items-start gap-3">
                   <Check className="text-peyk-blue h-5 w-5 mt-0.5 flex-shrink-0" />
-                  <span>کپی کارت ملی و شناسنامه متقاضی</span>
+                  <span>چک صیادی بنفش</span>
                 </li>
                 <li className="flex items-start gap-3">
                   <Check className="text-peyk-blue h-5 w-5 mt-0.5 flex-shrink-0" />
-                  <span>مدارک شغلی و درآمدی (بر اساس نوع شغل)</span>
+                  <span>فیش حقوقی ویا جواز کسب</span>
                 </li>
                 <li className="flex items-start gap-3">
                   <Check className="text-peyk-blue h-5 w-5 mt-0.5 flex-shrink-0" />
-                  <span>قبض آب یا برق یا گاز محل سکونت</span>
+                  <span>پرینت حساب سه ماهه همراه با مهر بانک</span>
                 </li>
                 <li className="flex items-start gap-3">
                   <Check className="text-peyk-blue h-5 w-5 mt-0.5 flex-shrink-0" />
-                  <span>عکس پرسنلی جدید</span>
+                  <span>کپی شناسنامه تمام صفحات</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <Check className="text-peyk-blue h-5 w-5 mt-0.5 flex-shrink-0" />
+                  <span>کپی کارت ملی پشت و رو</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <Check className="text-peyk-blue h-5 w-5 mt-0.5 flex-shrink-0" />
+                  <span>فرم ثنا</span>
                 </li>
               </ul>
             </CardContent>

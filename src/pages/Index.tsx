@@ -1,33 +1,24 @@
-import Navbar from "@/components/Navbar";
-import Hero from "@/components/Hero";
-import Features from "@/components/Features";
-import Calculator from "@/components/Calculator";
-import Steps from "@/components/Steps";
-// Removed Testimonials import
-import Footer from "@/components/Footer";
-import ScrollToTop from "@/components/ScrollToTop";
-import SectionNav from "@/components/SectionNav";
-import ContactUs from "@/components/ContactUs";
-import PopularRoutes from "@/components/PopularRoutes";
-import QuizBanner from "@/components/QuizBanner";
+import React from 'react';
+import Hero from '../components/Hero';
+import Features from '../components/Features';
+import PopularRoutes from '../components/PopularRoutes';
+import Guarantees from '../components/Guarantees';
+import Steps from '../components/Steps';
+import TravelQuiz from '../components/TravelQuiz';
+import ContactUs from '../components/ContactUs';
+import QuizBanner from '../components/QuizBanner';
 
-const Index = () => {
+const Index: React.FC = () => {
   return (
-    <div className="min-h-screen flex flex-col">
-      <Navbar />
+    <div>
       <Hero />
       <Features />
       <PopularRoutes />
-      <Calculator />
+      <Guarantees />
       <Steps />
-      {/* Removed Testimonials component */}
-      
-      <ContactUs />
-      <Footer />
-      <SectionNav />
-      <ScrollToTop />
-      {/* کوییز بنر به صورت خودکار با اسکرول نمایش داده می‌شود */}
       <QuizBanner />
+      <TravelQuiz />
+      <ContactUs />
     </div>
   );
 };

@@ -10,6 +10,7 @@ import { ADMIN_PATH } from "@/lib/config/admin";
 const Index = lazy(() => import("./pages/Index"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 const TravelQuizPage = lazy(() => import("./pages/TravelQuizPage"));
+const TravelQuizPage2 = lazy(() => import("./pages/TravelQuizPage2"));
 const AdminPage = lazy(() => import("./pages/AdminPage"));
 const SMSTestPage = lazy(() => import("./pages/SMSTestPage"));
 const KavehnegarDemo = lazy(() => import("./pages/KavehnegarDemo"));
@@ -42,6 +43,14 @@ const App = () => (
             element={
               <Suspense fallback={loadingFallback}>
                 <TravelQuizPage />
+              </Suspense>
+            } 
+          />
+          <Route 
+            path="/quiz2" 
+            element={
+              <Suspense fallback={loadingFallback}>
+                <TravelQuizPage2 />
               </Suspense>
             } 
           />

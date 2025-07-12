@@ -1,4 +1,5 @@
 const Quiz = require('../models/Quiz');
+const Quiz2 = require('../models/Quiz2');
 
 // کنترلر برای افزودن کاربر جدید
 exports.addUser = async (req, res) => {
@@ -135,6 +136,71 @@ exports.updateUser = async (req, res) => {
     res.status(500).json({ 
       success: false, 
       message: 'خطای سرور در به‌روزرسانی اطلاعات کاربر' 
+    });
+  }
+}; 
+
+exports.createQuiz2 = async (req, res) => {
+  try {
+    const { name, phone } = req.body;
+    
+    // اعتبارسنجی اطلاعات ورودی
+    if (!name || !phone) {
+      return res.status(400).json({ 
+        message: 'نام و شماره موبایل الزامی است' 
+      });
+    }
+
+    // ایجاد کوییز جدید
+    const quizId = await Quiz2.createQuiz(name, phone);
+
+    res.status(201).json({ 
+      message: 'کوییز با موفقیت ایجاد شد',
+      quizId 
+    });
+  } catch (error) {
+    console.error('خطا در ایجاد کوییز:', error);
+    res.status(500).json({ 
+      message: 'خطا در ایجاد کوییز',
+      error: error.message 
+    });
+  }
+};
+
+exports.submitQuiz2 = async (req, res) => {
+  try {
+    const { quizId, answers } = req.body;
+    
+    // اعتبارسنجی اطلاعات ورودی
+    if (!quizId || !answers || !Array.isArray(answers)) {
+      return res.status(400).json({ 
+        message: 'اطلاعات نامعتبر' 
+      });
+    }
+
+    // بررسی وجود کوییز
+    const existingQuiz = await Quiz2.getQuizById(quizId);
+    if (!existingQuiz) {
+      return res.status(404).json({ 
+        message: 'کوییز یافت نشد' 
+      });
+    }
+
+    // ذخیره نتایج کوییز
+    await Quiz2.saveQuizResults(quizId, answers);
+
+    // محاسبه نتیجه نهایی
+    const result = Quiz2.calculateResult(answers);
+
+    res.status(200).json({ 
+      message: 'نتایج کوییز با موفقیت ثبت شد',
+      result 
+    });
+  } catch (error) {
+    console.error('خطا در ثبت نتایج کوییز:', error);
+    res.status(500).json({ 
+      message: 'خطا در ثبت نتایج کوییز',
+      error: error.message 
     });
   }
 }; 
