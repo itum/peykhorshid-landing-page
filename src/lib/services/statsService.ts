@@ -71,7 +71,7 @@ const syncStoredClicks = async () => {
   // ارسال هر کلیک به سرور
   for (const click of unsent) {
     try {
-      await apiClient.post(`/stats/click`, {
+      await apiClient.post(`/api/stats/click`, {
         itemType: click.itemType,
         itemId: click.itemId,
         itemName: click.itemName
@@ -117,7 +117,7 @@ export const registerClick = async (itemType: string, itemId: string, itemName: 
     
     // سپس تلاش می‌کنیم به سرور ارسال کنیم
     try {
-      const response = await apiClient.post(`/stats/click`, {
+      const response = await apiClient.post(`/api/stats/click`, {
         itemType,
         itemId,
         itemName
@@ -200,7 +200,7 @@ export const getLocalDailyStats = (itemType: string): DailyStats[] => {
 // دریافت آمار روزانه بر اساس نوع آیتم
 export const getDailyStats = async (itemType: string, limit: number = 30): Promise<DailyStats[]> => {
   try {
-    const response = await apiClient.get(`/stats/daily/${itemType}?limit=${limit}`);
+    const response = await apiClient.get(`/api/stats/daily/${itemType}?limit=${limit}`);
     return response.data.data;
   } catch (error) {
     console.error('خطا در دریافت آمار روزانه از سرور:', error);
@@ -212,7 +212,7 @@ export const getDailyStats = async (itemType: string, limit: number = 30): Promi
 // دریافت آمار کلی بر اساس نوع آیتم
 export const getTotalStatsByType = async (itemType: string): Promise<TypeStats[]> => {
   try {
-    const response = await apiClient.get(`/stats/total/${itemType}`);
+    const response = await apiClient.get(`/api/stats/total/${itemType}`);
     return response.data.data;
   } catch (error) {
     console.error('خطا در دریافت آمار کلی بر اساس نوع از سرور:', error);
@@ -228,7 +228,7 @@ export const getTotalStatsByType = async (itemType: string): Promise<TypeStats[]
 // دریافت آمار کلی همه انواع
 export const getAllStats = async (): Promise<AllStats[]> => {
   try {
-    const response = await apiClient.get(`/stats/all`);
+    const response = await apiClient.get(`/api/stats/all`);
     return response.data.data;
   } catch (error) {
     console.error('خطا در دریافت کل آمارها از سرور:', error);
@@ -255,7 +255,7 @@ export const getAllStats = async (): Promise<AllStats[]> => {
 // دریافت پربازدیدترین آیتم‌ها
 export const getTopItems = async (limit: number = 100): Promise<TopItem[]> => {
   try {
-    const response = await apiClient.get(`/stats/top?limit=${limit}`);
+    const response = await apiClient.get(`/api/stats/top?limit=${limit}`);
     return response.data.data;
   } catch (error) {
     console.error('خطا در دریافت پربازدیدترین آیتم‌ها از سرور:', error);
