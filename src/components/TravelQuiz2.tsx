@@ -96,6 +96,7 @@ const TravelQuiz2: React.FC = () => {
   const [answers, setAnswers] = useState<string[]>([]);
   const [quizId, setQuizId] = useState<number | null>(null);
   const [result, setResult] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const handleStartQuiz = async () => {
     if (!name || !phone) {
@@ -132,6 +133,7 @@ const TravelQuiz2: React.FC = () => {
   };
 
   const submitQuiz = async (finalAnswers: string[]) => {
+    setIsLoading(true);
     try {
       const response = await apiClient.post('/api/quiz/quiz2/submit', { 
         quizId, 
@@ -145,9 +147,18 @@ const TravelQuiz2: React.FC = () => {
         variant: 'destructive'
       });
     }
+    setIsLoading(false);
   };
 
   const renderStep = () => {
+    if (isLoading) {
+      return (
+        <div className="text-center">
+          <h2 className="text-2xl font-bold">در حال پردازش نتیجه...</h2>
+        </div>
+      );
+    }
+
     if (result) {
       return (
         <div className="text-center">
