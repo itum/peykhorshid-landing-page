@@ -3,7 +3,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import { getUsers, downloadExcel, UserInfo } from '@/lib/services/userService';
+import { getUsers, downloadExcel, UserInfo, getQuiz2Users, downloadExcelForQuiz2, Quiz2User } from '@/lib/services/userService';
 import { getContactMessages, markMessageAsRead, ContactMessage } from '@/lib/services/contactService';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { toast } from 'sonner';
@@ -11,10 +11,88 @@ import { Mail, Check, Bell, BarChart } from 'lucide-react';
 import StatsPanel from '@/components/admin/StatsPanel';
 import { ADMIN_PASSWORD } from '@/lib/config/admin';
 
+const answerMappings: { [key: string]: string } = {
+  // سوال ۱
+  'A': 'دراز می‌کشم، بخوابم تا فردا!',
+  'B': 'موبایلمو درمیارم، سلفی با درخت هم می‌گیرم!',
+  'C': 'غر می‌زنم که چرا وای‌فای نمی‌گیره؟',
+  'D': 'می‌رم ببینم غذاشون چیه',
+  'E': 'چمدون‌مو زیر سرم می‌ذارم، می‌خوابم کنار لابی',
+  'F': 'به راننده می‌گم یه جا وایسه از سوپر آب معدنی ارزون بخرم',
+  'G': 'یه‌کم وسواس می‌گیرم ببینم تخت تمیزه یا نه',
+  // سوال ۲
+  // A: 'من؟ هنوز ساعت بدنم خوابه!',
+  // B: 'چرا اینقدر زوده?! تور باید از ۱۰ شروع شه!',
+  // C: 'یه آب به صورتم می‌زنم، اما اول استوری می‌ذارم',
+  // D: 'می‌پرم پایین، چون گفتن بوفه صبحونه بازه',
+  // E: 'خودم نمیام، با اسنپ‌فود بیدار می‌شم',
+  // F: 'با کم‌ترین هزینه، می‌رم خودم جاها رو ببینم',
+  // G: 'شروع می‌کنم غر زدن از شب قبل!',
+  // سوال ۳
+  // A: 'بی‌خیال، خواب بهتره',
+  // B: 'هیچی نمی‌خورم. می‌گم "فقط قرمه‌سبزی مامان خودم!"',
+  // C: 'دوتا ساندویچ از خونه آوردم، می‌خورم',
+  // D: 'فقط نون و ماست می‌خورم، غر می‌زنم',
+  // E: 'می‌رم دنبال رستوران با نور خوب برای عکاسی',
+  // F: 'اصلاً برای غذا اومدم! یه غذای جدید امتحان می‌کنم',
+  // G: 'دبه می‌کنم با لیدر که پولشو کم کنه!',
+  // سوال ۴
+  // A: 'صدای خودم بیشتره! اون باید تحمل کنه',
+  // B: 'هدفون می‌ذارم، فیلم می‌بینم و می‌خوابم',
+  // C: 'به لیدر می‌گم اتاقمو عوض کنه',
+  // D: 'می‌رم بیرون رو نیمکت می‌خوابم',
+  // E: 'یه استوری از خروپفش می‌ذارم (با تگ خودش 😈)',
+  // F: 'خودمو می‌زنم به خواب، شاید درست شه',
+  // G: 'یه چک می‌زنم بهش، بعد عذرخواهی می‌کنم 😅',
+  // سوال ۵
+  // A: 'دکه‌ی فلافل!',
+  // B: 'نماهای خاص برای عکس',
+  // C: 'جاهایی که ورودی‌ش رایگانه',
+  // D: 'بازار محلی برای تست خوراکی‌ها',
+  // E: 'نیمکت سایه‌دار برای چرت بعد ناهار',
+  // F: 'غر زدن ملت که "چرا اینقد گرمه؟"',
+  // G: 'فقط دنبال جاهای تمیز و لوکس می‌گردم',
+  // سوال ۶
+  // A: 'اینکه کی بخوابم جبران کنم',
+  // B: 'اینکه چه استوری‌هایی گرفتم!',
+  // C: 'اینکه اصلاً راضی نبودم!',
+  // D: 'اینکه چرا شام شب آخر کم بود',
+  // E: 'اینکه خرجش بالا بود ولی من کم خرج دادم',
+  // F: 'اینکه چقدر خوش گذشت با غذاهاش',
+  // G: 'اینکه بالش اتاقم سفت بود یا نرم',
+};
+
+const getAnswerText = (questionIndex: number, answerValue: string): string => {
+  // This is a simplified mapping. A more robust solution would involve a structured data source.
+  // For now, we assume the order and values from TravelQuiz2.tsx
+  const questionsContent = [
+    // Q1
+    { A: 'دراز می‌کشم، بخوابم تا فردا!', B: 'موبایلمو درمیارم، سلفی با درخت هم می‌گیرم!', C: 'غر می‌زنم که چرا وای‌فای نمی‌گیره؟', D: 'می‌رم ببینم غذاشون چیه', E: 'چمدون‌مو زیر سرم می‌ذارم، می‌خوابم کنار لابی', F: 'به راننده می‌گم یه جا وایسه از سوپر آب معدنی ارزون بخرم', G: 'یه‌کم وسواس می‌گیرم ببینم تخت تمیزه یا نه' },
+    // Q2
+    { A: 'من؟ هنوز ساعت بدنم خوابه!', B: 'چرا اینقدر زوده؟! تور باید از ۱۰ شروع شه!', C: 'یه آب به صورتم می‌زنم، اما اول استوری می‌ذارم', D: 'می‌پرم پایین، چون گفتن بوفه صبحونه بازه', E: 'خودم نمیام، با اسنپ‌فود بیدار می‌شم', F: 'با کم‌ترین هزینه، می‌رم خودم جاها رو ببینم', G: 'شروع می‌کنم غر زدن از شب قبل!' },
+    // Q3
+    { A: 'بی‌خیال، خواب بهتره', B: 'هیچی نمی‌خورم. می‌گم "فقط قرمه‌سبزی مامان خودم!"', C: 'دوتا ساندویچ از خونه آوردم، می‌خورم', D: 'فقط نون و ماست می‌خورم، غر می‌زنم', E: 'می‌رم دنبال رستوران با نور خوب برای عکاسی', F: 'اصلاً برای غذا اومدم! یه غذای جدید امتحان می‌کنم', G: 'دبه می‌کنم با لیدر که پولشو کم کنه!' },
+    // Q4
+    { A: 'صدای خودم بیشتره! اون باید تحمل کنه', B: 'هدفون می‌ذارم، فیلم می‌بینم و می‌خوابم', C: 'به لیدر می‌گم اتاقمو عوض کنه', D: 'می‌رم بیرون رو نیمکت می‌خوابم', E: 'یه استوری از خروپفش می‌ذارم (با تگ خودش 😈)', F: 'خودمو می‌زنم به خواب، شاید درست شه', G: 'یه چک می‌زنم بهش، بعد عذرخواهی می‌کنم 😅' },
+    // Q5
+    { A: 'دکه‌ی فلافل!', B: 'نماهای خاص برای عکس', C: 'جاهایی که ورودی‌ش رایگانه', D: 'بازار محلی برای تست خوراکی‌ها', E: 'نیمکت سایه‌دار برای چرت بعد ناهار', F: 'غر زدن ملت که "چرا اینقد گرمه؟"', G: 'فقط دنبال جاهای تمیز و لوکس می‌گردم' },
+    // Q6
+    { A: 'اینکه کی بخوابم جبران کنم', B: 'اینکه چه استوری‌هایی گرفتم!', C: 'اینکه اصلاً راضی نبودم!', D: 'اینکه چرا شام شب آخر کم بود', E: 'اینکه خرجش بالا بود ولی من کم خرج دادم', F: 'اینکه چقدر خوش گذشت با غذاهاش', G: 'اینکه بالش اتاقم سفت بود یا نرم' },
+  ];
+
+  if (questionIndex < questionsContent.length) {
+    // @ts-ignore
+    return questionsContent[questionIndex][answerValue] || answerValue;
+  }
+  return answerValue;
+};
+
+
 const AdminPage = () => {
   const [password, setPassword] = useState('');
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [users, setUsers] = useState<UserInfo[]>([]);
+  const [quiz2Users, setQuiz2Users] = useState<Quiz2User[]>([]);
   const [contactMessages, setContactMessages] = useState<ContactMessage[]>([]);
   const [isLoadingContacts, setIsLoadingContacts] = useState(false);
   const correctPassword = ADMIN_PASSWORD; // استفاده از رمز عبور از فایل کانفیگ
@@ -27,6 +105,7 @@ const AdminPage = () => {
       // استفاده از تابع async/await داخل useEffect
       const loadData = async () => {
         await refreshUsersList();
+        await refreshQuiz2UsersList();
         await refreshContactMessages();
       };
       loadData();
@@ -40,6 +119,16 @@ const AdminPage = () => {
       console.log('کاربران دریافت شده:', usersList);
     } catch (error) {
       console.error('خطا در دریافت لیست کاربران:', error);
+    }
+  };
+
+  const refreshQuiz2UsersList = async () => {
+    try {
+      const usersList = await getQuiz2Users();
+      setQuiz2Users(usersList);
+      console.log('کاربران کوییز 2 دریافت شده:', usersList);
+    } catch (error) {
+      console.error('خطا در دریافت لیست کاربران کوییز 2:', error);
     }
   };
 
@@ -63,6 +152,7 @@ const AdminPage = () => {
       setIsAuthenticated(true);
       localStorage.setItem('admin_authenticated', 'true');
       await refreshUsersList();
+      await refreshQuiz2UsersList();
       await refreshContactMessages();
     } else {
       alert('رمز عبور اشتباه است!');
@@ -87,6 +177,18 @@ const AdminPage = () => {
       alert('خطا در دانلود فایل اکسل. لطفاً دوباره تلاش کنید.');
     }
   };
+
+  const handleDownloadExcelForQuiz2 = async () => {
+    try {
+      await refreshQuiz2UsersList(); // Refresh data before download
+      downloadExcelForQuiz2(quiz2Users);
+      console.log('فایل اکسل کوییز 2 با موفقیت دانلود شد');
+    } catch (error) {
+      console.error('خطا در دانلود فایل اکسل کوییز 2:', error);
+      alert('خطا در دانلود فایل اکسل کوییز 2. لطفاً دوباره تلاش کنید.');
+    }
+  };
+
 
   // اضافه کردن دکمه به‌روزرسانی برای بارگذاری مجدد لیست کاربران
   const handleRefresh = async () => {
@@ -194,11 +296,12 @@ const AdminPage = () => {
                       )}
                     </TabsTrigger>
                     <TabsTrigger value="users" className="data-[state=active]:bg-white">کاربران کوییز سفر</TabsTrigger>
+                    <TabsTrigger value="quiz2-users" className="data-[state=active]:bg-white">کاربران کوییز سفر ۲</TabsTrigger>
                   </TabsList>
                   
                   <TabsContent value="users" className="mt-0">
                     <div className="flex justify-between items-center mb-4">
-                      <h3 className="text-lg font-semibold">لیست کاربران ({filteredUsers.length} نفر)</h3>
+                      <h3 className="text-lg font-semibold">لیست کاربران کوییز سفر ({filteredUsers.length} نفر)</h3>
                       <div className="flex gap-2">
                         <Button onClick={handleRefresh} className="bg-blue-600 hover:bg-blue-700 ml-2">
                           به‌روزرسانی لیست
@@ -341,6 +444,72 @@ const AdminPage = () => {
                             <tr>
                               <td colSpan={12} className="py-4 text-center text-gray-500">
                                 هنوز کاربری ثبت نشده است
+                              </td>
+                            </tr>
+                          )}
+                        </tbody>
+                      </table>
+                    </div>
+                  </TabsContent>
+
+                  <TabsContent value="quiz2-users" className="mt-0">
+                    <div className="flex justify-between items-center mb-4">
+                      <h3 className="text-lg font-semibold">لیست کاربران کوییز ۲ ({quiz2Users.length} نفر)</h3>
+                      <div className="flex gap-2">
+                        <Button onClick={refreshQuiz2UsersList} className="bg-blue-600 hover:bg-blue-700 ml-2">
+                          به‌روزرسانی لیست
+                        </Button>
+                        <Button onClick={handleDownloadExcelForQuiz2} className="bg-green-600 hover:bg-green-700">
+                          دانلود فایل اکسل
+                        </Button>
+                      </div>
+                    </div>
+                    
+                    <div className="overflow-x-auto">
+                      <table className="min-w-full bg-white border border-gray-200 text-sm">
+                        <thead>
+                          <tr className="bg-gray-100">
+                            <th className="py-2 px-2 border-b text-right">#</th>
+                            <th className="py-2 px-2 border-b text-right">نام</th>
+                            <th className="py-2 px-2 border-b text-right">شماره موبایل</th>
+                            <th className="py-2 px-2 border-b text-right">نتیجه</th>
+                            <th className="py-2 px-2 border-b text-right" style={{ minWidth: '300px' }}>پاسخ‌ها</th>
+                            <th className="py-2 px-2 border-b text-right">تاریخ ثبت</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {quiz2Users.length > 0 ? (
+                            quiz2Users.map((user, index) => (
+                              <tr key={user.id} className="hover:bg-gray-50">
+                                <td className="py-2 px-2 border-b text-right">{index + 1}</td>
+                                <td className="py-2 px-2 border-b text-right">{user.name || 'بدون نام'}</td>
+                                <td className="py-2 px-2 border-b text-right">{user.phone}</td>
+                                <td className="py-2 px-2 border-b text-right">{user.result || '-'}</td>
+                                <td className="py-2 px-2 border-b text-right">
+                                  {(() => {
+                                    try {
+                                      const answers = JSON.parse(user.answers || '[]');
+                                      return (
+                                        <ul className="list-none p-0 m-0">
+                                          {answers.map((ans: string, idx: number) => (
+                                            <li key={idx} className="text-xs">
+                                              {`سوال ${idx + 1}: ${getAnswerText(idx, ans)}`}
+                                            </li>
+                                          ))}
+                                        </ul>
+                                      );
+                                    } catch {
+                                      return user.answers;
+                                    }
+                                  })()}
+                                </td>
+                                <td className="py-2 px-2 border-b text-right">{new Date(user.created_at).toLocaleString('fa-IR')}</td>
+                              </tr>
+                            ))
+                          ) : (
+                            <tr>
+                              <td colSpan={6} className="py-4 px-4 text-center">
+                                کاربری یافت نشد.
                               </td>
                             </tr>
                           )}

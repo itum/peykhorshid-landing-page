@@ -204,3 +204,19 @@ exports.submitQuiz2 = async (req, res) => {
     });
   }
 }; 
+
+exports.getAllQuiz2Users = async (req, res) => {
+  try {
+    const users = await Quiz2.getAll();
+    res.status(200).json({
+      success: true,
+      data: users
+    });
+  } catch (error) {
+    console.error('خطا در دریافت کاربران کوییز 2:', error);
+    res.status(500).json({
+      success: false,
+      message: 'خطای سرور در دریافت اطلاعات کاربران کوییز 2'
+    });
+  }
+}; 

@@ -1,7 +1,7 @@
 import axios, { AxiosResponse, AxiosError } from 'axios';
 
 const apiClient = axios.create({
-  baseURL: 'https://apighesti.peykkhorshid.ir',
+  baseURL: import.meta.env.VITE_API_URL || 'https://apighesti.peykkhorshid.ir',
   timeout: 10000,
   headers: {
     'Content-Type': 'application/json'

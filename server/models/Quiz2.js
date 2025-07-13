@@ -43,7 +43,7 @@ class Quiz2 {
       ]);
       return result;
     } catch (error) {
-      console.error('خطا در ذخیره‌سازی نتایج کوییز:', error);
+      console.error('خطا در ذخیره‌سازی نتایج کوییز:', error); 
       throw error;
     }
   }
@@ -61,13 +61,13 @@ class Quiz2 {
     const topAnswers = Object.keys(counts).filter(key => counts[key] === maxCount);
 
     const personalities = {
-      A: '😴 خوابالو',
-      B: '🤳 سلفی‌بگیر',
-      C: '😒 غرغرو',
-      D: '🍕 شکمو',
-      E: '🐗 خروپف‌کن',
-      F: '💸 خسیس',
-      G: '👑 نازک‌نارنجی'
+      A: '😴 خوابالو', // 0
+      B: '🤳 سلفی‌بگیر', //1
+      C: '😒 غرغرو', //2
+      D: '🍕 شکمو', //3 
+      E: '🐗 خروپف‌کن', //4  
+      F: '💸 خسیس', //5
+      G: '👑 نازک‌نارنجی'//6
     };
 
     return personalities[topAnswers[0]] || personalities.A;
@@ -80,6 +80,17 @@ class Quiz2 {
       return rows[0];
     } catch (error) {
       console.error('خطا در دریافت کوییز:', error);
+      throw error;
+    }
+  }
+
+  static async getAll() {
+    const query = 'SELECT * FROM quiz2 ORDER BY created_at DESC';
+    try {
+      const [rows] = await pool.execute(query);
+      return rows;
+    } catch (error) {
+      console.error('خطا در دریافت همه کوییزها:', error);
       throw error;
     }
   }

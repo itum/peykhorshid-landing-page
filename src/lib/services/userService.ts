@@ -2,8 +2,9 @@ import axios from 'axios';
 import * as XLSX from 'xlsx';
 import { sendSMSWithJSONP, sendSMSWithIframe } from './smsUtils';
 
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'https://apighesti.peykkhorshid.ir';
 // آدرس API سرور
-const API_URL = import.meta.env.VITE_API_URL ? `${import.meta.env.VITE_API_URL}/quiz` : 'https://apighesti.peykkhorshid.ir/api/quiz';
+const API_URL = `${API_BASE_URL}/api/quiz`;
 
 // تعریف تایپ اطلاعات کاربر
 export type UserInfo = {
@@ -22,6 +23,16 @@ export type UserInfo = {
   budget?: string; // بودجه - فیلد از دیتابیس
   adventure?: string; // ماجراجویی - فیلد از دیتابیس
 };
+
+export type Quiz2User = {
+  id: number;
+  name: string;
+  phone: string;
+  answers: string; // این جیسون است که به صورت رشته ذخیره شده
+  result: string;
+  created_at: string;
+};
+
 
 // آرایه برای نگهداری اطلاعات کاربران
 let users: UserInfo[] = [];
@@ -89,6 +100,19 @@ export const getUsers = async (): Promise<UserInfo[]> => {
   
   // برگرداندن داده‌های محلی
   return users;
+};
+
+export const getQuiz2Users = async (): Promise<Quiz2User[]> => {
+  try {
+    const response = await axios.get(`${API_URL}/quiz2/users`);
+    if (response.data.success) {
+      return response.data.data;
+    }
+    return [];
+  } catch (error) {
+    console.error('خطا در دریافت اطلاعات کاربران کوییز 2 از سرور:', error);
+    return [];
+  }
 };
 
 // تابع کمکی برای دانلود فایل اکسل
@@ -170,6 +194,36 @@ const saveUsersToExcel = (download = false, usersForExcel?: UserInfo[]): void =>
     console.error('خطا در ذخیره فایل اکسل:', error);
   }
 };
+
+export const downloadExcelForQuiz2 = (usersForExcel: Quiz2User[]): void => {
+  try {
+    const excelData = usersForExcel.map(user => {
+      let answers = {};
+      try {
+        answers = JSON.parse(user.answers);
+      } catch (e) {
+        // نادیده گرفتن خطا اگر جیسون معتبر نباشد
+      }
+
+      return {
+        'نام و نام خانوادگی': user.name,
+        'شماره موبایل': user.phone,
+        'نتیجه': user.result,
+        'پاسخ‌ها': JSON.stringify(answers, null, 2),
+        'تاریخ ثبت': new Date(user.created_at).toLocaleString('fa-IR'),
+      };
+    });
+
+    const worksheet = XLSX.utils.json_to_sheet(excelData);
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, 'کاربران کوییز ۲');
+    XLSX.writeFile(workbook, 'travel_quiz_2_users.xlsx');
+
+  } catch (error) {
+    console.error('خطا در ذخیره فایل اکسل کوییز ۲:', error);
+  }
+};
+
 
 // ارسال پیامک با سرویس کاوه نگار
 export const sendSMS = async (phone: string, name: string): Promise<boolean> => {

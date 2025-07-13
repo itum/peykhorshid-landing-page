@@ -16,7 +16,7 @@ const connection = {
   host: 'localhost',
   user: 'root',
   password: '',
-  database: 'peykhorshid',
+  database: 'hadis',
   port: 3308,
   waitForConnections: true,
   connectionLimit: 10,
