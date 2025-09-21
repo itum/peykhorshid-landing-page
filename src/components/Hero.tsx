@@ -1,12 +1,26 @@
-import { Button } from "@/components/ui/button";
-import { Link } from "react-router-dom";
-import { useEffect, useState, useMemo } from "react";
+import { useEffect, useState } from "react";
 import { CSSProperties } from "react";
-import { useMediaQuery } from '@/hooks/useMediaQuery';
+import { getSection } from '@/lib/services/contentService';
 
 const Hero = () => {
   const [isMobile, setIsMobile] = useState(false);
   const [isIphoneXR, setIsIphoneXR] = useState(false);
+  const [heroData, setHeroData] = useState<any>(null);
+
+  // بارگذاری داده‌های Hero از CMS
+  useEffect(() => {
+    (async () => {
+      try {
+        const section = await getSection('home', 'hero');
+        if (section?.data) {
+          const data = typeof section.data === 'string' ? JSON.parse(section.data) : section.data;
+          setHeroData(data);
+        }
+      } catch (error) {
+        console.error('Error loading hero data:', error);
+      }
+    })();
+  }, []);
 
   useEffect(() => {
     const handleResize = () => {
@@ -80,8 +94,8 @@ const Hero = () => {
       >
         {isMobile || isIphoneXR ? (
           <img 
-            src="/images/hero-mobile.jpg" 
-            alt="hero background mobile" 
+            src={heroData?.mobile?.url || "/images/hero-mobile.jpg"} 
+            alt={heroData?.mobile?.alt || "hero background mobile"} 
             className={`w-full h-full object-cover ${isIphoneXR ? 'scale-[1.02]' : ''}`}
             style={imageStyle}
             loading="lazy"
@@ -90,8 +104,8 @@ const Hero = () => {
           />
         ) : (
           <img 
-            src="/images/hero-image-bg.jpg" 
-            alt="hero background" 
+            src={heroData?.desktop?.url || "/images/hero-image-bg.jpg"} 
+            alt={heroData?.desktop?.alt || "hero background"} 
             className="w-full h-full object-cover" 
             style={imageStyle}
             loading="lazy"
@@ -99,19 +113,6 @@ const Hero = () => {
             height="1080"
           />
         )}
-      </div>
-      
-      {/* گرادیان جهت خوانایی بهتر متن‌ها - حذف شده برای نمایش رنگ اصلی تصویر */}
-      
-      <div 
-        className={`container mx-auto px-4 md:px-6 relative z-20 h-full flex items-center ${isIphoneXR ? 'pt-12 px-5' : ''}`}
-        style={{
-          border: "none",
-          outline: "none"
-        }}
-      >
-        <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-8 md:gap-12">
-        </div>
       </div>
     </section>
   );

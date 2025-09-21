@@ -2,12 +2,19 @@ import { useEffect, useState, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Sparkles, MapPin, CalendarDays, Gift } from 'lucide-react';
+import { getSection } from '@/lib/services/contentService';
 
 const QuizBanner = () => {
   const [isVisible, setIsVisible] = useState(false);
   const [hasCompletedQuiz, setHasCompletedQuiz] = useState(false);
   const [destination, setDestination] = useState<string | null>(null);
   const bannerInitializedRef = useRef(false);
+  const [overrideTitle, setOverrideTitle] = useState<string | null>(null);
+  const [overrideDescription, setOverrideDescription] = useState<string | null>(null);
+  const [overrideSubtitle, setOverrideSubtitle] = useState<string | null>(null);
+  const [overrideButtonText, setOverrideButtonText] = useState<string | null>(null);
+  const [overrideCompletedText, setOverrideCompletedText] = useState<string | null>(null);
+  const [overrideRetryButton, setOverrideRetryButton] = useState<string | null>(null);
 
   useEffect(() => {
     // بررسی وضعیت کوییز کاربر
@@ -63,6 +70,21 @@ const QuizBanner = () => {
     };
   }, []);
 
+  useEffect(() => {
+    (async () => {
+      const section = await getSection('home', 'quiz_banner');
+      if (section && section.data) {
+        const data = typeof section.data === 'string' ? (() => { try { return JSON.parse(section.data); } catch { return {}; } })() : section.data;
+        if (data.title) setOverrideTitle(data.title);
+        if (data.description) setOverrideDescription(data.description);
+        if (data.subtitle) setOverrideSubtitle(data.subtitle);
+        if (data.button_text) setOverrideButtonText(data.button_text);
+        if (data.completed_text) setOverrideCompletedText(data.completed_text);
+        if (data.retry_button) setOverrideRetryButton(data.retry_button);
+      }
+    })();
+  }, []);
+
   const closePopup = () => {
     setIsVisible(false);
   };
@@ -75,7 +97,7 @@ const QuizBanner = () => {
         <div className="bg-gradient-to-r from-peyk-blue to-peyk-blue-dark px-4 py-3 flex justify-between items-center">
           <div className="flex items-center">
             <Sparkles className="text-peyk-yellow h-5 w-5 mr-2" />
-            <h3 className="text-white font-bold text-lg">کوییز سفر رویایی</h3>
+            <h3 className="text-white font-bold text-lg">{overrideTitle || 'کوییز سفر رویایی'}</h3>
           </div>
           <button
             onClick={closePopup}
@@ -91,12 +113,14 @@ const QuizBanner = () => {
             <div className="space-y-3">
               <div className="flex items-center gap-2">
                 <MapPin className="text-peyk-blue h-5 w-5 flex-shrink-0" />
-                <p className="text-gray-700 text-sm md:text-base">شما قبلاً در کوییز شرکت کرده‌اید و مقصد پیشنهادی شما <span className="font-bold text-peyk-blue">{destination}</span> است.</p>
+                <p className="text-gray-700 text-sm md:text-base">
+                  {(overrideCompletedText || 'شما قبلاً در کوییز شرکت کرده‌اید و مقصد پیشنهادی شما {destination} است.').replace('{destination}', destination || '')}
+                </p>
               </div>
               <div className="flex justify-end space-x-2 space-x-reverse mt-3">
                 <Link to="/quiz" className="w-full">
                   <Button variant="outline" size="sm" className="border-peyk-blue text-peyk-blue">
-                    انجام مجدد کوییز
+                    {overrideRetryButton || 'انجام مجدد کوییز'}
                   </Button>
                 </Link>
               </div>
@@ -106,18 +130,18 @@ const QuizBanner = () => {
               <div className="space-y-3 mb-4">
                 <div className="flex items-center gap-2">
                   <CalendarDays className="text-peyk-orange h-5 w-5 flex-shrink-0" />
-                  <p className="text-gray-700 text-sm md:text-base">مقصد سفر بعدی خود را با کوییز هوشمند ما کشف کنید!</p>
+                  <p className="text-gray-700 text-sm md:text-base">{overrideDescription || 'مقصد سفر بعدی خود را با کوییز هوشمند ما کشف کنید!'}</p>
                 </div>
                 <div className="flex items-center gap-2">
                   <Gift className="text-peyk-orange h-5 w-5 flex-shrink-0" />
-                  <p className="text-gray-700 text-sm md:text-base">با تکمیل کوییز، پیشنهاد ویژه تور دریافت کنید.</p>
+                  <p className="text-gray-700 text-sm md:text-base">{overrideSubtitle || 'با تکمیل کوییز، پیشنهاد ویژه تور دریافت کنید.'}</p>
                 </div>
               </div>
               
               <div className="flex justify-center mt-4">
                 <Link to="/quiz" className="w-full">
                   <Button className="bg-gradient-to-r from-peyk-yellow to-peyk-yellow-light text-peyk-blue-dark font-bold w-full">
-                    شروع کوییز سفر
+                    {overrideButtonText || 'شروع کوییز سفر'}
                   </Button>
                 </Link>
               </div>

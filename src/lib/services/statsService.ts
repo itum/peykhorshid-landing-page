@@ -1,6 +1,18 @@
 import axios from 'axios';
 
-const API_URL = import.meta.env.VITE_API_URL || 'https://apighesti.peykkhorshid.ir';
+// تعیین URL بر اساس محیط
+const getBaseURL = () => {
+  if (import.meta.env.VITE_API_URL) {
+    return import.meta.env.VITE_API_URL;
+  }
+  if (import.meta.env.PROD) {
+    return 'https://ghesti.peykkhorshid.ir';
+  }
+  return 'http://localhost:3001';
+};
+
+// باید به /api اشاره کند چون در سرور مسیرها با app.use('/api/stats', ...) ثبت شده‌اند
+const API_URL = getBaseURL() + '/api';
 
 // نوع داده آمار روزانه
 export interface DailyStats {

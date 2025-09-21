@@ -5,6 +5,7 @@ import { Separator } from "@/components/ui/separator";
 import { useState, useEffect } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Pagination, Autoplay, Navigation } from 'swiper/modules';
+import { getSection } from '@/lib/services/contentService';
 
 // Import Swiper styles
 import 'swiper/css';
@@ -14,6 +15,9 @@ import 'swiper/css/autoplay';
 
 const Steps = () => {
   const [isMobile, setIsMobile] = useState(false);
+  const [overrideTitle, setOverrideTitle] = useState<string | null>(null);
+  const [overrideDescription, setOverrideDescription] = useState<string | null>(null);
+  const [overrideSteps, setOverrideSteps] = useState<any[]>([]);
 
   useEffect(() => {
     const handleResize = () => {
@@ -32,7 +36,26 @@ const Steps = () => {
     };
   }, []);
 
-  const steps = [
+  useEffect(() => {
+    (async () => {
+      const section = await getSection('home', 'steps');
+      if (section && section.data) {
+        const data = typeof section.data === 'string' ? (() => { try { return JSON.parse(section.data); } catch { return {}; } })() : section.data;
+        if (data.title) setOverrideTitle(data.title);
+        if (data.description) setOverrideDescription(data.description);
+        if (Array.isArray(data.steps)) setOverrideSteps(data.steps);
+      }
+    })();
+  }, []);
+
+  const steps = overrideSteps.length > 0 ? overrideSteps.map((step, index) => ({
+    icon: step.icon ? <img src={step.icon} alt="icon" className="h-16 w-16" /> : 
+      index === 0 ? <FileText className="h-16 w-16 text-white" /> :
+      index === 1 ? <Check className="h-16 w-16 text-white" /> :
+      <CreditCard className="h-16 w-16 text-white" />,
+    title: step.title,
+    description: step.description
+  })) : [
     {
       icon: <FileText className="h-16 w-16 text-white" />,
       title: "ثبت درخواست",
@@ -55,9 +78,9 @@ const Steps = () => {
       <section id="steps" className="section-padding bg-gradient-to-b from-peyk-blue/10 to-white">
         <div className="container mx-auto">
           <div className="text-center mb-8">
-            <h2 className="text-4xl font-bold mb-4 text-gray-800">مراحل دریافت وام</h2>
+            <h2 className="text-4xl font-bold mb-4 text-gray-800">{overrideTitle || 'مراحل دریافت وام'}</h2>
             <p className="max-w-2xl mx-auto text-lg text-gray-600">
-              رزرو تور از پیک خورشید اهواز در سه گام ساده انجام می‌شود:
+              {overrideDescription || 'رزرو تور از پیک خورشید اهواز در سه گام ساده انجام می‌شود:'}
             </p>
           </div>
 

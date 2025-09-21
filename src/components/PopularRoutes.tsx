@@ -4,6 +4,7 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import { Pagination, Autoplay, Navigation } from 'swiper/modules';
 import ClickTracker from './ClickTracker';
 import { getLocalStats } from '@/lib/services/statsService';
+import { getSection } from '@/lib/services/contentService';
 
 // Import Swiper styles
 import 'swiper/css';
@@ -35,9 +36,13 @@ const PopularRoutes = () => {
   const [isMobile, setIsMobile] = useState(false);
   const [showStats, setShowStats] = useState(false);
   const [localStats, setLocalStats] = useState<any[]>([]);
+  const [overrideTitle, setOverrideTitle] = useState<string | null>(null);
+  const [overrideDescription, setOverrideDescription] = useState<string | null>(null);
+  const [overrideDomesticRoutes, setOverrideDomesticRoutes] = useState<any[]>([]);
+  const [overrideSpecialRoutes, setOverrideSpecialRoutes] = useState<any[]>([]);
 
   // دیتای مسیرهای پرتردد داخلی
-  const domesticRoutes: DomesticRoute[] = [
+  const domesticRoutes: DomesticRoute[] = overrideDomesticRoutes.length > 0 ? overrideDomesticRoutes : [
     { to: "کیش", price: "۷۵۰ هزار", image: "/city-icons/kish.jpg", link: "https://peykkhorshid.ir/kish-tour/" },
     { to: "مشهد", price: "۹۰۰ هزار", image: "/city-icons/mashhad.jpg", link: "https://peykkhorshid.ir/mashhad-tour/" },
     { to: "شیراز", price: "۶۸۰ هزار", image: "/city-icons/shiraz.jpg", link: "https://peykkhorshid.ir/shiraz-tour/" },
@@ -45,7 +50,7 @@ const PopularRoutes = () => {
   ];
 
   // دیتای مسیرهای پرتردد خاص
-  const specialRoutes: SpecialRoute[] = [
+  const specialRoutes: SpecialRoute[] = overrideSpecialRoutes.length > 0 ? overrideSpecialRoutes : [
     { to: "استانبول", price: "۱.۷۸۰", image: "/city-icons/istanbul.jpg", link: "https://peykkhorshid.ir/istanbul-tour/" },
     { to: "آنتالیا", price: "۲.۶۹۰", image: "/city-icons/antalia.jpg", link: "https://peykkhorshid.ir/antalya/" },
     { to: "دبی", price: "۲.۲۰۰", image: "/city-icons/dubai.jpg", link: "https://peykkhorshid.ir/dubai/" },
@@ -80,6 +85,19 @@ const PopularRoutes = () => {
     return () => {
       window.removeEventListener('resize', handleResize);
     };
+  }, []);
+
+  useEffect(() => {
+    (async () => {
+      const section = await getSection('home', 'popular_routes');
+      if (section && section.data) {
+        const data = typeof section.data === 'string' ? (() => { try { return JSON.parse(section.data); } catch { return {}; } })() : section.data;
+        if (data.title) setOverrideTitle(data.title);
+        if (data.description) setOverrideDescription(data.description);
+        if (Array.isArray(data.domestic_routes)) setOverrideDomesticRoutes(data.domestic_routes);
+        if (Array.isArray(data.special_routes)) setOverrideSpecialRoutes(data.special_routes);
+      }
+    })();
   }, []);
 
   // اضافه کردن استایل‌های انیمیشن به head
@@ -242,9 +260,9 @@ const PopularRoutes = () => {
     <section id="popular-routes" className="section-padding bg-white">
       <div className="container mx-auto">
         <div className="text-center mb-8">
-          <h2 className="text-3xl font-bold text-gray-900 mb-4">پرفروش‌ترین تورها</h2>
+          <h2 className="text-3xl font-bold text-gray-900 mb-4">{overrideTitle || 'پرفروش‌ترین تورها'}</h2>
           <p className="text-gray-600 max-w-2xl mx-auto">
-            محبوب‌ترین مسیرهای سفر داخلی و خارجی پیک خورشید
+            {overrideDescription || 'محبوب‌ترین مسیرهای سفر داخلی و خارجی پیک خورشید'}
           </p>
 
           {/* دکمه مخفی برای دیباگ - فقط با کلید مخفی قابل دسترسی */}

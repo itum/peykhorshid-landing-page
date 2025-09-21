@@ -2,6 +2,7 @@ import { CreditCard, Clock, Shield, ShoppingBag } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Pagination, Autoplay } from 'swiper/modules';
+import { getSection } from '@/lib/services/contentService';
 
 // Import Swiper styles
 import 'swiper/css';
@@ -10,6 +11,9 @@ import 'swiper/css/autoplay';
 
 const Features = () => {
   const [isMobile, setIsMobile] = useState(false);
+  const [overrideTitle, setOverrideTitle] = useState<string | null>(null);
+  const [overrideDescription, setOverrideDescription] = useState<string | null>(null);
+  const [overrideItems, setOverrideItems] = useState<Array<{ icon?: string; title: string; description: string }>>([]);
 
   useEffect(() => {
     const handleResize = () => {
@@ -28,7 +32,23 @@ const Features = () => {
     };
   }, []);
 
-  const features = [
+  useEffect(() => {
+    (async () => {
+      const section = await getSection('home', 'features');
+      if (section && section.data) {
+        const data = typeof section.data === 'string' ? (() => { try { return JSON.parse(section.data); } catch { return {}; } })() : section.data;
+        if (data.title) setOverrideTitle(data.title);
+        if (data.description) setOverrideDescription(data.description);
+        if (Array.isArray(data.items)) setOverrideItems(data.items);
+      }
+    })();
+  }, []);
+
+  const features = overrideItems.length > 0 ? overrideItems.map((it) => ({
+    icon: it.icon ? <img src={it.icon} alt="icon" className="h-10 w-10" /> : <CreditCard className="h-10 w-10 text-peyk-blue" />,
+    title: it.title,
+    description: it.description,
+  })) : [
     {
       icon: <CreditCard className="h-10 w-10 text-peyk-blue" />,
       title: "تا سقف ۱۰۰ میلیون تومان",
@@ -55,9 +75,9 @@ const Features = () => {
     <section id="features" className="section-padding bg-gray-50">
       <div className="container mx-auto">
         <div className="text-center mb-8">
-          <h2 className="text-3xl font-bold text-gray-900 mb-4">طرح جامع وام سفر پیک خورشید</h2>
+          <h2 className="text-3xl font-bold text-gray-900 mb-4">{overrideTitle || 'طرح جامع وام سفر پیک خورشید'}</h2>
           <p className="text-gray-600 max-w-2xl mx-auto">
-          به رویای سفرهای خود جامه عمل بپوشانید. بدون نیاز به ضامن فقط با یک چک صیادی ضمانت !
+            {overrideDescription || 'به رویای سفرهای خود جامه عمل بپوشانید. بدون نیاز به ضامن فقط با یک چک صیادی ضمانت !'}
           </p>
         </div>
 

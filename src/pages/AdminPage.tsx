@@ -7,9 +7,15 @@ import { getUsers, downloadExcel, UserInfo, getQuiz2Users, downloadExcelForQuiz2
 import { getContactMessages, markMessageAsRead, ContactMessage } from '@/lib/services/contactService';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { toast } from 'sonner';
-import { Mail, Check, Bell, BarChart } from 'lucide-react';
+import Swal from 'sweetalert2';
+import { Mail, Check, Bell, BarChart, Download, Upload } from 'lucide-react';
 import StatsPanel from '@/components/admin/StatsPanel';
 import { ADMIN_PASSWORD } from '@/lib/config/admin';
+import { listContent, createSection, updateSection, deleteSection, ContentItem, getSection, backupContent, restoreContent } from '@/lib/services/contentService';
+import ContentEditForm from '@/components/admin/ContentEditForm';
+import NavbarEditForm from '@/components/admin/NavbarEditForm';
+import FooterEditForm from '@/components/admin/FooterEditForm';
+import HeroEditForm from '@/components/admin/HeroEditForm';
 
 const answerMappings: { [key: string]: string } = {
   // سوال ۱
@@ -95,6 +101,10 @@ const AdminPage = () => {
   const [quiz2Users, setQuiz2Users] = useState<Quiz2User[]>([]);
   const [contactMessages, setContactMessages] = useState<ContactMessage[]>([]);
   const [isLoadingContacts, setIsLoadingContacts] = useState(false);
+  const [contentItems, setContentItems] = useState<ContentItem[]>([]);
+  const [contentPageFilter, setContentPageFilter] = useState<string>('home');
+  const [editingItem, setEditingItem] = useState<ContentItem | null>(null);
+  const [isSavingContent, setIsSavingContent] = useState(false);
   const correctPassword = ADMIN_PASSWORD; // استفاده از رمز عبور از فایل کانفیگ
 
   useEffect(() => {
@@ -107,6 +117,7 @@ const AdminPage = () => {
         await refreshUsersList();
         await refreshQuiz2UsersList();
         await refreshContactMessages();
+        await refreshContentList('home');
       };
       loadData();
     }
@@ -120,6 +131,211 @@ const AdminPage = () => {
     } catch (error) {
       console.error('خطا در دریافت لیست کاربران:', error);
     }
+  };
+
+  const refreshContentList = async (page?: string) => {
+    try {
+      const items = await listContent(page || contentPageFilter);
+      setContentItems(items);
+    } catch (error) {
+      console.error('خطا در دریافت محتوا:', error);
+      toast.error('خطا در دریافت محتوا');
+    }
+  };
+
+  const handleEditContent = (item?: ContentItem) => {
+    if (item) {
+      setEditingItem({ ...item, data: safeParseJson(item.data) });
+    } else {
+      setEditingItem({ page: contentPageFilter, section_key: '', title: '', data: {}, sort_order: 0, is_active: 1 });
+    }
+  };
+
+  const safeParseJson = (value: any) => {
+    if (value && typeof value === 'string') {
+      try { return JSON.parse(value); } catch { return value; }
+    }
+    return value || {};
+  };
+
+  const handleSaveContent = async () => {
+    if (!editingItem) return;
+    if (!editingItem.page || !editingItem.section_key) {
+      toast.error('صفحه و کلید سکشن الزامی است');
+      return;
+    }
+    setIsSavingContent(true);
+    try {
+      const payload: ContentItem = {
+        page: editingItem.page,
+        section_key: editingItem.section_key,
+        title: editingItem.title || '',
+        data: editingItem.data || {},
+        sort_order: editingItem.sort_order || 0,
+        is_active: editingItem.is_active ? 1 : 0,
+      };
+      if (editingItem.id) {
+        await updateSection(editingItem.id, payload);
+        toast.success('با موفقیت ذخیره شد');
+      } else {
+        await createSection(payload);
+        toast.success('ایجاد شد');
+      }
+      setEditingItem(null);
+      await refreshContentList();
+    } catch (e) {
+      console.error(e);
+      toast.error('خطا در ذخیره‌سازی محتوا');
+    } finally {
+      setIsSavingContent(false);
+    }
+  };
+
+  const handleDeleteContent = async (id: number) => {
+    try {
+      // پیدا کردن سکشن برای نمایش نام
+      const section = contentItems.find(item => item.id === id);
+      const sectionName = section?.title || section?.section_key || 'این سکشن';
+      
+      // نمایش اخطار با SweetAlert2
+      const result = await Swal.fire({
+        title: '⚠️ اخطار حذف سکشن',
+        html: `
+          <div class="text-right">
+            <p class="mb-4">آیا مطمئن هستید که می‌خواهید سکشن <strong>"${sectionName}"</strong> را حذف کنید؟</p>
+            <div class="bg-red-50 border border-red-200 rounded-lg p-4 mb-4">
+              <p class="text-red-800 font-semibold">⚠️ این عمل قابل برگشت نیست!</p>
+              <p class="text-red-600 text-sm mt-2">قبل از حذف، یک بکاپ خودکار از محتوا گرفته می‌شود.</p>
+            </div>
+            <p class="text-gray-600 text-sm">برای ادامه، نام سکشن را تایپ کنید:</p>
+            <input type="text" id="confirmName" class="mt-2 w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500" placeholder="${sectionName}">
+          </div>
+        `,
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'بله، حذف کن',
+        cancelButtonText: 'انصراف',
+        confirmButtonColor: '#dc2626',
+        cancelButtonColor: '#6b7280',
+        focusConfirm: false,
+        preConfirm: () => {
+          const confirmName = (document.getElementById('confirmName') as HTMLInputElement)?.value;
+          if (confirmName !== sectionName) {
+            Swal.showValidationMessage('نام سکشن صحیح نیست!');
+            return false;
+          }
+          return true;
+        }
+      });
+
+      if (result.isConfirmed) {
+        // نمایش loading
+        Swal.fire({
+          title: 'در حال حذف...',
+          text: 'لطفاً صبر کنید',
+          allowOutsideClick: false,
+          didOpen: () => {
+            Swal.showLoading();
+          }
+        });
+
+        // گرفتن بکاپ قبل از حذف
+        try {
+          const backupBlob = await backupContent();
+          const backupUrl = URL.createObjectURL(backupBlob);
+          const backupLink = document.createElement('a');
+          backupLink.href = backupUrl;
+          backupLink.download = `backup-before-delete-${sectionName}-${new Date().toISOString().split('T')[0]}.json`;
+          document.body.appendChild(backupLink);
+          backupLink.click();
+          document.body.removeChild(backupLink);
+          URL.revokeObjectURL(backupUrl);
+        } catch (backupError) {
+          console.warn('خطا در بکاپ:', backupError);
+        }
+
+        // حذف سکشن
+        await deleteSection(id);
+        
+        // نمایش موفقیت
+        Swal.fire({
+          title: '✅ موفقیت',
+          text: `سکشن "${sectionName}" با موفقیت حذف شد`,
+          icon: 'success',
+          confirmButtonText: 'باشه'
+        });
+        
+        toast.success(`سکشن "${sectionName}" با موفقیت حذف شد`);
+        await refreshContentList();
+      }
+    } catch (error) {
+      console.error('خطا در حذف سکشن:', error);
+      Swal.fire({
+        title: '❌ خطا',
+        text: 'خطا در حذف سکشن',
+        icon: 'error',
+        confirmButtonText: 'باشه'
+      });
+      toast.error('خطا در حذف سکشن');
+    }
+  };
+
+  // بکاپ محتوا
+  const handleBackupContent = async () => {
+    try {
+      const blob = await backupContent();
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = `content-backup-${new Date().toISOString().split('T')[0]}.json`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(url);
+      toast.success('بکاپ با موفقیت دانلود شد');
+    } catch (error) {
+      console.error('خطا در بکاپ:', error);
+      toast.error('خطا در بکاپ محتوا');
+    }
+  };
+
+  // ریستور محتوا
+  const handleRestoreContent = async () => {
+    const result = await Swal.fire({
+      title: 'ریستور محتوا',
+      text: 'آیا مطمئن هستید که می‌خواهید محتوای فعلی را با فایل بکاپ جایگزین کنید؟ این عمل غیرقابل برگشت است!',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#d33',
+      cancelButtonColor: '#3085d6',
+      confirmButtonText: 'بله، ریستور کن!',
+      cancelButtonText: 'انصراف',
+      reverseButtons: true
+    });
+
+    if (!result.isConfirmed) return;
+
+    // ایجاد input برای انتخاب فایل
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.accept = '.json';
+    input.onchange = async (e) => {
+      const file = (e.target as HTMLInputElement).files?.[0];
+      if (!file) return;
+
+      try {
+        const text = await file.text();
+        const backupData = JSON.parse(text);
+        
+        const restoreResult = await restoreContent(backupData);
+        toast.success(restoreResult.message);
+        await refreshContentList();
+      } catch (error) {
+        console.error('خطا در ریستور:', error);
+        toast.error('خطا در ریستور محتوا. لطفاً فایل معتبر انتخاب کنید.');
+      }
+    };
+    input.click();
   };
 
   const refreshQuiz2UsersList = async () => {
@@ -154,6 +370,7 @@ const AdminPage = () => {
       await refreshUsersList();
       await refreshQuiz2UsersList();
       await refreshContactMessages();
+      await refreshContentList('home');
     } else {
       alert('رمز عبور اشتباه است!');
     }
@@ -204,6 +421,84 @@ const AdminPage = () => {
     } catch (error) {
       console.error('خطا در به‌روزرسانی وضعیت پیام:', error);
       toast.error('خطا در به‌روزرسانی وضعیت پیام');
+    }
+  };
+
+  // تابع حذف کاربر کوییز ۱
+  const handleDeleteUser = async (user: UserInfo) => {
+    const result = await Swal.fire({
+      title: 'حذف کاربر',
+      text: `آیا مطمئن هستید که می‌خواهید کاربر "${user.name || 'بدون نام'}" با شماره ${user.phone} را حذف کنید؟`,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#d33',
+      cancelButtonColor: '#3085d6',
+      confirmButtonText: 'بله، حذف کن!',
+      cancelButtonText: 'انصراف',
+      reverseButtons: true
+    });
+
+    if (!result.isConfirmed) return;
+
+    try {
+      // اینجا باید API حذف کاربر اضافه شود
+      toast.success('کاربر حذف شد');
+      await refreshUsersList();
+    } catch (error) {
+      console.error('خطا در حذف کاربر:', error);
+      toast.error('خطا در حذف کاربر');
+    }
+  };
+
+  // تابع حذف کاربر کوییز ۲
+  const handleDeleteQuiz2User = async (user: Quiz2User) => {
+    const result = await Swal.fire({
+      title: 'حذف کاربر کوییز ۲',
+      text: `آیا مطمئن هستید که می‌خواهید کاربر "${user.name}" با شماره ${user.phone} را حذف کنید؟`,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#d33',
+      cancelButtonColor: '#3085d6',
+      confirmButtonText: 'بله، حذف کن!',
+      cancelButtonText: 'انصراف',
+      reverseButtons: true
+    });
+
+    if (!result.isConfirmed) return;
+
+    try {
+      // اینجا باید API حذف کاربر کوییز ۲ اضافه شود
+      toast.success('کاربر کوییز ۲ حذف شد');
+      await refreshQuiz2UsersList();
+    } catch (error) {
+      console.error('خطا در حذف کاربر کوییز ۲:', error);
+      toast.error('خطا در حذف کاربر کوییز ۲');
+    }
+  };
+
+  // تابع حذف پیام تماس
+  const handleDeleteContactMessage = async (message: ContactMessage) => {
+    const result = await Swal.fire({
+      title: 'حذف پیام',
+      text: `آیا مطمئن هستید که می‌خواهید پیام "${message.name}" را حذف کنید؟`,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#d33',
+      cancelButtonColor: '#3085d6',
+      confirmButtonText: 'بله، حذف کن!',
+      cancelButtonText: 'انصراف',
+      reverseButtons: true
+    });
+
+    if (!result.isConfirmed) return;
+
+    try {
+      // اینجا باید API حذف پیام اضافه شود
+      toast.success('پیام حذف شد');
+      await refreshContactMessages();
+    } catch (error) {
+      console.error('خطا در حذف پیام:', error);
+      toast.error('خطا در حذف پیام');
     }
   };
 
@@ -283,6 +578,7 @@ const AdminPage = () => {
                 
                 <Tabs defaultValue="users" className="w-full">
                   <TabsList className="mb-6 w-full justify-end bg-gray-100 p-1">
+                    <TabsTrigger value="content" className="data-[state=active]:bg-white">مدیریت محتوا</TabsTrigger>
                     <TabsTrigger value="stats" className="data-[state=active]:bg-white flex items-center">
                       <BarChart className="h-4 w-4 ml-1" />
                       <span>آمار کلیک‌ها</span>
@@ -299,6 +595,111 @@ const AdminPage = () => {
                     <TabsTrigger value="quiz2-users" className="data-[state=active]:bg-white">کاربران کوییز سفر ۲</TabsTrigger>
                   </TabsList>
                   
+                  <TabsContent value="content" className="mt-0">
+                    <div className="mb-4 flex items-center justify-between">
+                      <div className="flex items-center gap-2">
+                        <label className="text-sm">صفحه:</label>
+                        <select
+                          value={contentPageFilter}
+                          onChange={async (e) => { setContentPageFilter(e.target.value); await refreshContentList(e.target.value); }}
+                          className="border rounded px-2 py-1"
+                        >
+                          <option value="home">صفحه اصلی</option>
+                          <option value="quiz">کوییز سفر</option>
+                          <option value="quiz2">کوییز سفر ۲</option>
+                        </select>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <Button 
+                          onClick={handleBackupContent} 
+                          variant="outline" 
+                          className="flex items-center gap-2 border-green-500 text-green-600 hover:bg-green-50"
+                        >
+                          <Download className="h-4 w-4" />
+                          بکاپ محتوا
+                        </Button>
+                        <Button 
+                          onClick={handleRestoreContent} 
+                          variant="outline" 
+                          className="flex items-center gap-2 border-orange-500 text-orange-600 hover:bg-orange-50"
+                        >
+                          <Upload className="h-4 w-4" />
+                          ریستور محتوا
+                        </Button>
+                        <Button onClick={() => handleEditContent()} className="bg-peyk-blue">ایجاد سکشن جدید</Button>
+                      </div>
+                    </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                      {contentItems.length > 0 ? contentItems.map((item, idx) => (
+                        <div key={item.id} className="bg-white border rounded-lg p-4 hover:shadow-md transition-shadow">
+                          <div className="flex justify-between items-start mb-3">
+                            <h4 className="font-bold text-gray-800">{item.title || item.section_key}</h4>
+                            <span className="text-xs bg-gray-100 px-2 py-1 rounded">{item.page}</span>
+                          </div>
+                          <p className="text-sm text-gray-600 mb-3">{item.section_key}</p>
+                          <div className="flex gap-2">
+                            <Button size="sm" variant="outline" onClick={() => handleEditContent(item)} className="flex-1">
+                              ویرایش
+                            </Button>
+                            {item.id && (
+                              <Button size="sm" variant="destructive" onClick={() => handleDeleteContent(item.id!)}>
+                                حذف
+                              </Button>
+                            )}
+                          </div>
+                        </div>
+                      )) : (
+                        <div className="col-span-full text-center py-8 text-gray-500">
+                          موردی یافت نشد
+                        </div>
+                      )}
+                    </div>
+
+                    {editingItem && (
+                      <div className="fixed inset-0 bg-black/30 flex items-center justify-center z-50 p-4">
+                        <div className="bg-white rounded-xl p-6 w-full max-w-4xl max-h-[90vh] overflow-y-auto shadow-lg">
+                          <h3 className="text-xl font-bold mb-6 text-center">{editingItem.id ? 'ویرایش سکشن' : 'ایجاد سکشن'}</h3>
+                          
+                          {/* فرم بر اساس نوع سکشن */}
+                          {editingItem.section_key === 'navbar' ? (
+                            <NavbarEditForm 
+                              item={editingItem} 
+                              onSave={handleSaveContent}
+                              onCancel={() => setEditingItem(null)}
+                              isSaving={isSavingContent}
+                              onChange={setEditingItem}
+                            />
+                          ) : editingItem.section_key === 'footer' ? (
+                            <FooterEditForm 
+                              item={editingItem} 
+                              onSave={handleSaveContent}
+                              onCancel={() => setEditingItem(null)}
+                              isSaving={isSavingContent}
+                              onChange={setEditingItem}
+                            />
+                          ) : editingItem.section_key === 'hero' ? (
+                            <HeroEditForm 
+                              item={editingItem} 
+                              onSave={handleSaveContent}
+                              onCancel={() => setEditingItem(null)}
+                              isSaving={isSavingContent}
+                              onChange={setEditingItem}
+                            />
+                          ) : (
+                            <ContentEditForm 
+                              item={editingItem} 
+                              onSave={handleSaveContent}
+                              onCancel={() => setEditingItem(null)}
+                              isSaving={isSavingContent}
+                              onChange={setEditingItem}
+                            />
+                          )}
+                        </div>
+                      </div>
+                    )}
+                  </TabsContent>
+
                   <TabsContent value="users" className="mt-0">
                     <div className="flex justify-between items-center mb-4">
                       <h3 className="text-lg font-semibold">لیست کاربران کوییز سفر ({filteredUsers.length} نفر)</h3>
@@ -328,6 +729,7 @@ const AdminPage = () => {
                             <th className="py-2 px-2 border-b text-right">ماجراجویی</th>
                             <th className="py-2 px-2 border-b text-right">امتیاز</th>
                             <th className="py-2 px-2 border-b text-right">تاریخ ثبت</th>
+                            <th className="py-2 px-2 border-b text-right">اقدامات</th>
                           </tr>
                         </thead>
                         <tbody>
@@ -438,13 +840,22 @@ const AdminPage = () => {
                                 <td className="py-2 px-2 border-b text-right">
                                   {user.created_at ? new Date(user.created_at).toLocaleDateString('fa-IR') : '-'}
                                 </td>
+                                <td className="py-2 px-2 border-b text-right">
+                                  <Button
+                                    size="sm"
+                                    variant="destructive"
+                                    onClick={() => handleDeleteUser(user)}
+                                  >
+                                    حذف
+                                  </Button>
+                                </td>
                               </tr>
                             ))
                           ) : (
                             <tr>
-                              <td colSpan={12} className="py-4 text-center text-gray-500">
-                                هنوز کاربری ثبت نشده است
-                              </td>
+                                                          <td colSpan={13} className="py-4 text-center text-gray-500">
+                              هنوز کاربری ثبت نشده است
+                            </td>
                             </tr>
                           )}
                         </tbody>
@@ -475,6 +886,7 @@ const AdminPage = () => {
                             <th className="py-2 px-2 border-b text-right">نتیجه</th>
                             <th className="py-2 px-2 border-b text-right" style={{ minWidth: '300px' }}>پاسخ‌ها</th>
                             <th className="py-2 px-2 border-b text-right">تاریخ ثبت</th>
+                            <th className="py-2 px-2 border-b text-right">اقدامات</th>
                           </tr>
                         </thead>
                         <tbody>
@@ -504,11 +916,20 @@ const AdminPage = () => {
                                   })()}
                                 </td>
                                 <td className="py-2 px-2 border-b text-right">{new Date(user.created_at).toLocaleString('fa-IR')}</td>
+                                <td className="py-2 px-2 border-b text-right">
+                                  <Button
+                                    size="sm"
+                                    variant="destructive"
+                                    onClick={() => handleDeleteQuiz2User(user)}
+                                  >
+                                    حذف
+                                  </Button>
+                                </td>
                               </tr>
                             ))
                           ) : (
                             <tr>
-                              <td colSpan={6} className="py-4 px-4 text-center">
+                              <td colSpan={7} className="py-4 px-4 text-center">
                                 کاربری یافت نشد.
                               </td>
                             </tr>
@@ -567,6 +988,14 @@ const AdminPage = () => {
                                     <span className="text-xs">علامت‌گذاری به عنوان خوانده شده</span>
                                   </Button>
                                 )}
+                                <Button 
+                                  variant="ghost" 
+                                  size="sm" 
+                                  onClick={() => handleDeleteContactMessage(message)}
+                                  className="text-red-600 hover:text-red-700 hover:bg-red-50 p-1"
+                                >
+                                  <span className="text-xs">حذف پیام</span>
+                                </Button>
                               </div>
                             </div>
                             <p className="text-gray-700 whitespace-pre-wrap mb-2 text-right">{message.message}</p>

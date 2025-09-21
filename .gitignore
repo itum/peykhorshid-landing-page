@@ -26,3 +26,14 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Deployment files
+*.zip
+server-deploy.zip
+frontend-deploy.zip
+
+# Seed files (keep for reference but don't commit)
+seed-*.js
+
+# Server node_modules
+server/node_modules

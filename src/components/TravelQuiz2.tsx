@@ -3,8 +3,11 @@ import { Button } from './ui/button';
 import { Input } from './ui/input';
 import { toast } from './ui/use-toast';
 import apiClient from '../lib/services/apiClient';
+import { useEffect } from 'react';
+import { getSection } from '@/lib/services/contentService';
 
-const questions = [
+// سوالات پیشفرض (fallback)
+const defaultQuestions = [
   {
     text: 'وقتی می‌رسی به مقصد، اولین کاری که می‌کنی؟',
     options: [
@@ -97,6 +100,20 @@ const TravelQuiz2: React.FC = () => {
   const [quizId, setQuizId] = useState<number | null>(null);
   const [result, setResult] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [questions, setQuestions] = useState<any[]>(defaultQuestions);
+
+  // بارگذاری سوالات از CMS
+  useEffect(() => {
+    (async () => {
+      const section = await getSection('quiz2', 'quiz2_content');
+      const data = section?.data;
+      if (data && Array.isArray(data.questions) && data.questions.length > 0) {
+        try {
+          setQuestions(data.questions);
+        } catch {}
+      }
+    })();
+  }, []);
 
   const handleStartQuiz = async () => {
     if (!name || !phone) {

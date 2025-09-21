@@ -1,7 +1,23 @@
 import axios, { AxiosResponse, AxiosError } from 'axios';
 
+// تعیین URL بر اساس محیط
+const getBaseURL = () => {
+  // اگر متغیر محیطی تعریف شده باشد، از آن استفاده کن
+  if (import.meta.env.VITE_API_URL) {
+    return import.meta.env.VITE_API_URL;
+  }
+  
+  // در محیط production از URL اصلی استفاده کن
+  if (import.meta.env.PROD) {
+    return 'https://ghesti.peykkhorshid.ir';
+  }
+  
+  // در محیط development از localhost استفاده کن
+  return 'http://localhost:3001';
+};
+
 const apiClient = axios.create({
-  baseURL: import.meta.env.VITE_API_URL || 'https://apighesti.peykkhorshid.ir',
+  baseURL: getBaseURL(),
   timeout: 10000,
   headers: {
     'Content-Type': 'application/json'

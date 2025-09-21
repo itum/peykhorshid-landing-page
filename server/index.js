@@ -6,9 +6,12 @@ const Quiz = require('./models/Quiz');
 const Contact = require('./models/Contact');
 const ClickStats = require('./models/ClickStats');
 const Quiz2 = require('./models/Quiz2');
+const Content = require('./models/Content');
 const quizRoutes = require('./routes/quizRoutes');
 const contactRoutes = require('./routes/contactRoutes');
 const statsRoutes = require('./routes/statsRoutes');
+const contentRoutes = require('./routes/contentRoutes');
+const uploadRoutes = require('./routes/uploadRoutes');
 
 // تنظیمات اولیه برنامه
 const app = express();
@@ -22,11 +25,14 @@ app.use(cors({
 }));
 app.use(bodyParser.json());
 app.use(express.urlencoded({ extended: true }));
+app.use('/uploads', express.static('uploads'));
 
 // تنظیم مسیرهای API
 app.use('/api/quiz', quizRoutes);
 app.use('/api/contacts', contactRoutes);
 app.use('/api/stats', statsRoutes);
+app.use('/api/content', contentRoutes);
+app.use('/api/upload', uploadRoutes);
 
 // مسیر اصلی
 app.get('/', (req, res) => {
@@ -49,6 +55,7 @@ const startServer = async () => {
     await Contact.createTable();
     await ClickStats.createTable();
     await Quiz2.createTable();
+    await Content.createTable();
     
     app.listen(PORT, '0.0.0.0', () => {
       console.log(`سرور با موفقیت در پورت ${PORT} راه‌اندازی شد.`);

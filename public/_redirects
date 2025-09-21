@@ -1,1 +1,18 @@
-/* /index.html 200 
+# Netlify Redirects for Peyk Khorshid SPA
+# این فایل برای React SPA و API routing در Netlify تنظیم شده
+
+# مسیریابی برای API - اگر از Netlify Functions استفاده می‌کنید
+# /api/* /.netlify/functions/api/:splat 200
+
+# مسیریابی برای API - اگر از سرور خارجی استفاده می‌کنید
+/api/* https://ghesti.peykkhorshid.ir/api/:splat 200
+
+# مسیریابی برای React Router (SPA)
+/* /index.html 200
+
+# تنظیمات CORS
+/api/*
+  Access-Control-Allow-Origin: *
+  Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS
+  Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-With
+  Access-Control-Max-Age: 3600

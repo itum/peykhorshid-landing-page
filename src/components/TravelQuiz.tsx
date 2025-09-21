@@ -5,6 +5,7 @@ import { Input } from '@/components/ui/input';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Check, Plane, Map, Palmtree, Mountain, Car, Train, Anchor, Phone, User, Lock } from 'lucide-react';
+import { getSection } from '@/lib/services/contentService';
 import { addUser, sendSMS, sendSMSAlternative, UserInfo } from '@/lib/services/userService';
 import { sendSMSWithJSONP, sendSMSWithIframe } from '@/lib/services/smsUtils';
 import confetti from 'canvas-confetti';
@@ -42,8 +43,8 @@ type QuizQuestion = {
   multiple?: boolean;
 };
 
-// سوالات آزمون
-const questions: QuizQuestion[] = [
+// سوالات آزمون پیشفرض (fallback)
+const defaultQuestions: QuizQuestion[] = [
   {
     id: 'location',
     question: 'تمایل به چه نوع سفری دارید؟',
@@ -115,9 +116,34 @@ const TravelQuiz = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [quizCompleted, setQuizCompleted] = useState(false);
   const [selectedOptions, setSelectedOptions] = useState<string[]>([]);
+  const [questions, setQuestions] = useState<QuizQuestion[]>(defaultQuestions);
   const totalSteps = questions.length;
   const [showPhoneModal, setShowPhoneModal] = useState(true);
   const [isPhoneValid, setIsPhoneValid] = useState(false);
+
+  // بارگذاری سوالات از CMS
+  useEffect(() => {
+    (async () => {
+      const section = await getSection('quiz', 'quiz_content');
+      const data = section?.data;
+      if (data && Array.isArray(data.questions) && data.questions.length > 0) {
+        try {
+          const mapped: QuizQuestion[] = data.questions.map((q: any, idx: number) => ({
+            id: q.id || `q_${idx + 1}`,
+            question: q.question,
+            multiple: !!q.multiple,
+            options: (q.options || []).map((o: any, oidx: number) => ({
+              id: o.id || `o_${oidx + 1}`,
+              text: o.label || o.text,
+              icon: <span className="text-sm">•</span>,
+              value: o.value,
+            }))
+          }));
+          if (mapped.length > 0) setQuestions(mapped);
+        } catch {}
+      }
+    })();
+  }, []);
 
   // جشن برای نمایش در پایان آزمون
   const triggerConfetti = () => {

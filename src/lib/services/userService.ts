@@ -2,7 +2,18 @@ import axios from 'axios';
 import * as XLSX from 'xlsx';
 import { sendSMSWithJSONP, sendSMSWithIframe } from './smsUtils';
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'https://apighesti.peykkhorshid.ir';
+// تعیین URL بر اساس محیط
+const getBaseURL = () => {
+  if (import.meta.env.VITE_API_URL) {
+    return import.meta.env.VITE_API_URL;
+  }
+  if (import.meta.env.PROD) {
+    return 'https://ghesti.peykkhorshid.ir';
+  }
+  return 'http://localhost:3001';
+};
+
+const API_BASE_URL = getBaseURL();
 // آدرس API سرور
 const API_URL = `${API_BASE_URL}/api/quiz`;
 

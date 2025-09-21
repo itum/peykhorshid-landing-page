@@ -581,3 +581,75 @@ section {
 .section-nav-transition {
   transition: opacity 0.4s ease, transform 0.4s ease;
 }
+
+/* انیمیشن‌های Hero Banner */
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-20px);
+  }
+}
+
+@keyframes float-delayed {
+  0%, 100% {
+    transform: translateY(0px) rotate(12deg);
+  }
+  50% {
+    transform: translateY(-15px) rotate(12deg);
+  }
+}
+
+@keyframes cloud-float {
+  0%, 100% {
+    transform: translateX(0px) translateY(0px);
+  }
+  33% {
+    transform: translateX(10px) translateY(-5px);
+  }
+  66% {
+    transform: translateX(-5px) translateY(5px);
+  }
+}
+
+@keyframes cloud-float-delayed {
+  0%, 100% {
+    transform: translateX(0px) translateY(0px);
+  }
+  33% {
+    transform: translateX(-8px) translateY(3px);
+  }
+  66% {
+    transform: translateX(5px) translateY(-3px);
+  }
+}
+
+@keyframes cloud-float-slow {
+  0%, 100% {
+    transform: translateX(0px) translateY(0px);
+  }
+  50% {
+    transform: translateX(15px) translateY(-8px);
+  }
+}
+
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+.animate-float-delayed {
+  animation: float-delayed 8s ease-in-out infinite;
+}
+
+.animate-cloud-float {
+  animation: cloud-float 12s ease-in-out infinite;
+}
+
+.animate-cloud-float-delayed {
+  animation: cloud-float-delayed 15s ease-in-out infinite;
+}
+
+.animate-cloud-float-slow {
+  animation: cloud-float-slow 20s ease-in-out infinite;
+}

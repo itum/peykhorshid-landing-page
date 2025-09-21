@@ -1,7 +1,18 @@
 import axios from 'axios';
 
 // آدرس API سرور
-const API_URL = `${import.meta.env.VITE_API_URL}/contacts`;
+// تعیین URL بر اساس محیط
+const getBaseURL = () => {
+  if (import.meta.env.VITE_API_URL) {
+    return import.meta.env.VITE_API_URL;
+  }
+  if (import.meta.env.PROD) {
+    return 'https://ghesti.peykkhorshid.ir';
+  }
+  return 'http://localhost:3001';
+};
+
+const API_URL = `${getBaseURL()}/api/contacts`;
 
 // تعریف تایپ پیام تماس با ما
 export type ContactMessage = {
