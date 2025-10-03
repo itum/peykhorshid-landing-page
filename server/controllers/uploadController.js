@@ -55,7 +55,18 @@ exports.uploadImage = async (req, res) => {
       });
     }
 
-    const baseUrl = process.env.BASE_URL || 'http://localhost:3001';
+    // تشخیص محیط و تولید URL مناسب
+    const isProduction = process.env.NODE_ENV === 'production';
+    let baseUrl;
+    
+    if (isProduction) {
+      // در محیط تولید، از دامنه اصلی استفاده کن
+      baseUrl = process.env.BASE_URL || 'https://ghesti.peykkhorshid.ir';
+    } else {
+      // در محیط توسعه، از localhost استفاده کن
+      baseUrl = process.env.BASE_URL || 'http://localhost:3001';
+    }
+    
     const imageUrl = `${baseUrl}/uploads/images/${req.file.filename}`;
     
     res.json({
@@ -118,6 +129,16 @@ exports.listImages = async (req, res) => {
       });
     }
 
+    // تشخیص محیط و تولید URL مناسب
+    const isProduction = process.env.NODE_ENV === 'production';
+    let baseUrl;
+    
+    if (isProduction) {
+      baseUrl = process.env.BASE_URL || 'https://ghesti.peykkhorshid.ir';
+    } else {
+      baseUrl = process.env.BASE_URL || 'http://localhost:3001';
+    }
+
     const files = fs.readdirSync(imagesPath);
     const images = files
       .filter(file => {
@@ -126,7 +147,7 @@ exports.listImages = async (req, res) => {
       })
       .map(file => ({
         filename: file,
-        url: `${process.env.BASE_URL || 'http://localhost:3001'}/uploads/images/${file}`,
+        url: `${baseUrl}/uploads/images/${file}`,
         path: path.join(imagesPath, file),
         size: fs.statSync(path.join(imagesPath, file)).size,
         created: fs.statSync(path.join(imagesPath, file)).birthtime

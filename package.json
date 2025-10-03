@@ -4,10 +4,13 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "VITE_API_URL=http://localhost:3001 vite",
-    "start": "VITE_API_URL=http://localhost:3001 vite",
-    "build": "vite build",
-    "build:dev": "vite build --mode development",
+    "dev": "vite --mode development",
+    "start": "vite --mode development",
+    "build": "NODE_ENV=production vite build --mode production && npm run postbuild",
+    "build:dev": "NODE_ENV=development vite build --mode development && npm run postbuild",
+    "postbuild": "npm run copy-htaccess",
+    "copy-htaccess": "node scripts/copy-htaccess.js",
+    "copy-htaccess:win": "scripts\\copy-htaccess.cmd",
     "lint": "eslint .",
     "preview": "vite preview"
   },

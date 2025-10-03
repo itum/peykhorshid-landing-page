@@ -1,0 +1,120 @@
+# Apache Configuration for Peyk Khorshid SPA
+# این فایل برای React SPA و API routing تنظیم شده
+
+# فعال کردن mod_rewrite
+RewriteEngine On
+
+# تنظیمات CORS برای API
+<IfModule mod_headers.c>
+    # اجازه دسترسی از همه دامنه‌ها
+    Header always set Access-Control-Allow-Origin "*"
+    Header always set Access-Control-Allow-Methods "GET, POST, PUT, DELETE, OPTIONS"
+    Header always set Access-Control-Allow-Headers "Content-Type, Authorization, X-Requested-With"
+    Header always set Access-Control-Max-Age "3600"
+    
+    # پاسخ به OPTIONS request
+    RewriteCond %{REQUEST_METHOD} OPTIONS
+    RewriteRule ^(.*)$ $1 [R=200,L]
+</IfModule>
+
+# مسیریابی برای API - فقط در محیط توسعه
+# در محیط تولید، API ها باید مستقیماً از سرور Node.js سرو شوند
+# RewriteCond %{REQUEST_URI} ^/api/
+# RewriteRule ^api/(.*)$ http://localhost:3001/api/$1 [P,L]
+
+# مسیریابی برای فایل‌های آپلود شده
+RewriteCond %{REQUEST_URI} ^/uploads/
+RewriteRule ^uploads/(.*)$ /uploads/$1 [L]
+
+# مسیریابی برای فایل‌های استاتیک
+RewriteCond %{REQUEST_FILENAME} -f
+RewriteRule ^.*$ - [L]
+
+# مسیریابی برای React Router (SPA)
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^.*$ /index.html [L]
+
+# تنظیمات امنیتی
+<IfModule mod_headers.c>
+    # جلوگیری از clickjacking
+    Header always set X-Frame-Options "SAMEORIGIN"
+    
+    # جلوگیری از MIME type sniffing
+    Header always set X-Content-Type-Options "nosniff"
+    
+    # فعال کردن XSS protection
+    Header always set X-XSS-Protection "1; mode=block"
+    
+    # تنظیم Referrer Policy
+    Header always set Referrer-Policy "strict-origin-when-cross-origin"
+</IfModule>
+
+# تنظیمات فشرده‌سازی
+<IfModule mod_deflate.c>
+    # فشرده‌سازی فایل‌های متنی
+    AddOutputFilterByType DEFLATE text/plain
+    AddOutputFilterByType DEFLATE text/html
+    AddOutputFilterByType DEFLATE text/xml
+    AddOutputFilterByType DEFLATE text/css
+    AddOutputFilterByType DEFLATE application/xml
+    AddOutputFilterByType DEFLATE application/xhtml+xml
+    AddOutputFilterByType DEFLATE application/rss+xml
+    AddOutputFilterByType DEFLATE application/javascript
+    AddOutputFilterByType DEFLATE application/x-javascript
+    AddOutputFilterByType DEFLATE application/json
+</IfModule>
+
+# تنظیمات کش
+<IfModule mod_expires.c>
+    ExpiresActive On
+    
+    # کش برای فایل‌های CSS و JS
+    ExpiresByType text/css "success plus 1 month"
+    ExpiresByType application/javascript "success plus 1 month"
+    ExpiresByType application/x-javascript "success plus 1 month"
+    
+    # کش برای تصاویر
+    ExpiresByType image/png "success plus 1 year"
+    ExpiresByType image/jpg "success plus 1 year"
+    ExpiresByType image/jpeg "success plus 1 year"
+    ExpiresByType image/gif "success plus 1 year"
+    ExpiresByType image/svg+xml "success plus 1 year"
+    ExpiresByType image/webp "success plus 1 year"
+    
+    # کش برای فونت‌ها
+    ExpiresByType font/woff "success plus 1 year"
+    ExpiresByType font/woff2 "success plus 1 year"
+    ExpiresByType application/font-woff "success plus 1 year"
+    ExpiresByType application/font-woff2 "success plus 1 year"
+    
+    # کش برای HTML
+    ExpiresByType text/html "success plus 1 hour"
+</IfModule>
+
+# تنظیمات MIME types
+<IfModule mod_mime.c>
+    # فونت‌ها
+    AddType font/woff .woff
+    AddType font/woff2 .woff2
+    AddType application/font-woff .woff
+    AddType application/font-woff2 .woff2
+    
+    # JSON
+    AddType application/json .json
+    
+    # SVG
+    AddType image/svg+xml .svg
+</IfModule>
+
+# جلوگیری از دسترسی به فایل‌های حساس
+<FilesMatch "\.(htaccess|htpasswd|ini|log|sh|inc|bak)$">
+    Require all denied
+</FilesMatch>
+
+# جلوگیری از دسترسی به پوشه‌های حساس
+RedirectMatch 403 /\..*$
+
+# تنظیمات خطا
+ErrorDocument 404 /index.html
+ErrorDocument 500 /index.html

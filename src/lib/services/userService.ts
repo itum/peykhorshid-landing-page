@@ -1,30 +1,10 @@
 import axios from 'axios';
 import * as XLSX from 'xlsx';
 import { sendSMSWithJSONP, sendSMSWithIframe } from './smsUtils';
+import { getApiUrl } from '@/lib/config/environment';
 
-// تعیین URL بر اساس محیط
-const getBaseURL = () => {
-  // بررسی اینکه آیا در localhost هستیم یا نه
-  const isLocalhost = window.location.hostname === 'localhost' || 
-                     window.location.hostname === '127.0.0.1' || 
-                     window.location.hostname === '::1';
-  
-  if (import.meta.env.VITE_API_URL) {
-    return import.meta.env.VITE_API_URL;
-  }
-  
-  // اگر در localhost هستیم، از localhost استفاده کنیم
-  if (isLocalhost) {
-    return 'http://localhost:3001';
-  }
-  
-  // در غیر این صورت از production استفاده کنیم
-  return 'https://ghesti.peykkhorshid.ir';
-};
-
-const API_BASE_URL = getBaseURL();
 // آدرس API سرور
-const API_URL = `${API_BASE_URL}/api/quiz`;
+const API_URL = getApiUrl('api/quiz');
 
 // تعریف تایپ اطلاعات کاربر
 export type UserInfo = {
