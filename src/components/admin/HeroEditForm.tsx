@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -28,7 +28,7 @@ const HeroEditForm: React.FC<HeroEditFormProps> = ({
   const [uploading, setUploading] = useState(false);
   const [images, setImages] = useState<ImageInfo[]>([]);
   const [loadingImages, setLoadingImages] = useState(false);
-  const fileInputRef = useRef<HTMLInputElement>(null);
+  const [dragOver, setDragOver] = useState<string | null>(null);
 
   // بارگذاری لیست تصاویر
   const loadImages = async () => {
@@ -100,14 +100,43 @@ const HeroEditForm: React.FC<HeroEditFormProps> = ({
 
   // انتخاب فایل
   const handleFileSelect = (type: 'desktop' | 'mobile') => {
-    if (fileInputRef.current) {
-      fileInputRef.current.onchange = (e) => {
-        const file = (e.target as HTMLInputElement).files?.[0];
-        if (file) {
-          handleImageUpload(file, type);
-        }
-      };
-      fileInputRef.current.click();
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.accept = '.png,.jpg,.jpeg,.gif,.webp,.svg';
+    input.style.display = 'none';
+    
+    input.onchange = (e) => {
+      const file = (e.target as HTMLInputElement).files?.[0];
+      if (file) {
+        handleImageUpload(file, type);
+      }
+    };
+    
+    input.click();
+  };
+
+  // Drag and drop handlers
+  const handleDragOver = (e: React.DragEvent, type: string) => {
+    e.preventDefault();
+    setDragOver(type);
+  };
+
+  const handleDragLeave = (e: React.DragEvent) => {
+    e.preventDefault();
+    setDragOver(null);
+  };
+
+  const handleDrop = async (e: React.DragEvent, type: 'desktop' | 'mobile') => {
+    e.preventDefault();
+    setDragOver(null);
+    
+    const files = Array.from(e.dataTransfer.files);
+    const imageFile = files.find(file => file.type.startsWith('image/'));
+    
+    if (imageFile) {
+      handleImageUpload(imageFile, type);
+    } else {
+      toast.error('لطفاً یک فایل تصویری انتخاب کنید');
     }
   };
 
@@ -317,19 +346,50 @@ const HeroEditForm: React.FC<HeroEditFormProps> = ({
 
               <div className="mb-4">
                 <Button
-                  onClick={() => fileInputRef.current?.click()}
+                  onClick={() => {
+                    const input = document.createElement('input');
+                    input.type = 'file';
+                    input.accept = '.png,.jpg,.jpeg,.gif,.webp,.svg';
+                    input.style.display = 'none';
+                    
+                    input.onchange = async (e) => {
+                      const file = (e.target as HTMLInputElement).files?.[0];
+                      if (file) {
+                        try {
+                          // بررسی نوع فایل
+                          const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp', 'image/svg+xml'];
+                          if (!allowedTypes.includes(file.type)) {
+                            toast.error('فقط فایل‌های تصویری (PNG, JPG, JPEG, GIF, WEBP, SVG) مجاز هستند');
+                            return;
+                          }
+                          
+                          // بررسی سایز فایل (10MB)
+                          if (file.size > 10 * 1024 * 1024) {
+                            toast.error('سایز فایل نباید بیشتر از 10MB باشد');
+                            return;
+                          }
+
+                          setUploading(true);
+                          await uploadImage(file);
+                          toast.success('تصویر با موفقیت آپلود شد');
+                          await loadImages(); // بارگذاری مجدد لیست تصاویر
+                        } catch (error) {
+                          console.error('Error uploading image:', error);
+                          toast.error('خطا در آپلود تصویر');
+                        } finally {
+                          setUploading(false);
+                        }
+                      }
+                    };
+                    
+                    input.click();
+                  }}
                   disabled={uploading}
                   className="w-full"
                 >
                   <Upload className="h-4 w-4 ml-2" />
                   {uploading ? 'در حال آپلود...' : 'آپلود تصویر جدید'}
                 </Button>
-                <input
-                  ref={fileInputRef}
-                  type="file"
-                  accept=".png,.jpg,.jpeg,.gif,.webp,.svg"
-                  className="hidden"
-                />
                 <p className="text-xs text-gray-500 mt-2 text-center">
                   PNG, JPG, JPEG, GIF, WEBP, SVG (حداکثر 10MB)
                 </p>
@@ -385,12 +445,12 @@ const HeroEditForm: React.FC<HeroEditFormProps> = ({
               <CardTitle>تصویر دسکتاپ</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
-              {/* اطلاعات سایز پیشنهادی */}
-              <ImageSizeInfo 
-                recommendedSize="1920x1080px" 
-                description="سایز پیشنهادی تصویر دسکتاپ"
-                className="mb-4"
-              />
+              <div className="mb-4">
+                <ImageSizeInfo 
+                  recommendedSize="1920x1080px" 
+                  description="سایز پیشنهادی تصویر دسکتاپ"
+                />
+              </div>
               <div>
                 <Label>تصویر فعلی</Label>
                 {item.data?.desktop?.url ? (
@@ -427,15 +487,25 @@ const HeroEditForm: React.FC<HeroEditFormProps> = ({
                     </div>
                   </div>
                 ) : (
-                  <div className="mt-2 border-2 border-dashed border-gray-300 rounded-lg p-8 text-center">
+                  <div 
+                    className={`mt-2 border-2 border-dashed rounded-lg p-8 text-center transition-colors ${
+                      dragOver === 'desktop' 
+                        ? 'border-blue-500 bg-blue-50' 
+                        : 'border-gray-300 hover:border-gray-400'
+                    }`}
+                    onDragOver={(e) => handleDragOver(e, 'desktop')}
+                    onDragLeave={handleDragLeave}
+                    onDrop={(e) => handleDrop(e, 'desktop')}
+                  >
                     <ImageIcon className="h-12 w-12 mx-auto text-gray-400 mb-4" />
-                    <p className="text-gray-500 mb-4">هیچ تصویری انتخاب نشده</p>
+                    <p className="text-gray-500 mb-2">هیچ تصویری انتخاب نشده</p>
+                    <p className="text-sm text-gray-400 mb-4">تصویر را اینجا بکشید یا کلیک کنید</p>
                     <Button
                       onClick={() => handleFileSelect('desktop')}
                       disabled={uploading}
                     >
                       <Upload className="h-4 w-4 ml-2" />
-                      انتخاب تصویر
+                      {uploading ? 'در حال آپلود...' : 'انتخاب تصویر'}
                     </Button>
                   </div>
                 )}
@@ -508,15 +578,25 @@ const HeroEditForm: React.FC<HeroEditFormProps> = ({
                     </div>
                   </div>
                 ) : (
-                  <div className="mt-2 border-2 border-dashed border-gray-300 rounded-lg p-8 text-center">
+                  <div 
+                    className={`mt-2 border-2 border-dashed rounded-lg p-8 text-center transition-colors ${
+                      dragOver === 'mobile' 
+                        ? 'border-blue-500 bg-blue-50' 
+                        : 'border-gray-300 hover:border-gray-400'
+                    }`}
+                    onDragOver={(e) => handleDragOver(e, 'mobile')}
+                    onDragLeave={handleDragLeave}
+                    onDrop={(e) => handleDrop(e, 'mobile')}
+                  >
                     <ImageIcon className="h-12 w-12 mx-auto text-gray-400 mb-4" />
-                    <p className="text-gray-500 mb-4">هیچ تصویری انتخاب نشده</p>
+                    <p className="text-gray-500 mb-2">هیچ تصویری انتخاب نشده</p>
+                    <p className="text-sm text-gray-400 mb-4">تصویر را اینجا بکشید یا کلیک کنید</p>
                     <Button
                       onClick={() => handleFileSelect('mobile')}
                       disabled={uploading}
                     >
                       <Upload className="h-4 w-4 ml-2" />
-                      انتخاب تصویر
+                      {uploading ? 'در حال آپلود...' : 'انتخاب تصویر'}
                     </Button>
                   </div>
                 )}

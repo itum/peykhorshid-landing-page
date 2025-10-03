@@ -28,6 +28,7 @@ const NavbarEditForm: React.FC<NavbarEditFormProps> = ({
   const [images, setImages] = useState<ImageInfo[]>([]);
   const [isUploading, setIsUploading] = useState(false);
   const [showImageGallery, setShowImageGallery] = useState(false);
+  const [dragOver, setDragOver] = useState(false);
 
   // بارگذاری تصاویر موجود
   React.useEffect(() => {
@@ -83,11 +84,36 @@ const NavbarEditForm: React.FC<NavbarEditFormProps> = ({
   const handleDeleteImage = async (filename: string) => {
     try {
       await deleteImage(filename);
-      setImages(prev => prev.filter(img => img.filename !== filename));
+      setImages(prev => prev.filter(img => img.filename !== img));
       toast.success('تصویر حذف شد');
     } catch (error) {
       console.error('خطا در حذف تصویر:', error);
       toast.error('خطا در حذف تصویر');
+    }
+  };
+
+  // Drag and drop handlers
+  const handleDragOver = (e: React.DragEvent) => {
+    e.preventDefault();
+    setDragOver(true);
+  };
+
+  const handleDragLeave = (e: React.DragEvent) => {
+    e.preventDefault();
+    setDragOver(false);
+  };
+
+  const handleDrop = async (e: React.DragEvent) => {
+    e.preventDefault();
+    setDragOver(false);
+    
+    const files = Array.from(e.dataTransfer.files);
+    const imageFile = files.find(file => file.type.startsWith('image/'));
+    
+    if (imageFile) {
+      handleImageUpload(imageFile);
+    } else {
+      toast.error('لطفاً یک فایل تصویری انتخاب کنید');
     }
   };
 
@@ -186,7 +212,16 @@ const NavbarEditForm: React.FC<NavbarEditFormProps> = ({
               {/* آپلود تصویر */}
               <div className="space-y-4">
                 <Label>آپلود تصویر لوگو</Label>
-                <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center">
+                <div 
+                  className={`border-2 border-dashed rounded-lg p-6 text-center transition-colors ${
+                    dragOver 
+                      ? 'border-blue-500 bg-blue-50' 
+                      : 'border-gray-300 hover:border-gray-400'
+                  }`}
+                  onDragOver={handleDragOver}
+                  onDragLeave={handleDragLeave}
+                  onDrop={handleDrop}
+                >
                   <input
                     type="file"
                     accept=".png,.jpg,.jpeg,.gif,.webp,.svg"

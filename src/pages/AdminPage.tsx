@@ -16,6 +16,7 @@ import ContentEditForm from '@/components/admin/ContentEditForm';
 import NavbarEditForm from '@/components/admin/NavbarEditForm';
 import FooterEditForm from '@/components/admin/FooterEditForm';
 import HeroEditForm from '@/components/admin/HeroEditForm';
+import CalculatorEditForm from '@/components/admin/CalculatorEditForm';
 
 const answerMappings: { [key: string]: string } = {
   // سوال ۱
@@ -680,6 +681,14 @@ const AdminPage = () => {
                             />
                           ) : editingItem.section_key === 'hero' ? (
                             <HeroEditForm 
+                              item={editingItem} 
+                              onSave={handleSaveContent}
+                              onCancel={() => setEditingItem(null)}
+                              isSaving={isSavingContent}
+                              onChange={setEditingItem}
+                            />
+                          ) : editingItem.section_key === 'calculator' ? (
+                            <CalculatorEditForm 
                               item={editingItem} 
                               onSave={handleSaveContent}
                               onCancel={() => setEditingItem(null)}

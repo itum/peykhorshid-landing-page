@@ -1,6 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
+const path = require('path');
 const { testConnection } = require('./config/db');
 const Quiz = require('./models/Quiz');
 const Contact = require('./models/Contact');
@@ -25,7 +26,7 @@ app.use(cors({
 }));
 app.use(bodyParser.json());
 app.use(express.urlencoded({ extended: true }));
-app.use('/uploads', express.static('uploads'));
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // تنظیم مسیرهای API
 app.use('/api/quiz', quizRoutes);

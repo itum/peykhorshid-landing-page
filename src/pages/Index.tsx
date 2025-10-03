@@ -3,6 +3,7 @@ import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import Hero from '../components/Hero';
 import Features from '../components/Features';
+import Calculator from '../components/Calculator';
 import PopularRoutes from '../components/PopularRoutes';
 import Guarantees from '../components/Guarantees';
 import Steps from '../components/Steps';
@@ -17,6 +18,7 @@ const Index: React.FC = () => {
       <main className="flex-grow">
         <Hero />
         <Features />
+        <Calculator />
         <PopularRoutes />
         <Guarantees />
         <Steps />

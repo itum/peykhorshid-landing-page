@@ -55,7 +55,8 @@ exports.uploadImage = async (req, res) => {
       });
     }
 
-    const imageUrl = `/uploads/images/${req.file.filename}`;
+    const baseUrl = process.env.BASE_URL || 'http://localhost:3001';
+    const imageUrl = `${baseUrl}/uploads/images/${req.file.filename}`;
     
     res.json({
       success: true,
@@ -125,7 +126,7 @@ exports.listImages = async (req, res) => {
       })
       .map(file => ({
         filename: file,
-        url: `/uploads/images/${file}`,
+        url: `${process.env.BASE_URL || 'http://localhost:3001'}/uploads/images/${file}`,
         path: path.join(imagesPath, file),
         size: fs.statSync(path.join(imagesPath, file)).size,
         created: fs.statSync(path.join(imagesPath, file)).birthtime

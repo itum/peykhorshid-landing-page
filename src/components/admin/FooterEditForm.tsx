@@ -28,6 +28,7 @@ const FooterEditForm: React.FC<FooterEditFormProps> = ({
   const [images, setImages] = useState<ImageInfo[]>([]);
   const [isUploading, setIsUploading] = useState(false);
   const [showImageGallery, setShowImageGallery] = useState(false);
+  const [dragOver, setDragOver] = useState<string | null>(null);
 
   // بارگذاری تصاویر موجود
   React.useEffect(() => {
@@ -83,11 +84,36 @@ const FooterEditForm: React.FC<FooterEditFormProps> = ({
   const handleDeleteImage = async (filename: string) => {
     try {
       await deleteImage(filename);
-      setImages(prev => prev.filter(img => img.filename !== filename));
+      setImages(prev => prev.filter(img => img.filename !== img));
       toast.success('تصویر حذف شد');
     } catch (error) {
       console.error('خطا در حذف تصویر:', error);
       toast.error('خطا در حذف تصویر');
+    }
+  };
+
+  // Drag and drop handlers
+  const handleDragOver = (e: React.DragEvent, type: string) => {
+    e.preventDefault();
+    setDragOver(type);
+  };
+
+  const handleDragLeave = (e: React.DragEvent) => {
+    e.preventDefault();
+    setDragOver(null);
+  };
+
+  const handleDrop = async (e: React.DragEvent) => {
+    e.preventDefault();
+    setDragOver(null);
+    
+    const files = Array.from(e.dataTransfer.files);
+    const imageFile = files.find(file => file.type.startsWith('image/'));
+    
+    if (imageFile) {
+      handleImageUpload(imageFile);
+    } else {
+      toast.error('لطفاً یک فایل تصویری انتخاب کنید');
     }
   };
 
@@ -588,7 +614,16 @@ const FooterEditForm: React.FC<FooterEditFormProps> = ({
                     {/* آپلود تصویر نشان */}
                     <div className="space-y-2">
                       <Label>آپلود تصویر نشان</Label>
-                      <div className="border-2 border-dashed border-gray-300 rounded-lg p-4 text-center">
+                      <div 
+                        className={`border-2 border-dashed rounded-lg p-4 text-center transition-colors ${
+                          dragOver === `badge-${index}` 
+                            ? 'border-blue-500 bg-blue-50' 
+                            : 'border-gray-300 hover:border-gray-400'
+                        }`}
+                        onDragOver={(e) => handleDragOver(e, `badge-${index}`)}
+                        onDragLeave={handleDragLeave}
+                        onDrop={handleDrop}
+                      >
                         <input
                           type="file"
                           accept=".png,.jpg,.jpeg,.gif,.webp,.svg"
@@ -611,7 +646,7 @@ const FooterEditForm: React.FC<FooterEditFormProps> = ({
                         >
                           <Upload className="h-6 w-6 text-gray-400" />
                           <span className="text-sm text-gray-600">
-                            {isUploading ? 'در حال آپلود...' : 'آپلود تصویر'}
+                            {isUploading ? 'در حال آپلود...' : 'کلیک کنید یا فایل را بکشید'}
                           </span>
                         </label>
                       </div>
