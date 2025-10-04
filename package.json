@@ -61,7 +61,7 @@
     "framer-motion": "^12.7.4",
     "grapesjs": "^0.19.5",
     "grapesjs-preset-webpage": "^1.0.3",
-    "grapesjs-react": "^4.0.2",
+    "grapesjs-react": "^4.0.3",
     "input-otp": "^1.2.4",
     "lucide-react": "^0.462.0",
     "mysql2": "^3.14.0",
