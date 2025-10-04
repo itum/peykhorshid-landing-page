@@ -33,8 +33,9 @@ app.use(express.urlencoded({ extended: true }));
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // fallback برای تصاویر در production
-app.get('/uploads/images/*', (req, res) => {
-  const imagePath = path.join(__dirname, 'uploads', req.url.replace('/uploads/', ''));
+app.get('/uploads/images/:filename', (req, res) => {
+  const filename = req.params.filename;
+  const imagePath = path.join(__dirname, 'uploads', 'images', filename);
   
   if (require('fs').existsSync(imagePath)) {
     res.sendFile(imagePath);
@@ -42,7 +43,7 @@ app.get('/uploads/images/*', (req, res) => {
     res.status(404).json({ 
       success: false, 
       message: 'تصویر یافت نشد',
-      path: req.url 
+      filename: filename 
     });
   }
 });
