@@ -102,6 +102,6 @@
     "typescript": "^5.5.3",
     "typescript-eslint": "^8.0.1",
     "vite": "^7.1.9",
-    "vite-plugin-image-optimizer": "^1.1.8"
+    "vite-plugin-image-optimizer": "^2.0.2"
   }
 }
