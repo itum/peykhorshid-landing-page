@@ -38,7 +38,7 @@ elif [ "$env" = "prod" ]; then
     
     echo "🏗️ Build کردن Frontend..."
     npm run build
-    echo "✅ Frontend build شد"
+    echo "✅ Frontend build شد (شامل تصاویر)"
     
     echo "🔧 آماده‌سازی Backend..."
     cd server

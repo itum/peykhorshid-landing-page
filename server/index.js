@@ -29,7 +29,23 @@ app.use(cors({
 }));
 app.use(bodyParser.json());
 app.use(express.urlencoded({ extended: true }));
+// serve کردن فایل‌های آپلود شده
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+
+// fallback برای تصاویر در production
+app.get('/uploads/images/*', (req, res) => {
+  const imagePath = path.join(__dirname, 'uploads', req.url.replace('/uploads/', ''));
+  
+  if (require('fs').existsSync(imagePath)) {
+    res.sendFile(imagePath);
+  } else {
+    res.status(404).json({ 
+      success: false, 
+      message: 'تصویر یافت نشد',
+      path: req.url 
+    });
+  }
+});
 
 // تنظیم مسیرهای API
 app.use('/api/quiz', quizRoutes);

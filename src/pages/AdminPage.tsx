@@ -195,7 +195,7 @@ const AdminPage = () => {
   const handleDeleteContent = async (id: number) => {
     try {
       // پیدا کردن سکشن برای نمایش نام
-      const section = contentItems.find(item => item.id === id);
+      const section = contentItems?.find(item => item.id === id);
       const sectionName = section?.title || section?.section_key || 'این سکشن';
       
       // نمایش اخطار با SweetAlert2
@@ -504,11 +504,11 @@ const AdminPage = () => {
   };
 
   // شمارش پیام‌های خوانده نشده
-  const unreadCount = contactMessages.filter(msg => !msg.is_read).length;
+  const unreadCount = contactMessages?.filter(msg => !msg.is_read).length || 0;
 
   // فیلتر کردن کاربران برای حذف شماره‌های تکراری و نمایش فقط رکورد کامل یا اولیه
   const filteredUsers = Array.from(
-    users.reduce((acc, user) => {
+    (users || []).reduce((acc, user) => {
       const phone = user.phone;
       // شرط تکمیل بودن کوییز: داشتن travel_destination یا travelDestination یا حداقل یک quizAnswers کامل
       const isComplete = Boolean(
@@ -632,7 +632,7 @@ const AdminPage = () => {
                     </div>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                      {contentItems.length > 0 ? contentItems.map((item, idx) => (
+                      {contentItems && contentItems.length > 0 ? contentItems.map((item, idx) => (
                         <div key={item.id} className="bg-white border rounded-lg p-4 hover:shadow-md transition-shadow">
                           <div className="flex justify-between items-start mb-3">
                             <h4 className="font-bold text-gray-800">{item.title || item.section_key}</h4>
@@ -711,7 +711,7 @@ const AdminPage = () => {
 
                   <TabsContent value="users" className="mt-0">
                     <div className="flex justify-between items-center mb-4">
-                      <h3 className="text-lg font-semibold">لیست کاربران کوییز سفر ({filteredUsers.length} نفر)</h3>
+                      <h3 className="text-lg font-semibold">لیست کاربران کوییز سفر ({filteredUsers?.length || 0} نفر)</h3>
                       <div className="flex gap-2">
                         <Button onClick={handleRefresh} className="bg-blue-600 hover:bg-blue-700 ml-2">
                           به‌روزرسانی لیست
@@ -742,7 +742,7 @@ const AdminPage = () => {
                           </tr>
                         </thead>
                         <tbody>
-                          {filteredUsers.length > 0 ? (
+                          {filteredUsers && filteredUsers.length > 0 ? (
                             filteredUsers.map((user, index) => (
                               <tr key={index} className="hover:bg-gray-50">
                                 <td className="py-2 px-2 border-b text-right">{index + 1}</td>
@@ -767,7 +767,7 @@ const AdminPage = () => {
                                     };
                                     
                                     if (Array.isArray(activities)) {
-                                      return activities.map(act => activitiesMap[act] || act).join('، ');
+                                      return (activities || []).map(act => activitiesMap[act] || act).join('، ');
                                     } else if (typeof activities === 'string') {
                                       // اگر رشته باشد و شامل کاما باشد، آن را تقسیم می‌کنیم
                                       if (activities.includes(',')) {
@@ -874,7 +874,7 @@ const AdminPage = () => {
 
                   <TabsContent value="quiz2-users" className="mt-0">
                     <div className="flex justify-between items-center mb-4">
-                      <h3 className="text-lg font-semibold">لیست کاربران کوییز ۲ ({quiz2Users.length} نفر)</h3>
+                      <h3 className="text-lg font-semibold">لیست کاربران کوییز ۲ ({quiz2Users?.length || 0} نفر)</h3>
                       <div className="flex gap-2">
                         <Button onClick={refreshQuiz2UsersList} className="bg-blue-600 hover:bg-blue-700 ml-2">
                           به‌روزرسانی لیست
@@ -899,7 +899,7 @@ const AdminPage = () => {
                           </tr>
                         </thead>
                         <tbody>
-                          {quiz2Users.length > 0 ? (
+                          {quiz2Users && quiz2Users.length > 0 ? (
                             quiz2Users.map((user, index) => (
                               <tr key={user.id} className="hover:bg-gray-50">
                                 <td className="py-2 px-2 border-b text-right">{index + 1}</td>
@@ -912,7 +912,7 @@ const AdminPage = () => {
                                       const answers = JSON.parse(user.answers || '[]');
                                       return (
                                         <ul className="list-none p-0 m-0">
-                                          {answers.map((ans: string, idx: number) => (
+                                          {(answers || []).map((ans: string, idx: number) => (
                                             <li key={idx} className="text-xs">
                                               {`سوال ${idx + 1}: ${getAnswerText(idx, ans)}`}
                                             </li>
@@ -964,7 +964,7 @@ const AdminPage = () => {
                     </div>
                     
                     <div className="space-y-4">
-                      {contactMessages.length > 0 ? (
+                      {contactMessages && contactMessages.length > 0 ? (
                         contactMessages.map((message, index) => (
                           <div 
                             key={index} 

@@ -6,11 +6,12 @@
   "scripts": {
     "dev": "vite --mode development",
     "start": "vite --mode development",
-    "build": "NODE_ENV=production vite build --mode production && npm run postbuild",
+    "build": "NODE_ENV=production vite build --mode production && npm run postbuild && npm run copy-images",
     "build:dev": "NODE_ENV=development vite build --mode development && npm run postbuild",
     "postbuild": "npm run copy-htaccess",
     "copy-htaccess": "node scripts/copy-htaccess.js",
     "copy-htaccess:win": "scripts\\copy-htaccess.cmd",
+    "copy-images": "node copy-images-to-production.cjs",
     "lint": "eslint .",
     "preview": "vite preview"
   },
