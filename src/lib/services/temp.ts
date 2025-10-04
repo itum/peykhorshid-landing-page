@@ -3,7 +3,7 @@ import * as XLSX from 'xlsx';
 import { sendSMSWithJSONP, sendSMSWithIframe } from './smsUtils';
 
 // آدرس API سرور
-const API_URL = `${import.meta.env.VITE_API_URL}/quiz`;
+const API_URL = `${import.meta.env.VITE_API_URL}/api/quiz`;
 
 // تعریف تایپ اطلاعات کاربر
 export type UserInfo = {
@@ -141,7 +141,12 @@ export const sendSMS = async (phone: string, name: string): Promise<boolean> => 
     return false;
   }
   
-  const apiKey = '6F315959556279784174515954335870754D57582B446843686470686854336A';
+  const apiKey = import.meta.env.VITE_KAVENEGAR_API_KEY;
+  
+  if (!apiKey) {
+    console.error('❌ خطا: متغیر محیطی VITE_KAVENEGAR_API_KEY تنظیم نشده است');
+    return false;
+  }
   const template = 'Smsvorod';
   
   // ارسال با استفاده از الگو (پترن) به جای پیامک متنی
@@ -178,7 +183,12 @@ export const sendSMSAlternative = async (phone: string, name: string): Promise<b
     return false;
   }
   
-  const apiKey = '6F315959556279784174515954335870754D57582B446843686470686854336A';
+  const apiKey = import.meta.env.VITE_KAVENEGAR_API_KEY;
+  
+  if (!apiKey) {
+    console.error('❌ خطا: متغیر محیطی VITE_KAVENEGAR_API_KEY تنظیم نشده است');
+    return false;
+  }
   const template = 'Smsvorod';
   
   // استفاده از الگو (پترن) کاوه نگار

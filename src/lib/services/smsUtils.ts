@@ -78,7 +78,14 @@ export const sendSMSWithJSONP = async (phone: string, message: string, apiKey: s
     console.log('ارسال پیامک با روش JSONP به:', phone);
     
     // ساخت URL
-    const url = `https://api.kavenegar.com/v1/${apiKey}/sms/send.json?receptor=${encodeURIComponent(phone)}&message=${encodeURIComponent(message)}&sender=${encodeURIComponent(sender)}`;
+    const kavenegarApiKey = import.meta.env.VITE_KAVENEGAR_API_KEY;
+    
+    if (!kavenegarApiKey) {
+      console.error('❌ خطا: متغیر محیطی VITE_KAVENEGAR_API_KEY تنظیم نشده است');
+      return Promise.reject(new Error('API Key تنظیم نشده است'));
+    }
+    
+    const url = `https://api.kavenegar.com/v1/${kavenegarApiKey}/sms/send.json?receptor=${encodeURIComponent(phone)}&message=${encodeURIComponent(message)}&sender=${encodeURIComponent(sender)}`;
     
     console.log('URL JSONP:', url);
     
@@ -134,7 +141,7 @@ export const sendSMSWithIframe = async (phone: string, message: string, apiKey: 
       // ایجاد فرم
       const form = document.createElement('form');
       form.method = 'POST';
-      form.action = `https://api.kavenegar.com/v1/${apiKey}/sms/send.json`;
+      form.action = `https://api.kavenegar.com/v1/${kavenegarApiKey}/sms/send.json`;
       form.target = '_blank';
       
       // افزودن فیلدها

@@ -5,7 +5,8 @@
 # /api/* /.netlify/functions/api/:splat 200
 
 # مسیریابی برای API - اگر از سرور خارجی استفاده می‌کنید
-/api/* https://ghesti.peykkhorshid.ir/api/:splat 200
+# توجه: این آدرس باید با متغیر محیطی VITE_API_URL مطابقت داشته باشد
+# /api/* https://your-api-domain.com/api/:splat 200
 
 # مسیریابی برای React Router (SPA)
 /* /index.html 200

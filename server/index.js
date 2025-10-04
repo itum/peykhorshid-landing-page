@@ -1,3 +1,6 @@
+// بارگیری متغیرهای محیطی از فایل .env
+require('dotenv').config();
+
 const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
@@ -60,7 +63,7 @@ const startServer = async () => {
     
     app.listen(PORT, '0.0.0.0', () => {
       console.log(`سرور با موفقیت در پورت ${PORT} راه‌اندازی شد.`);
-      console.log(`آدرس: http://localhost:${PORT}`);
+      console.log(`آدرس: ${process.env.BASE_URL || `http://localhost:${PORT}`}`);
     });
   } catch (error) {
     console.error('خطا در راه‌اندازی سرور:', error);

@@ -52,7 +52,13 @@ const SMSTestPage = () => {
 
   const handleRawTest = () => {
     // تست مستقیم با باز کردن URL در تب جدید
-    const apiKey = '6F315959556279784174515954335870754D57582B446843686470686854336A';
+    const apiKey = import.meta.env.VITE_KAVENEGAR_API_KEY;
+    
+    if (!apiKey) {
+      alert('❌ خطا: متغیر محیطی VITE_KAVENEGAR_API_KEY تنظیم نشده است');
+      return;
+    }
+    
     const url = `https://api.kavenegar.com/v1/${apiKey}/verify/lookup.json?receptor=${encodeURIComponent(phone)}&template=Smsvorod&token=${encodeURIComponent(name || 'کاربر گرامی')}`;
     window.open(url, '_blank');
   };

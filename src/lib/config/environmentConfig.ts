@@ -3,13 +3,13 @@
 
 export const environmentConfig = {
   development: {
-    apiUrl: 'http://localhost:3001',
+    apiUrl: import.meta.env.VITE_API_URL,
     appName: 'Peyk Khorshid',
     version: '1.0.0',
     debug: true,
   },
   production: {
-    apiUrl: 'https://ghesti.peykkhorshid.ir',
+    apiUrl: import.meta.env.VITE_API_URL,
     appName: 'Peyk Khorshid',
     version: '1.0.0',
     debug: false,

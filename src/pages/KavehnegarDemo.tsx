@@ -9,7 +9,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 
 const KavehnegarDemo = () => {
-  const [apiKey, setApiKey] = useState('6F315959556279784174515954335870754D57582B446843686470686854336A');
+  const [apiKey, setApiKey] = useState(import.meta.env.VITE_KAVENEGAR_API_KEY || '');
   const [phone, setPhone] = useState('');
   const [message, setMessage] = useState('تست پیامک از سایت پیک خورشید');
   const [token, setToken] = useState('');

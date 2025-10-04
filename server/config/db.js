@@ -1,27 +1,27 @@
 const mysql = require('mysql2/promise');
 
-// تنظیمات اتصال به پایگاه داده
-// const connection = {
-//   host: 'localhost',
-//   user: 'farazec',
-//   password: 'M@@sdfsfsdf2138123',
-//   database: 'peykkhorshid',
-//   port: 3306,
-//   waitForConnections: true,
-//   connectionLimit: 10,
-//   queueLimit: 0
-// };
-// Localhost
+// تنظیمات اتصال به پایگاه داده از متغیرهای محیطی
 const connection = {
-  host: 'localhost',
-  user: 'root',
-  password: '',
-  database: 'hadis',
-  port: 3308,
+  host: process.env.DB_HOST || 'localhost',
+  user: process.env.DB_USER || 'root',
+  password: process.env.DB_PASSWORD || '',
+  database: process.env.DB_NAME || 'peykkhorshid',
+  port: parseInt(process.env.DB_PORT) || 3306,
   waitForConnections: true,
-  connectionLimit: 10,
+  connectionLimit: parseInt(process.env.DB_CONNECTION_LIMIT) || 10,
   queueLimit: 0
 };
+
+// بررسی تنظیمات دیتابیس
+if (!process.env.DB_HOST && !process.env.DB_USER) {
+  console.warn('⚠️ هشدار: متغیرهای محیطی دیتابیس تنظیم نشده‌اند. از مقادیر پیش‌فرض استفاده می‌شود.');
+  console.log('لطفاً متغیرهای زیر را در فایل .env تنظیم کنید:');
+  console.log('DB_HOST=localhost');
+  console.log('DB_USER=your_username');
+  console.log('DB_PASSWORD=your_password');
+  console.log('DB_NAME=peykkhorshid');
+  console.log('DB_PORT=3306');
+}
 
 // ایجاد پول اتصال
 const pool = mysql.createPool(connection);

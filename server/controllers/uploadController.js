@@ -55,16 +55,14 @@ exports.uploadImage = async (req, res) => {
       });
     }
 
-    // تشخیص محیط و تولید URL مناسب
-    const isProduction = process.env.NODE_ENV === 'production';
-    let baseUrl;
+    // استفاده از BASE_URL از متغیر محیطی
+    const baseUrl = process.env.BASE_URL;
     
-    if (isProduction) {
-      // در محیط تولید، از دامنه اصلی استفاده کن
-      baseUrl = process.env.BASE_URL || 'https://ghesti.peykkhorshid.ir';
-    } else {
-      // در محیط توسعه، از localhost استفاده کن
-      baseUrl = process.env.BASE_URL || 'http://localhost:3001';
+    if (!baseUrl) {
+      return res.status(500).json({ 
+        success: false, 
+        message: 'BASE_URL در متغیرهای محیطی تنظیم نشده است' 
+      });
     }
     
     const imageUrl = `${baseUrl}/uploads/images/${req.file.filename}`;
@@ -129,14 +127,14 @@ exports.listImages = async (req, res) => {
       });
     }
 
-    // تشخیص محیط و تولید URL مناسب
-    const isProduction = process.env.NODE_ENV === 'production';
-    let baseUrl;
+    // استفاده از BASE_URL از متغیر محیطی
+    const baseUrl = process.env.BASE_URL;
     
-    if (isProduction) {
-      baseUrl = process.env.BASE_URL || 'https://ghesti.peykkhorshid.ir';
-    } else {
-      baseUrl = process.env.BASE_URL || 'http://localhost:3001';
+    if (!baseUrl) {
+      return res.status(500).json({ 
+        success: false, 
+        message: 'BASE_URL در متغیرهای محیطی تنظیم نشده است' 
+      });
     }
 
     const files = fs.readdirSync(imagesPath);
