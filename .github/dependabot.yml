@@ -1,0 +1,56 @@
+version: 2
+updates:
+  # Enable version updates for npm (frontend)
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "09:00"
+      timezone: "Asia/Tehran"
+    open-pull-requests-limit: 10
+    reviewers:
+      - "itum"
+    assignees:
+      - "itum"
+    commit-message:
+      prefix: "chore"
+      include: "scope"
+    labels:
+      - "dependencies"
+      - "security"
+    ignore:
+      # Ignore major version updates for critical dependencies
+      - dependency-name: "react"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "react-dom"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "vite"
+        update-types: ["version-update:semver-major"]
+
+  # Enable version updates for npm (backend)
+  - package-ecosystem: "npm"
+    directory: "/server"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "09:00"
+      timezone: "Asia/Tehran"
+    open-pull-requests-limit: 5
+    reviewers:
+      - "itum"
+    assignees:
+      - "itum"
+    commit-message:
+      prefix: "chore"
+      include: "scope"
+    labels:
+      - "dependencies"
+      - "security"
+      - "backend"
+    ignore:
+      # Ignore major version updates for critical dependencies
+      - dependency-name: "express"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "mysql2"
+        update-types: ["version-update:semver-major"]

@@ -1,5 +1,5 @@
 import axios from 'axios';
-import * as XLSX from 'xlsx';
+import ExcelJS from 'exceljs';
 import { sendSMSWithJSONP, sendSMSWithIframe } from './smsUtils';
 import { getApiUrl } from '@/lib/config/environment';
 
@@ -121,7 +121,7 @@ export const downloadExcel = (usersForExcel?: UserInfo[]): void => {
 };
 
 // ذخیره اطلاعات کاربران در فایل اکسل
-const saveUsersToExcel = (download = false, usersForExcel?: UserInfo[]): void => {
+const saveUsersToExcel = async (download = false, usersForExcel?: UserInfo[]): Promise<void> => {
   try {
     // تابع کمکی برای تبدیل فعالیت‌ها به فارسی
     const translateActivities = (activities: any): string => {
@@ -184,18 +184,67 @@ const saveUsersToExcel = (download = false, usersForExcel?: UserInfo[]): void =>
           : new Date(user.timestamp).toLocaleString('fa-IR'),
       };
     });
-    const worksheet = XLSX.utils.json_to_sheet(excelData);
-    const workbook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(workbook, worksheet, 'کاربران');
+    const workbook = new ExcelJS.Workbook();
+    const worksheet = workbook.addWorksheet('کاربران');
+
+    // تعریف ستون‌ها
+    worksheet.columns = [
+      { header: 'نام و نام خانوادگی', key: 'name', width: 20 },
+      { header: 'شماره موبایل', key: 'phone', width: 15 },
+      { header: 'مقصد سفر', key: 'destination', width: 20 },
+      { header: 'امتیاز', key: 'score', width: 10 },
+      { header: 'ترجیح سفر', key: 'location', width: 15 },
+      { header: 'فعالیت‌ها', key: 'activities', width: 30 },
+      { header: 'مدت سفر', key: 'duration', width: 15 },
+      { header: 'فصل مورد علاقه', key: 'season', width: 15 },
+      { header: 'بودجه', key: 'budget', width: 15 },
+      { header: 'میزان ماجراجویی', key: 'adventure', width: 15 },
+      { header: 'تاریخ ثبت', key: 'date', width: 20 },
+    ];
+
+    dataSource.forEach(user => {
+      const activities = user.activities || (user.quizAnswers?.activities);
+      const translatedActivities = translateActivities(activities);
+      const duration = user.duration || user.quizAnswers?.duration || '';
+      const translatedDuration = duration ? translateDuration(duration) : '';
+      const season = user.season || user.quizAnswers?.season || '';
+      const translatedSeason = season ? translateSeason(season) : '';
+      
+      worksheet.addRow({
+        name: user.name || 'بدون نام',
+        phone: user.phone,
+        destination: user.travel_destination || user.travelDestination || '',
+        score: user.score || 0,
+        location: user.location || (user.quizAnswers?.location) || '',
+        activities: translatedActivities,
+        duration: translatedDuration,
+        season: translatedSeason,
+        budget: user.budget || user.quizAnswers?.budget || '',
+        adventure: user.adventure || user.quizAnswers?.adventure || '',
+        date: user.created_at 
+          ? new Date(user.created_at).toLocaleString('fa-IR')
+          : new Date(user.timestamp).toLocaleString('fa-IR'),
+      });
+    });
+
     if (download) {
-      XLSX.writeFile(workbook, 'travel_quiz_users.xlsx');
+      const buffer = await workbook.xlsx.writeBuffer();
+      const blob = new Blob([buffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = 'travel_quiz_users.xlsx';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(url);
     }
   } catch (error) {
     console.error('خطا در ذخیره فایل اکسل:', error);
   }
 };
 
-export const downloadExcelForQuiz2 = (usersForExcel: Quiz2User[]): void => {
+export const downloadExcelForQuiz2 = async (usersForExcel: Quiz2User[]): Promise<void> => {
   try {
     const excelData = usersForExcel.map(user => {
       let answers = {};
@@ -214,10 +263,45 @@ export const downloadExcelForQuiz2 = (usersForExcel: Quiz2User[]): void => {
       };
     });
 
-    const worksheet = XLSX.utils.json_to_sheet(excelData);
-    const workbook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(workbook, worksheet, 'کاربران کوییز ۲');
-    XLSX.writeFile(workbook, 'travel_quiz_2_users.xlsx');
+    const workbook = new ExcelJS.Workbook();
+    const worksheet = workbook.addWorksheet('کاربران کوییز ۲');
+
+    // تعریف ستون‌ها
+    worksheet.columns = [
+      { header: 'نام و نام خانوادگی', key: 'name', width: 20 },
+      { header: 'شماره موبایل', key: 'phone', width: 15 },
+      { header: 'نتیجه', key: 'result', width: 20 },
+      { header: 'پاسخ‌ها', key: 'answers', width: 50 },
+      { header: 'تاریخ ثبت', key: 'date', width: 20 },
+    ];
+
+    usersForExcel.forEach(user => {
+      let answers = {};
+      try {
+        answers = JSON.parse(user.answers);
+      } catch (e) {
+        // نادیده گرفتن خطا اگر جیسون معتبر نباشد
+      }
+
+      worksheet.addRow({
+        name: user.name,
+        phone: user.phone,
+        result: user.result,
+        answers: JSON.stringify(answers, null, 2),
+        date: new Date(user.created_at).toLocaleString('fa-IR'),
+      });
+    });
+
+    const buffer = await workbook.xlsx.writeBuffer();
+    const blob = new Blob([buffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+    const url = window.URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = 'travel_quiz_2_users.xlsx';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    window.URL.revokeObjectURL(url);
 
   } catch (error) {
     console.error('خطا در ذخیره فایل اکسل کوییز ۲:', error);

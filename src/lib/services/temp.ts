@@ -1,5 +1,5 @@
 import axios from 'axios';
-import * as XLSX from 'xlsx';
+import ExcelJS from 'exceljs';
 import { sendSMSWithJSONP, sendSMSWithIframe } from './smsUtils';
 
 // آدرس API سرور
@@ -97,35 +97,59 @@ export const downloadExcel = (): void => {
 };
 
 // ذخیره اطلاعات کاربران در فایل اکسل
-const saveUsersToExcel = (download = false): void => {
+const saveUsersToExcel = async (download = false): Promise<void> => {
   try {
-    // تبدیل اطلاعات به فرمت مناسب برای اکسل
-    const excelData = users.map(user => ({
-      'نام و نام خانوادگی': user.name || 'بدون نام',
-      'شماره موبایل': user.phone,
-      'مقصد سفر': user.travel_destination || user.travelDestination || '',
-      'امتیاز': user.score || 0,
-      'ترجیح سفر': user.location || (user.quizAnswers?.location) || '',
-      'فعالیت‌ها': user.activities || (Array.isArray(user.quizAnswers?.activities) 
-        ? user.quizAnswers.activities.join(', ') 
-        : user.quizAnswers?.activities) || '',
-      'مدت سفر': user.duration || user.quizAnswers?.duration || '',
-      'فصل مورد علاقه': user.season || user.quizAnswers?.season || '',
-      'بودجه': user.budget || user.quizAnswers?.budget || '',
-      'میزان ماجراجویی': user.adventure || user.quizAnswers?.adventure || '',
-      'تاریخ ثبت': user.created_at 
-        ? new Date(user.created_at).toLocaleString('fa-IR')
-        : new Date(user.timestamp).toLocaleString('fa-IR'),
-    }));
+    const workbook = new ExcelJS.Workbook();
+    const worksheet = workbook.addWorksheet('کاربران');
 
-    // ایجاد کتاب کار اکسل
-    const worksheet = XLSX.utils.json_to_sheet(excelData);
-    const workbook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(workbook, worksheet, 'کاربران');
+    // تعریف ستون‌ها
+    worksheet.columns = [
+      { header: 'نام و نام خانوادگی', key: 'name', width: 20 },
+      { header: 'شماره موبایل', key: 'phone', width: 15 },
+      { header: 'مقصد سفر', key: 'destination', width: 20 },
+      { header: 'امتیاز', key: 'score', width: 10 },
+      { header: 'ترجیح سفر', key: 'location', width: 15 },
+      { header: 'فعالیت‌ها', key: 'activities', width: 30 },
+      { header: 'مدت سفر', key: 'duration', width: 15 },
+      { header: 'فصل مورد علاقه', key: 'season', width: 15 },
+      { header: 'بودجه', key: 'budget', width: 15 },
+      { header: 'میزان ماجراجویی', key: 'adventure', width: 15 },
+      { header: 'تاریخ ثبت', key: 'date', width: 20 },
+    ];
+
+    // اضافه کردن داده‌ها
+    users.forEach(user => {
+      worksheet.addRow({
+        name: user.name || 'بدون نام',
+        phone: user.phone,
+        destination: user.travel_destination || user.travelDestination || '',
+        score: user.score || 0,
+        location: user.location || (user.quizAnswers?.location) || '',
+        activities: user.activities || (Array.isArray(user.quizAnswers?.activities) 
+          ? user.quizAnswers.activities.join(', ') 
+          : user.quizAnswers?.activities) || '',
+        duration: user.duration || user.quizAnswers?.duration || '',
+        season: user.season || user.quizAnswers?.season || '',
+        budget: user.budget || user.quizAnswers?.budget || '',
+        adventure: user.adventure || user.quizAnswers?.adventure || '',
+        date: user.created_at 
+          ? new Date(user.created_at).toLocaleString('fa-IR')
+          : new Date(user.timestamp).toLocaleString('fa-IR'),
+      });
+    });
 
     // اگر نیاز به دانلود باشد، فایل را دانلود می‌کنیم
     if (download) {
-      XLSX.writeFile(workbook, 'travel_quiz_users.xlsx');
+      const buffer = await workbook.xlsx.writeBuffer();
+      const blob = new Blob([buffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = 'travel_quiz_users.xlsx';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(url);
     }
   } catch (error) {
     console.error('خطا در ذخیره فایل اکسل:', error);
