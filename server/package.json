@@ -53,7 +53,7 @@
     "ignore-by-default": "^1.0.1",
     "inherits": "^2.0.4",
     "ipaddr.js": "^1.9.1",
-    "is-binary-path": "^2.1.0",
+    "is-binary-path": "^3.0.0",
     "is-extglob": "^2.1.1",
     "is-glob": "^4.0.3",
     "is-number": "^7.0.0",
